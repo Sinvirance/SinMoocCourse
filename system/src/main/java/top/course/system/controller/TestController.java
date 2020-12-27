@@ -2,6 +2,11 @@ package top.course.system.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.course.system.domain.Test;
+import top.course.system.service.TestService;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: Sinvirance
@@ -12,8 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
+    @Resource
+    private TestService testService;
+
     @RequestMapping("/test")
-    public String test() {
-        return "success";
+    public List<Test> test() {
+        return testService.list();
     }
 }
