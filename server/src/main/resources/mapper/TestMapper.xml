@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.course.system.mapper.TestMapper">
+<mapper namespace="top.course.server.mapper.TestMapper">
 
-    <select id="list" resultType="top.course.system.domain.Test">
+    <select id="list" resultType="top.course.server.domain.Test">
         select `id`,`name` from `test`
     </select>
 </mapper>

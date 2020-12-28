@@ -2,9 +2,8 @@ package top.course.system.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.course.system.domain.Test;
-import top.course.system.service.TestService;
-
+import top.course.server.domain.Test;
+import top.course.server.service.TestService;
 import javax.annotation.Resource;
 import java.util.List;
 

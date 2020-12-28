@@ -1,6 +1,7 @@
-package top.course.system.mapper;
+package top.course.server.mapper;
 
-import top.course.system.domain.Test;
+
+import top.course.server.domain.Test;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ import java.util.List;
 
 public interface TestMapper {
 
-    public List<Test> list();
+    List<Test> list();
 }

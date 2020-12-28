@@ -13,7 +13,7 @@ import org.springframework.core.env.Environment;
 @SpringBootApplication
 @EnableEurekaClient
 @ComponentScan("top.course")
-@MapperScan("top.course.system.mapper")
+@MapperScan("top.course.server.mapper")
 public class SystemApplication {
 
     // 指定类初始化日志对象

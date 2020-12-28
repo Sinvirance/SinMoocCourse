@@ -1,4 +1,5 @@
-package top.course.system.domain;
+package top.course.server.domain;
+
 
 import lombok.Getter;
 import lombok.Setter;

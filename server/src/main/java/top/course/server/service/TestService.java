@@ -1,8 +1,9 @@
-package top.course.system.service;
+package top.course.server.service;
+
 
 import org.springframework.stereotype.Service;
-import top.course.system.domain.Test;
-import top.course.system.mapper.TestMapper;
+import top.course.server.domain.Test;
+import top.course.server.mapper.TestMapper;
 
 import javax.annotation.Resource;
 import java.util.List;
