@@ -1,17 +1,30 @@
 package top.course.server.mapper;
 
-
-import top.course.server.domain.Test;
-
 import java.util.List;
-
-/**
- * @Author: Sinvirance
- * @Date: 2020/12/28 3:08
- * @Description: TODO
- */
+import org.apache.ibatis.annotations.Param;
+import top.course.server.domain.Test;
+import top.course.server.domain.TestExample;
 
 public interface TestMapper {
+    long countByExample(TestExample example);
 
-    List<Test> list();
+    int deleteByExample(TestExample example);
+
+    int deleteByPrimaryKey(String id);
+
+    int insert(Test record);
+
+    int insertSelective(Test record);
+
+    List<Test> selectByExample(TestExample example);
+
+    Test selectByPrimaryKey(String id);
+
+    int updateByExampleSelective(@Param("record") Test record, @Param("example") TestExample example);
+
+    int updateByExample(@Param("record") Test record, @Param("example") TestExample example);
+
+    int updateByPrimaryKeySelective(Test record);
+
+    int updateByPrimaryKey(Test record);
 }
