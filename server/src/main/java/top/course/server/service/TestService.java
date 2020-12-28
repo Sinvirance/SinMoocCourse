@@ -2,11 +2,9 @@ package top.course.server.service;
 
 
 import org.springframework.stereotype.Service;
-import top.course.server.domain.Test;
 import top.course.server.mapper.TestMapper;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @Author: Sinvirance
