@@ -75,9 +75,16 @@
 </template>
 
 <script>
-  $('body').attr('class', 'login-layout light-login');
   export default {
-    name: 'login',
+    name: "login",
+    // 在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
+    mounted: function () {
+      // 删除样式
+      $("body").removeClass("no-skin");
+      // 增加样式
+      $("body").attr("class", "login-layout light-login");
+      console.log("login")
+    },
     methods: {
       login(){
         this.$router.push("/admin")
