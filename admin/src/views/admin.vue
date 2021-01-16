@@ -396,15 +396,6 @@
             </ul>
           </li>
 
-          <li class="">
-            <a href="widgets.html">
-              <i class="menu-icon fa fa-list-alt"></i>
-              <span class="menu-text"> Widgets </span>
-            </a>
-
-            <b class="arrow"></b>
-          </li>
-
         </ul><!-- /.nav-list -->
 
         <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
