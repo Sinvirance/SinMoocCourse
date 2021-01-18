@@ -39,6 +39,8 @@
                              targetPackage="top.course.server.mapper"
                              type="XMLMAPPER" />
 
-        <table tableName="test" domainObjectName="Test"/>
+        <!--每次建好数据表后，都需要执行一次 Mybatis-generator,并将已经生成过的数据库表注释，防止再次生成-->
+        <!--<table tableName="test" domainObjectName="Test"/>-->
+        <table tableName="chapter" domainObjectName="Chapter"/>
     </context>
 </generatorConfiguration>
