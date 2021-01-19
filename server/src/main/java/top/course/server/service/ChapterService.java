@@ -20,7 +20,6 @@ import java.util.List;
 
 @Service
 public class ChapterService {
-
     @Resource
     private ChapterMapper chapterMapper;
 
