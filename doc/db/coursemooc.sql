@@ -9,7 +9,6 @@ CREATE TABLE `test`(
     PRIMARY KEY (`id`)
 ) CHARACTER SET = utf8mb4;
 
-
 # 课程章节表
 DROP table if exists `chapter`;
 CREATE TABLE `chapter`(
@@ -18,3 +17,8 @@ CREATE TABLE `chapter`(
     `name`      varchar(50) comment '名称',
     primary key (`id`)
 ) engine = innodb comment = '大章';
+
+# 大章节表测试数据
+insert into `chapter` (id, course_id, name) values ('00000000', '00000000', '测试大章一');
+insert into `chapter` (id, course_id, name) values ('00000001', '00000000', '测试大章二');
+select id, course_id, name from chapter;
