@@ -396,7 +396,7 @@
             </ul>
           </li>
 
-          <li class="">
+          <li class="active open">
             <a href="#" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 业务管理 </span>
@@ -480,15 +480,32 @@
   export default {
     name: "admin",
     mounted: function() {
+      //
+      let _this = this;
       $("body").removeClass("login-layout light-login");
       $("body").attr("class", "no-skin");
-      console.log("admin")
+      console.log("admin");
+      // 为了实现登录到 welcome 页面也具有激活样式
+      _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
+    },
+    // watch: 监听Vue实例的数据变化，这里是监听 $route 的变化
+    watch: {
+      $route: {
+        // admin组件的子组件下页面激活样式
+        handler:function(val, oldVal){
+          console.log("---->页面跳转：", val, oldVal);
+          let _this = this;
+          _this.$nextTick(function(){  //页面加载完成后执行
+            // 获取 route.js 下的name属性，将其转化为id,将id作为激活id
+            _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
+          })
+        }
+      }
     },
     methods: {
       login(){
         this.$router.push("/admin")
       },
-
       /**
        * 菜单激活样式，id是当前点击的菜单的id
        * @param id

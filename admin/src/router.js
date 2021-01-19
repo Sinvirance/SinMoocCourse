@@ -23,7 +23,7 @@ export default new Router({
         // 配置 admin 子路由
         children: [{
             path: "welcome",
-            name: "name",
+            name: "welcome",
             component: Welcome
         }, {
             path: "business/chapter",
