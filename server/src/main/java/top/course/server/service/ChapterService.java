@@ -1,6 +1,7 @@
 package top.course.server.service;
 
 
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import top.course.server.domain.Chapter;
@@ -24,6 +25,8 @@ public class ChapterService {
     private ChapterMapper chapterMapper;
 
     public List<ChapterDto> list() {
+        // startPage 会对最近的第一个Select语句进行分页
+        PageHelper.startPage(2, 1);
         ChapterExample chapterExample = new ChapterExample();
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         List<ChapterDto> chapterDtoList = new ArrayList<>();
