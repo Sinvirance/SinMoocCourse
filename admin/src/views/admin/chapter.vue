@@ -977,10 +977,18 @@ export default {
   name: "chapter",
   // 在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
   mounted: function() {
+    let _this = this;
+    _this.list();
     // $parent 调用父组件admin的方法
     // this.$parent.activeSidebar("business-chapter-sidebar");
   },
   methods: {
+    list() {
+      let _this = this;
+      _this.$ajax.get("http://127.0.0.1:9002/business/admin/chapter/list").then((Response)=>{
+        console.log("查询大章结果：", Response);
+      })
+    }
   }
 }
 </script>
