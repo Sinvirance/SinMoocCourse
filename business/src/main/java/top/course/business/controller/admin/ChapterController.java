@@ -1,12 +1,14 @@
 package top.course.business.controller.admin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.course.server.dto.ChapterDto;
+import top.course.server.dto.PageDto;
 import top.course.server.service.ChapterService;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @Author: Sinvirance
@@ -15,14 +17,18 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/admin/chapter")
+@RequestMapping(value = "/admin/chapter")
 public class ChapterController {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
 
     @Resource
     private ChapterService chapterService;
 
-    @RequestMapping("/list")
-    public List<ChapterDto> list() {
-        return chapterService.list();
+    @RequestMapping(value = "/list")
+    public PageDto list(@RequestBody(required = false) PageDto pageDto) {
+        LOG.info("pageDTo: {}", pageDto);
+        chapterService.list(pageDto);
+        return pageDto;
     }
 }

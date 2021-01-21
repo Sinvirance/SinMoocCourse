@@ -90,10 +90,13 @@ export default {
   methods: {
     list() {
       let _this = this;
-      _this.$ajax.get("http://127.0.0.1:9000/business/admin/chapter/list").then((response)=>{
+      _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/list",{
+        page: 1,
+        size: 1,
+      }).then((response)=>{
         console.log("查询大章结果：", response.data);
-        // 真实数据存储在响应对象的 data属性
-        _this.chapters = response.data;
+        // 真实数据存储在响应对象的 data.list属性
+        _this.chapters = response.data.list;
       })
     }
   }
