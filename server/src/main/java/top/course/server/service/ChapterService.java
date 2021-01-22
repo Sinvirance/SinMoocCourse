@@ -1,19 +1,17 @@
 package top.course.server.service;
 
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import top.course.server.domain.Chapter;
 import top.course.server.domain.ChapterExample;
 import top.course.server.dto.ChapterDto;
 import top.course.server.dto.PageDto;
 import top.course.server.mapper.ChapterMapper;
+import top.course.server.util.CopyUtil;
 import top.course.server.util.UUIDUtil;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,14 +33,14 @@ public class ChapterService {
 
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         pageDto.setTotal(pageInfo.getTotal());
-        List<ChapterDto> chapterDtoList = new ArrayList<>();
-        for (int i = 0, l = chapterList.size(); i < l ; i++) {
-            Chapter chapter = chapterList.get(i);
-            ChapterDto chapterDto = new ChapterDto();
-            // 将chapter的属性值复制到数据传输对象chapterDto
-            BeanUtils.copyProperties(chapter, chapterDto);
-            chapterDtoList.add(chapterDto);
-        }
+        // List<ChapterDto> chapterDtoList = new ArrayList<ChapterDto>();
+        // for (int i = 0, l = chapterList.size(); i < l; i++) {
+        //     Chapter chapter = chapterList.get(i);
+        //     ChapterDto chapterDto = new ChapterDto();
+        //     BeanUtils.copyProperties(chapter, chapterDto);
+        //     chapterDtoList.add(chapterDto);
+        // }
+        List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList, ChapterDto.class);
         pageDto.setList(chapterDtoList);
     }
 
@@ -52,8 +50,9 @@ public class ChapterService {
      */
     public void save(ChapterDto chapterDto) {
         chapterDto.setId(UUIDUtil.getShortUUID());
-        Chapter chapter = new Chapter();
-        BeanUtils.copyProperties(chapterDto, chapter);
+        // Chapter chapter = new Chapter();
+        // BeanUtils.copyProperties(chapterDto, chapter);
+        Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
         chapterMapper.insert(chapter);
     }
 }
