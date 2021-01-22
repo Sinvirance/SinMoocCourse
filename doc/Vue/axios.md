@@ -18,10 +18,24 @@ Vue.prototype.$ajax = axios;
 ```
 * Get 请求
 ```javascript
-// 使用get请求访问 /user,成功打印访问结果，失败打印error
-axios.get('/user').then((response) => {
+  // 使用get请求访问 /user,成功打印访问结果，失败打印error
+  _this.$ajax.get('/user').then((response) => {
 		console.log(response);
 	}).catch( (error) => {
 		console.log(error);
+		// 真实数据存储在 data中
+		respondse.data;
 	});
+```
+
+* Post 请求: axios的post请求默认是以流的方式传递参数，所以controller里的参数要加@RequestBody注解
+```javascript
+  _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/list",{
+    page: 1,
+    size: 1,
+  }).then((response)=>{
+    console.log("查询大章结果：", response.data);
+    // 真实数据存储在响应对象的 data.list属性
+    response.data.list;
+  })
 ```

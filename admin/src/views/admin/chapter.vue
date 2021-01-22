@@ -1,16 +1,20 @@
 <template>
   <div>
+    <!--新增大章和刷新按钮-->
     <p>
+      <button v-on:click="add()" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-edit"></i>
+        新增
+      </button>
+      &nbsp;
       <!--点击触发事件查询list()-->
       <button v-on:click="list(1)" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-refresh "></i>
         刷新
       </button>
     </p>
-    <!--显示分页组件,这里将会被渲染成dom-->
-    <!--pagination组件暴露的组件名，ref: 给元素或子组件注册引用信息-->
-    <!--v-bind: 用于绑绑定数据 -->
-    <pagination ref="pagination" v-bind:list="list"/>
+
+    <!--大章数据显示表格-->
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
       <tr>
@@ -82,6 +86,43 @@
       </tr>
       </tbody>
     </table>
+
+    <!--显示分页组件,这里将会被渲染成dom-->
+    <!--pagination组件暴露的组件名，ref: 给元素或子组件注册引用信息-->
+    <!--v-bind: 用于绑绑定数据 -->
+    <pagination ref="pagination" v-bind:list="list"/>
+
+    <!--新增大章功能表单-->
+    <div class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                  <input class="form-control" placeholder="名称">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">课程ID</label>
+                <div class="col-sm-10">
+                  <input class="form-control" placeholder="课程ID">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary">保存</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   </div>
 </template>
 
@@ -106,6 +147,9 @@
       // this.$parent.activeSidebar("business-chapter-sidebar");
     },
     methods: {
+      add() {
+        $(".modal").modal("show");
+      },
       // 前端传入查询的页码数
       list(page) {
         let _this = this;
