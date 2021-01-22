@@ -105,20 +105,22 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">名称</label>
                 <div class="col-sm-10">
-                  <input class="form-control" placeholder="名称">
+                  <input v-model="chapter.name" class="form-control" placeholder="名称">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">课程ID</label>
                 <div class="col-sm-10">
-                  <input class="form-control" placeholder="课程ID">
+                  <!--v-model简单来说就是实现一个-->
+                  <!--在给 <input /> 元素添加 v-model 属性时，默认会把 value 作为元素的属性，当触发点击事件时，会将值绑定传递过去-->
+                  <input v-model="chapter.courseId" class="form-control" placeholder="课程ID">
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-primary">保存</button>
+            <button v-on:click="save()" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -132,8 +134,13 @@
   export default {
     components: {Pagination},
     name: "chapter",
+    // 为什么data属性需要写成函数并return
+    // 不使用return包裹的数据会在项目的全局可见,会造成变量污染,使用return包裹后数据中变量只在当前组件中生效，不会影响其他组件
     data: function() {
       return {
+        // object: {}
+        chapter: {},
+        // array: []
         chapters: []
       }
     },
@@ -146,11 +153,17 @@
       // $parent 调用父组件admin的方法
       // this.$parent.activeSidebar("business-chapter-sidebar");
     },
+
     methods: {
+
       add() {
         $(".modal").modal("show");
       },
-      // 前端传入查询的页码数
+
+      /**
+       * 显示指定页码的大章列表
+       * @param page 前端传入查询的页码数
+       */
       list(page) {
         let _this = this;
         _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/list",{
@@ -166,6 +179,17 @@
 
           // render：pagination组件定义的方法, 用于使用数据重新渲染页面
           _this.$refs.pagination.render(page, response.data.total);
+        })
+      },
+
+      /**
+       * 表单添加大章数据后保存
+       */
+      save() {
+        let _this = this;
+        // 将上面点击事件传过来的 chapter 对象属性值，使用post请求传递后端
+        _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
+          console.log("保存大章列表结果：", response);
         })
       }
     }

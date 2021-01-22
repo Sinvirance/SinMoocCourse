@@ -10,6 +10,7 @@ import top.course.server.domain.ChapterExample;
 import top.course.server.dto.ChapterDto;
 import top.course.server.dto.PageDto;
 import top.course.server.mapper.ChapterMapper;
+import top.course.server.util.UUIDUtil;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -43,5 +44,16 @@ public class ChapterService {
             chapterDtoList.add(chapterDto);
         }
         pageDto.setList(chapterDtoList);
+    }
+
+    /**
+     * 表单添加大章保存功能
+     * @param chapterDto 大章数据传输对象
+     */
+    public void save(ChapterDto chapterDto) {
+        chapterDto.setId(UUIDUtil.getShortUUID());
+        Chapter chapter = new Chapter();
+        BeanUtils.copyProperties(chapterDto, chapter);
+        chapterMapper.insert(chapter);
     }
 }
