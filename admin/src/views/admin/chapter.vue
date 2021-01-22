@@ -2,11 +2,15 @@
   <div>
     <p>
       <!--点击触发事件查询list()-->
-      <button v-on:click="list()" class="btn btn-white btn-default btn-round">
+      <button v-on:click="list(1)" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-refresh "></i>
         刷新
       </button>
     </p>
+    <!--显示分页组件,这里将会被渲染成dom-->
+    <!--pagination组件暴露的组件名，ref: 给元素或子组件注册引用信息-->
+    <!--v-bind: 用于绑绑定数据 -->
+    <pagination ref="pagination" v-bind:list="list"/>
     <table id="simple-table" class="table  table-bordered table-hover">
       <thead>
       <tr>
@@ -82,32 +86,44 @@
 </template>
 
 <script>
-export default {
-  name: "chapter",
-  data: function() {
-    return {
-      chapters: []
-    }
-  },
-  // 在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
-  mounted: function() {
-    let _this = this;
-    _this.list();
-    // $parent 调用父组件admin的方法
-    // this.$parent.activeSidebar("business-chapter-sidebar");
-  },
-  methods: {
-    list() {
+  // 引入分页组件
+  import Pagination from "../../components/pagination";
+  export default {
+    components: {Pagination},
+    name: "chapter",
+    data: function() {
+      return {
+        chapters: []
+      }
+    },
+    // 在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
+    mounted: function() {
       let _this = this;
-      _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/list",{
-        page: 1,
-        size: 1,
-      }).then((response)=>{
-        console.log("查询大章结果：", response.data);
-        // 真实数据存储在响应对象的 data.list属性
-        _this.chapters = response.data.list;
-      })
+      // 在点击大章管理后，显示的内容：第一页，5条页面数据
+      _this.$refs.pagination.size = 5;
+      _this.list(1);
+      // $parent 调用父组件admin的方法
+      // this.$parent.activeSidebar("business-chapter-sidebar");
+    },
+    methods: {
+      // 前端传入查询的页码数
+      list(page) {
+        let _this = this;
+        _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/list",{
+          page: page,
+          // 获取组件 pagination 里定义的size
+          // $refs 获取通过 ref 注册的引用来获取数据
+          size: _this.$refs.pagination.size,
+        }).then((response)=>{
+          console.log("查询大章结果：", response.data);
+
+          // 真实数据存储在响应对象的 data.list属性
+          _this.chapters = response.data.list;
+
+          // render：pagination组件定义的方法, 用于使用数据重新渲染页面
+          _this.$refs.pagination.render(page, response.data.total);
+        })
+      }
     }
   }
-}
 </script>
