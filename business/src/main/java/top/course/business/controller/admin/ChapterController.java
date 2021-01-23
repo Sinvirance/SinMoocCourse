@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.course.server.dto.ChapterDto;
 import top.course.server.dto.PageDto;
+import top.course.server.dto.ResponseDto;
 import top.course.server.service.ChapterService;
 
 import javax.annotation.Resource;
@@ -26,22 +27,31 @@ public class ChapterController {
     @Resource
     private ChapterService chapterService;
 
+    /**
+     * 所有大章数据查询显示列表
+     * @param pageDto 分页信息传输对象
+     * @return 统一返回响应对象
+     */
     @RequestMapping(value = "/list")
-    public PageDto list(@RequestBody(required = false) PageDto pageDto) {
+    public ResponseDto<PageDto> list(@RequestBody(required = false) PageDto pageDto) {
         LOG.info("pageDTo: {}", pageDto);
+        ResponseDto<PageDto> responseDto = new ResponseDto<>();
         chapterService.list(pageDto);
-        return pageDto;
+        responseDto.setContent(pageDto);
+        return responseDto;
     }
 
     /**
      * 表单添加大章保存功能
      * @param chapterDto 大章数据传输对象
-     * @return 大章数据传输对象
+     * @return 统一返回响应对象
      */
     @RequestMapping("/save")
-    public ChapterDto save(@RequestBody ChapterDto chapterDto) {
+    public ResponseDto<ChapterDto> save(@RequestBody ChapterDto chapterDto) {
         LOG.info("chapterDto: {}", chapterDto);
+        ResponseDto<ChapterDto> responseDto = new ResponseDto<>();
         chapterService.save(chapterDto);
-        return chapterDto;
+        responseDto.setContent(chapterDto);
+        return responseDto;
     }
 }

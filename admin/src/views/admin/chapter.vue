@@ -93,12 +93,12 @@
     <pagination ref="pagination" v-bind:list="list"/>
 
     <!--新增大章功能表单-->
-    <div class="modal fade" tabindex="-1" role="dialog">
+    <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Modal title</h4>
+            <h4 class="modal-title">新增大章</h4>
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
@@ -120,7 +120,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            <button v-on:click="save()" type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+            <button v-on:click="save()" type="button" class="btn btn-primary">保存</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -157,7 +157,7 @@
     methods: {
 
       add() {
-        $(".modal").modal("show");
+        $("#form-modal").modal("show");
       },
 
       /**
@@ -172,13 +172,14 @@
           // $refs 获取通过 ref 注册的引用来获取数据
           size: _this.$refs.pagination.size,
         }).then((response)=>{
-          console.log("查询大章结果：", response.data);
-
+          console.log("查询大章结果：", response);
+          // resp 就是后端的统一返回对象 ResponseDto
+          let resp = response.data
           // 真实数据存储在响应对象的 data.list属性
-          _this.chapters = response.data.list;
+          _this.chapters = resp.content.list;
 
           // render：pagination组件定义的方法, 用于使用数据重新渲染页面
-          _this.$refs.pagination.render(page, response.data.total);
+          _this.$refs.pagination.render(page, resp.content.total);
         })
       },
 
@@ -190,6 +191,13 @@
         // 将上面点击事件传过来的 chapter 对象属性值，使用post请求传递后端
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
           console.log("保存大章列表结果：", response);
+
+          // 当保存成功时，关闭表单并刷新
+          let resp = response.data;
+          if (resp.success) {
+              $("#form-modal").modal("hide");
+              _this.list(1);
+          }
         })
       }
     }
