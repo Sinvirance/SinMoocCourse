@@ -126,12 +126,14 @@
        */
       list(page) {
         let _this = this;
+        Loading.show();
         _this.$ajax.post("http://127.0.0.1:9000/business/admin/chapter/list",{
           page: page,
           // 获取组件 pagination 里定义的size
           // $refs 获取通过 ref 注册的引用来获取数据
           size: _this.$refs.pagination.size,
         }).then((response)=>{
+          Loading.hide();
           console.log("查询大章结果：", response);
           // resp 就是后端的统一返回对象 ResponseDto
           let resp = response.data
@@ -148,8 +150,10 @@
        */
       save() {
         let _this = this;
+        Loading.show();
         // 将上面点击事件传过来的 chapter 对象属性值，使用post请求传递后端
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
+          Loading.hide();
           console.log("保存大章列表结果：", response);
 
           // 当保存成功时，关闭表单并刷新
@@ -157,7 +161,7 @@
           if (resp.success) {
             $("#form-modal").modal("hide");
             _this.list(1);
-            toast.success("保存成功！");
+            Toast.success("保存成功！");
           }
         })
       },
@@ -179,30 +183,20 @@
        */
       del(id) {
         let _this = this;
-
         // 使用弹出框对删除大章功能进行用户确认
-        Swal.fire({
-          title: '确认删除',
-          text: "删除后不可恢复，确认删除",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: '立即删除!'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // 使用 restful 风格传递要删除的id
-            _this.$ajax.delete("http://127.0.0.1:9000/business/admin/chapter/delete/" + id).then((response) =>{
-              console.log("删除大章列表结果:", response);
-              let resp = response.data;
-              if (resp.success) {
-                _this.list(1);
-                toast.success("删除成功！");
-              }
-            })
-          }
+        Confirm.show("删除大章数据后不可恢复，确认删除?", function () {
+          Loading.show();
+          // 使用 restful 风格传递要删除的id
+          _this.$ajax.delete("http://127.0.0.1:9000/business/admin/chapter/delete/" + id).then((response) =>{
+            Loading.hide();
+            console.log("删除大章列表结果:", response);
+            let resp = response.data;
+            if (resp.success) {
+              _this.list(1);
+              Toast.success("删除成功！");
+            }
+          })
         })
-
       }
     }
   }
