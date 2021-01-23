@@ -155,8 +155,9 @@
           // 当保存成功时，关闭表单并刷新
           let resp = response.data;
           if (resp.success) {
-              $("#form-modal").modal("hide");
-              _this.list(1);
+            $("#form-modal").modal("hide");
+            _this.list(1);
+            toast.success("保存成功！");
           }
         })
       },
@@ -179,6 +180,7 @@
       del(id) {
         let _this = this;
 
+        // 使用弹出框对删除大章功能进行用户确认
         Swal.fire({
           title: '确认删除',
           text: "删除后不可恢复，确认删除",
@@ -195,15 +197,12 @@
               let resp = response.data;
               if (resp.success) {
                 _this.list(1);
-                Swal.fire(
-                        '删除成功',
-                        '点击返回!',
-                        'success'
-                )
+                toast.success("删除成功！");
               }
             })
           }
         })
+
       }
     }
   }
