@@ -3,6 +3,7 @@ package top.course.server.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import top.course.server.domain.Chapter;
 import top.course.server.domain.ChapterExample;
 import top.course.server.dto.ChapterDto;
@@ -45,14 +46,32 @@ public class ChapterService {
     }
 
     /**
-     * 表单添加大章保存功能
+     * 根据传输对象中是否包含 id 来判断是新增保存，还是更新保存
      * @param chapterDto 大章数据传输对象
      */
     public void save(ChapterDto chapterDto) {
-        chapterDto.setId(UUIDUtil.getShortUUID());
-        // Chapter chapter = new Chapter();
-        // BeanUtils.copyProperties(chapterDto, chapter);
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
+        if (StringUtils.isEmpty(chapterDto.getId())) {
+            this.insert(chapter);
+        } else {
+            this.update(chapter);
+        }
+    }
+
+    /**
+     * 根据前端传递过来的大章对象，生成短id，并保存到数据库中
+     * @param chapter 大章对象(无ID)
+     */
+    private void insert(Chapter chapter) {
+        chapter.setId(UUIDUtil.getShortUUID());
         chapterMapper.insert(chapter);
+    }
+
+    /**
+     * 根据前端传递过来的大章对象，根据短id，到数据库中修改指定对象并保存
+     * @param chapter 大章对象(有ID)
+     */
+    private void update(Chapter chapter) {
+        chapterMapper.updateByPrimaryKey(chapter);
     }
 }

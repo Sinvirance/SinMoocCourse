@@ -21,6 +21,7 @@
         <th class="detail-col">id</th>
         <th>名称</th>
         <th>课程</th>
+        <th>操作</th>
       </tr>
       </thead>
 
@@ -29,58 +30,14 @@
         <td>{{chapter.id}}</td>
         <td>{{chapter.name}}</td>
         <td>{{chapter.courseId}}</td>
-
         <td>
           <div class="hidden-sm hidden-xs btn-group">
-            <button class="btn btn-xs btn-success">
-              <i class="ace-icon fa fa-check bigger-120"></i>
-            </button>
-
-            <button class="btn btn-xs btn-info">
+            <button v-on:click="edit(chapter)" class="btn btn-xs btn-info">
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
-
             <button class="btn btn-xs btn-danger">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
             </button>
-
-            <button class="btn btn-xs btn-warning">
-              <i class="ace-icon fa fa-flag bigger-120"></i>
-            </button>
-          </div>
-
-          <div class="hidden-md hidden-lg">
-            <div class="inline pos-rel">
-              <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-              </button>
-
-              <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                <li>
-                  <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
-																			<span class="blue">
-																				<i class="ace-icon fa fa-search-plus bigger-120"></i>
-																			</span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-																			<span class="green">
-																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																			</span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-																			<span class="red">
-																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																			</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
           </div>
         </td>
       </tr>
@@ -157,6 +114,9 @@
     methods: {
 
       add() {
+        let _this = this;
+        // 不在新增中显示以往编辑的数据
+        _this.chapter = {};
         $("#form-modal").modal("show");
       },
 
@@ -199,6 +159,17 @@
               _this.list(1);
           }
         })
+      },
+
+      /**
+       * 表单修改已有大章数据
+       */
+      edit(chapter) {
+        let _this = this;
+        // 解决 Vue 数据双向绑定导致的修改数据直接在页面显示问题，如果未保存依然会显示
+        // 使用一个空变量接收chapter对象
+        _this.chapter = $.extend({},chapter);
+        $("#form-modal").modal("show");
       }
     }
   }
