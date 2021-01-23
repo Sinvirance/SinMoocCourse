@@ -74,4 +74,12 @@ public class ChapterService {
     private void update(Chapter chapter) {
         chapterMapper.updateByPrimaryKey(chapter);
     }
+
+    /**
+     * 从数据库中删除指定id大章数据
+     * @param id 大章id
+     */
+    public void delete(String id) {
+        chapterMapper.deleteByPrimaryKey(id);
+    }
 }

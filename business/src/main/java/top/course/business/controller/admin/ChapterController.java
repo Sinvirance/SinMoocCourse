@@ -2,9 +2,7 @@ package top.course.business.controller.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.course.server.dto.ChapterDto;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
@@ -21,7 +19,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping(value = "/admin/chapter")
 public class ChapterController {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
 
     @Resource
@@ -32,7 +30,7 @@ public class ChapterController {
      * @param pageDto 分页信息传输对象
      * @return 统一返回响应对象
      */
-    @RequestMapping(value = "/list")
+    @PostMapping(value = "/list")
     public ResponseDto<PageDto> list(@RequestBody(required = false) PageDto pageDto) {
         LOG.info("pageDTo: {}", pageDto);
         ResponseDto<PageDto> responseDto = new ResponseDto<>();
@@ -46,7 +44,7 @@ public class ChapterController {
      * @param chapterDto 大章数据传输对象
      * @return 统一返回响应对象
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public ResponseDto<ChapterDto> save(@RequestBody ChapterDto chapterDto) {
         LOG.info("chapterDto: {}", chapterDto);
         ResponseDto<ChapterDto> responseDto = new ResponseDto<>();
@@ -54,4 +52,18 @@ public class ChapterController {
         responseDto.setContent(chapterDto);
         return responseDto;
     }
+
+    /**
+     * 删除指定id的大章
+     * @param id 大章数据传输对象
+     * @return 统一返回响应对象
+     */
+    @DeleteMapping("/delete/{id}")
+    public ResponseDto<ChapterDto> del(@PathVariable String id) {
+        LOG.info("id: {}", id);
+        ResponseDto responseDto = new ResponseDto();
+        chapterService.delete(id);
+        return responseDto;
+    }
+
 }

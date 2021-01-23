@@ -35,7 +35,7 @@
             <button v-on:click="edit(chapter)" class="btn btn-xs btn-info">
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
-            <button class="btn btn-xs btn-danger">
+            <button v-on:click="del(chapter.id)" class="btn btn-xs btn-danger">
               <i class="ace-icon fa fa-trash-o bigger-120"></i>
             </button>
           </div>
@@ -170,6 +170,22 @@
         // 使用一个空变量接收chapter对象
         _this.chapter = $.extend({},chapter);
         $("#form-modal").modal("show");
+      },
+
+      /**
+       * 根据大章id删除对应数据
+       * @param id
+       */
+      del(id) {
+        let _this = this;
+        // 使用 restful 风格传递要删除的id
+        _this.$ajax.delete("http://127.0.0.1:9000/business/admin/chapter/delete/" + id).then((response) =>{
+          console.log("删除大章列表结果:", response);
+          let resp = response.data;
+          if (resp.success) {
+            _this.list(1);
+          }
+        })
       }
     }
   }
