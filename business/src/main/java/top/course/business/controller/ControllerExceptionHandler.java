@@ -31,7 +31,8 @@ public class ControllerExceptionHandler {
     public ResponseDto validatorExceptionHandler(ValidatorException e) {
         ResponseDto<ChapterDto> responseDto = new ResponseDto<>();
         responseDto.setSuccess(false);
-        LOG.warn(e.getMessage());
+        // LOG.warn(e.getMessage());
+        LOG.warn("------------- 【大章】保存失败，参数错误 -------------");
         responseDto.setMessage("请求参数异常");
         return responseDto;
     }

@@ -35,7 +35,7 @@ public class ValidatorUtil {
             length = str.length();
         }
         if (length < min || length > max) {
-            throw new ValidatorException(fieldName + "长度" + min + "~" + max + "位");
+            throw new ValidatorException(fieldName + "长度应该为" + min + "~" + max + "位");
         }
     }
 }

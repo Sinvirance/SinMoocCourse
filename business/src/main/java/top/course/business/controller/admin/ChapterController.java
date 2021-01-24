@@ -23,6 +23,9 @@ public class ChapterController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
 
+    // ChapterController 标识名
+    public static final String BUSINESS_NAME = "大章";
+
     @Resource
     private ChapterService chapterService;
 
@@ -52,9 +55,9 @@ public class ChapterController {
         /*
          * 后端保存进行校验
          */
-        ValidatorUtil.require(chapterDto.getName(),"名称");
+        ValidatorUtil.require(chapterDto.getName(), "名称");
         ValidatorUtil.require(chapterDto.getCourseId(), "课程ID");
-        ValidatorUtil.length(chapterDto.getCourseId(),"课程ID", 1, 8);
+        ValidatorUtil.length(chapterDto.getCourseId(), "课程ID", 1, 8);
 
         ResponseDto<ChapterDto> responseDto = new ResponseDto<>();
         chapterService.save(chapterDto);
