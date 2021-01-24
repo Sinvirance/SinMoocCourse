@@ -7,6 +7,7 @@ import top.course.server.dto.ChapterDto;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
 import top.course.server.service.ChapterService;
+import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
 
@@ -47,6 +48,14 @@ public class ChapterController {
     @PostMapping("/save")
     public ResponseDto<ChapterDto> save(@RequestBody ChapterDto chapterDto) {
         LOG.info("chapterDto: {}", chapterDto);
+
+        /*
+         * 后端保存进行校验
+         */
+        ValidatorUtil.require(chapterDto.getName(),"名称");
+        ValidatorUtil.require(chapterDto.getCourseId(), "课程ID");
+        ValidatorUtil.length(chapterDto.getCourseId(),"课程ID", 1, 8);
+
         ResponseDto<ChapterDto> responseDto = new ResponseDto<>();
         chapterService.save(chapterDto);
         responseDto.setContent(chapterDto);
