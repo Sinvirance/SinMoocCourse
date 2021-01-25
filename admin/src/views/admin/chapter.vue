@@ -159,7 +159,7 @@
         }
         Loading.show();
         // 将上面点击事件传过来的 chapter 对象属性值，使用post请求传递后端
-        _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
+        _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/chapter/save", _this.chapter).then((response)=>{
           Loading.hide();
           // 当保存成功时，关闭表单并刷新
           let resp = response.data;
