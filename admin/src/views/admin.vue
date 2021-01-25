@@ -484,7 +484,6 @@
       let _this = this;
       $("body").removeClass("login-layout light-login");
       $("body").attr("class", "no-skin");
-      console.log("admin");
       // 为了实现登录到 welcome 页面也具有激活样式
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
     },
