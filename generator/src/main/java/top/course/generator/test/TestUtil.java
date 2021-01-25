@@ -26,17 +26,16 @@ public class TestUtil {
     static String toPath = "generator\\src\\main\\java\\top\\course\\generator\\test\\";
 
     public static void main(String[] args) throws IOException, TemplateException {
-        /*
-         * 根据freeMarker版本读取配置并针对配置和模板文件ftl
-         */
+        /* 根据freeMarker版本读取配置 */
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_29);
         cfg.setDirectoryForTemplateLoading(new File(ftlPath));
         cfg.setObjectWrapper(new DefaultObjectWrapper(Configuration.VERSION_2_3_29));
+        /* 加载模板文件 */
         Template temp = cfg.getTemplate("test.ftl");
-
-
+        /* 生成数据 */
         FileWriter fw = new FileWriter(toPath + "Test.java");
         BufferedWriter bw = new BufferedWriter(fw);
+        /* 输出文件 */
         temp.process(null, bw);
         bw.flush();
         fw.close();
