@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @Author: Sinvirance
  * @Date: 2020/12/28 3:28
- * @Description: 大章持久层接口
+ * @Description: Chapter持久层接口
  */
 
 @Service
@@ -27,7 +27,7 @@ public class ChapterService {
     private ChapterMapper chapterMapper;
 
     /**
-     * 通过PageHelper分页列表显示数据库大章数据
+     * chapter表列表分页查询
      * @param pageDto 分页组件传输对象
      */
     public void list(PageDto pageDto) {
@@ -43,7 +43,7 @@ public class ChapterService {
     }
 
     /**
-     * 根据传输对象中是否包含 id 来判断是新增保存，还是更新保存
+     * 保存: ChapterDto对象有id属性值时更新，无值时新增
      * @param chapterDto 大章数据传输对象
      */
     public void save(ChapterDto chapterDto) {
@@ -56,8 +56,8 @@ public class ChapterService {
     }
 
     /**
-     * 根据前端传递过来的大章对象，生成短id，并保存到数据库中
-     * @param chapter 大章对象(无ID)
+     * 新增:生成短id作为Chapter对象id插入chapter表
+     * @param chapter (无ID)Chapter对象
      */
     private void insert(Chapter chapter) {
         chapter.setId(UUIDUtil.getShortUUID());
@@ -65,15 +65,15 @@ public class ChapterService {
     }
 
     /**
-     * 根据前端传递过来的大章对象，根据短id，到数据库中修改指定对象并保存
-     * @param chapter 大章对象(有ID)
+     * 更新:根据Chapter对象id查询条件修改chapter表数据
+     * @param chapter (有ID)Chapter对象
      */
     private void update(Chapter chapter) {
         chapterMapper.updateByPrimaryKey(chapter);
     }
 
     /**
-     * 从数据库中删除指定id大章数据
+     * 删除: 根据id删除chapter表数据
      * @param id 大章id
      */
     public void delete(String id) {

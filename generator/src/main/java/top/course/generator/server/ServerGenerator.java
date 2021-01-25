@@ -4,19 +4,28 @@ import freemarker.template.TemplateException;
 import top.course.generator.util.FreemarkerUtil;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: Sinvirance
- * @Date: 2021/1/25 19:11
+ * @Date: Freemarker 代码生成器启动类
  * @Description: TODO
  */
 
 public class ServerGenerator {
 
-    static String toPath = "generator\\src\\main\\java\\top\\course\\generator\\test\\";
+    static String toServicePath = "server\\src\\main\\java\\top\\course\\server\\service\\";
 
     public static void main(String[] args) throws IOException, TemplateException {
-        FreemarkerUtil.initConfig("test.ftl");
-        FreemarkerUtil.generator(toPath + "Test.java");
+
+        String Domain="Section";
+        String domain="section";
+        Map<String, Object> map = new HashMap<>();
+        map.put("Domain", Domain);
+        map.put("domain", domain);
+
+        FreemarkerUtil.initConfig("service.ftl");
+        FreemarkerUtil.generator(toServicePath + Domain + "Service.java", map);
     }
 }
