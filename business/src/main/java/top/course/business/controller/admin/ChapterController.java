@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 /**
  * @Author: Sinvirance
  * @Date: 2020/12/27 19:30
- * @Description: 大章查询控制层
+ * @Description: Chapter控制层
  */
 
 @RestController
@@ -32,7 +32,7 @@ public class ChapterController {
     private ChapterService chapterService;
 
     /**
-     * 所有大章数据查询显示列表
+     * 查询: Chapter对象分页列表
      * @param pageDto 分页信息传输对象
      * @return 统一返回响应对象
      */
@@ -45,7 +45,7 @@ public class ChapterController {
     }
 
     /**
-     * 表单添加大章保存功能
+     * 保存: ChapterDto对象有id属性值时更新，无值时新增
      * @param chapterDto 大章数据传输对象
      * @return 统一返回响应对象
      */
@@ -65,8 +65,8 @@ public class ChapterController {
     }
 
     /**
-     * 删除指定id的大章
-     * @param id 大章数据传输对象
+     * 删除: 指定id的Chapter对象
+     * @param id Chapter对象id
      * @return 统一返回响应对象
      */
     @DeleteMapping("/delete/{id}")

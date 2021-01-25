@@ -1,0 +1,70 @@
+package top.course.business.controller.admin;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
+import top.course.server.dto.PageDto;
+import top.course.server.dto.ResponseDto;
+import top.course.server.dto.SectionDto;
+import top.course.server.service.SectionService;
+
+import javax.annotation.Resource;
+
+/**
+ * @Author: Sinvirance
+ * @Date: 2021/01/25 21:11
+ * @Description: Section控制层
+ */
+
+@RestController
+@RequestMapping(value = "/admin/section")
+public class SectionController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SectionController.class);
+
+    /* Section控制器 SectionController 标识名 */
+    public static final String BUSINESS_NAME = "小节";
+
+    @Resource
+    private SectionService sectionService;
+
+    /**
+     * 查询: Section对象分页列表
+     * @param pageDto 分页信息传输对象
+     * @return 统一返回响应对象
+     */
+    @PostMapping(value = "/list")
+    public ResponseDto<PageDto> list(@RequestBody(required = false) PageDto pageDto) {
+        ResponseDto<PageDto> responseDto = new ResponseDto<>();
+        sectionService.list(pageDto);
+        responseDto.setContent(pageDto);
+        return responseDto;
+    }
+
+    /**
+     * 保存: SectionDto对象有id属性值时更新，无值时新增
+     * @param sectionDto 数据传输对象
+     * @return 统一返回响应对象
+     */
+    @PostMapping("/save")
+    public ResponseDto<SectionDto> save(@RequestBody SectionDto sectionDto) {
+        /* 保存校验*/
+
+        ResponseDto<SectionDto> responseDto = new ResponseDto<>();
+        sectionService.save(sectionDto);
+        responseDto.setContent(sectionDto);
+        return responseDto;
+    }
+
+    /**
+     * 删除: 指定id的Section对象
+     * @param id Section对象id
+     * @return 统一返回响应对象
+     */
+    @DeleteMapping("/delete/{id}")
+    public ResponseDto<SectionDto> delete(@PathVariable String id) {
+        ResponseDto<SectionDto> responseDto = new ResponseDto<>();
+        sectionService.delete(id);
+        return responseDto;
+    }
+}

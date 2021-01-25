@@ -9,13 +9,14 @@ import java.util.Map;
 
 /**
  * @Author: Sinvirance
- * @Date: Freemarker 代码生成器启动类
- * @Description: TODO
+ * @Date: 2021/01/25 18:05
+ * @Description: Freemarker 代码生成器启动类
  */
 
 public class ServerGenerator {
 
     static String toServicePath = "server\\src\\main\\java\\top\\course\\server\\service\\";
+    static String toControllerPath = "business\\src\\main\\java\\top\\course\\business\\controller\\admin\\";
 
     public static void main(String[] args) throws IOException, TemplateException {
 
@@ -25,7 +26,12 @@ public class ServerGenerator {
         map.put("Domain", Domain);
         map.put("domain", domain);
 
+        /* 生成Service层 */
         FreemarkerUtil.initConfig("service.ftl");
         FreemarkerUtil.generator(toServicePath + Domain + "Service.java", map);
+
+        /* 生成Controller层 */
+        FreemarkerUtil.initConfig("controller.ftl");
+        FreemarkerUtil.generator(toControllerPath + Domain + "Controller.java", map);
     }
 }
