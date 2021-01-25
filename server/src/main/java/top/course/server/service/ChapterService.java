@@ -26,6 +26,10 @@ public class ChapterService {
     @Resource
     private ChapterMapper chapterMapper;
 
+    /**
+     * 通过PageHelper分页列表显示数据库大章数据
+     * @param pageDto 分页组件传输对象
+     */
     public void list(PageDto pageDto) {
         // startPage 会对最近的第一个Select语句进行分页
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
@@ -34,13 +38,6 @@ public class ChapterService {
 
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         pageDto.setTotal(pageInfo.getTotal());
-        // List<ChapterDto> chapterDtoList = new ArrayList<ChapterDto>();
-        // for (int i = 0, l = chapterList.size(); i < l; i++) {
-        //     Chapter chapter = chapterList.get(i);
-        //     ChapterDto chapterDto = new ChapterDto();
-        //     BeanUtils.copyProperties(chapter, chapterDto);
-        //     chapterDtoList.add(chapterDto);
-        // }
         List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList, ChapterDto.class);
         pageDto.setList(chapterDtoList);
     }

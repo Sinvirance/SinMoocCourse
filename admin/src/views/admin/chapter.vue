@@ -113,6 +113,9 @@
 
     methods: {
 
+      /**
+       * 添加大章功能,点击弹出表单
+       */
       add() {
         let _this = this;
         // 不在新增中显示以往编辑的数据
@@ -134,12 +137,10 @@
           size: _this.$refs.pagination.size,
         }).then((response)=>{
           Loading.hide();
-          console.log("查询大章结果：", response);
           // resp 就是后端的统一返回对象 ResponseDto
           let resp = response.data
           // 真实数据存储在响应对象的 data.list属性
           _this.chapters = resp.content.list;
-
           // render：pagination组件定义的方法, 用于使用数据重新渲染页面
           _this.$refs.pagination.render(page, resp.content.total);
         })
@@ -150,20 +151,16 @@
        */
       save() {
         let _this = this;
-
         // 保存时校验
         if (!Validator.require(_this.chapter.name, "名称")
         || !Validator.require(_this.chapter.courseId, "课程ID")
         || !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
           return;
         }
-
         Loading.show();
         // 将上面点击事件传过来的 chapter 对象属性值，使用post请求传递后端
         _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
           Loading.hide();
-          console.log("保存大章列表结果：", response);
-
           // 当保存成功时，关闭表单并刷新
           let resp = response.data;
           if (resp.success) {
@@ -178,6 +175,7 @@
 
       /**
        * 表单修改已有大章数据
+       * @param chapter
        */
       edit(chapter) {
         let _this = this;
@@ -199,7 +197,6 @@
           // 使用 restful 风格传递要删除的id
           _this.$ajax.delete("http://127.0.0.1:9000/business/admin/chapter/delete/" + id).then((response) =>{
             Loading.hide();
-            console.log("删除大章列表结果:", response);
             let resp = response.data;
             if (resp.success) {
               _this.list(1);

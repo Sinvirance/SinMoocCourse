@@ -23,7 +23,9 @@ public class ChapterController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChapterController.class);
 
-    // ChapterController 标识名
+    /*
+     * 大章控制器 ChapterController 标识名
+     */
     public static final String BUSINESS_NAME = "大章";
 
     @Resource
@@ -36,7 +38,6 @@ public class ChapterController {
      */
     @PostMapping(value = "/list")
     public ResponseDto<PageDto> list(@RequestBody(required = false) PageDto pageDto) {
-        LOG.info("pageDTo: {}", pageDto);
         ResponseDto<PageDto> responseDto = new ResponseDto<>();
         chapterService.list(pageDto);
         responseDto.setContent(pageDto);
@@ -50,8 +51,6 @@ public class ChapterController {
      */
     @PostMapping("/save")
     public ResponseDto<ChapterDto> save(@RequestBody ChapterDto chapterDto) {
-        LOG.info("chapterDto: {}", chapterDto);
-
         /*
          * 后端保存进行校验
          */
@@ -71,9 +70,8 @@ public class ChapterController {
      * @return 统一返回响应对象
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseDto<ChapterDto> del(@PathVariable String id) {
-        LOG.info("id: {}", id);
-        ResponseDto responseDto = new ResponseDto();
+    public ResponseDto<ChapterDto> delete(@PathVariable String id) {
+        ResponseDto<ChapterDto> responseDto = new ResponseDto<>();
         chapterService.delete(id);
         return responseDto;
     }
