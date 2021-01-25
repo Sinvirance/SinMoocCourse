@@ -15,16 +15,22 @@ import java.util.Map;
 
 public class ServerGenerator {
 
+    static String MODULE = "business";
     static String toServicePath = "server\\src\\main\\java\\top\\course\\server\\service\\";
-    static String toControllerPath = "business\\src\\main\\java\\top\\course\\business\\controller\\admin\\";
+    static String toControllerPath = MODULE + "\\src\\main\\java\\top\\course\\" + MODULE + "\\controller\\admin\\";
 
     public static void main(String[] args) throws IOException, TemplateException {
 
-        String Domain="Section";
-        String domain="section";
+        String Domain = "Section";
+        String domain = "section";
+        String tableNameCn = "小节";
+        String module = MODULE;
+
         Map<String, Object> map = new HashMap<>();
         map.put("Domain", Domain);
         map.put("domain", domain);
+        map.put("tableNameCn",tableNameCn);
+        map.put("module", module);
 
         /* 生成Service层 */
         FreemarkerUtil.initConfig("service.ftl");

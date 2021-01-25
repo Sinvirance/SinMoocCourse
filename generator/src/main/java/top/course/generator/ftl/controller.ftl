@@ -1,4 +1,4 @@
-package top.course.business.controller.admin;
+package top.course.${module}.controller.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class ${Domain}Controller {
     private static final Logger LOG = LoggerFactory.getLogger(${Domain}Controller.class);
 
     /* ${Domain}控制器 ${Domain}Controller 标识名 */
-    public static final String BUSINESS_NAME = "大章";
+    public static final String BUSINESS_NAME = "${tableNameCn}";
 
     @Resource
     private ${Domain}Service ${domain}Service;
