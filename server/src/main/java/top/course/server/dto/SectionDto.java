@@ -1,26 +1,47 @@
 package top.course.server.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
+/**
+ * @Author: Sinvirance
+ * @Date: 2021/01/26 02:31
+ * @Description: Section数据传输对象
+ */
+
 public class SectionDto {
+
+    /* 小节Id */
     private String id;
 
+    /* 标题 */
     private String title;
 
+    /* 课程|course.id */
     private String courseId;
 
+    /* 大章|chapter.id */
     private String chapterId;
 
+    /* 视频地址 */
     private String video;
 
+    /* 时长|单位秒(s) */
     private Integer time;
 
+    /* 收费|C:收费;F:免费 */
     private String charge;
 
+    /* 顺序 */
     private Integer sort;
 
+    /* 创建时间 */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdAt;
 
+    /* 修改时间 */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
 
     public String getId() {
@@ -122,4 +143,5 @@ public class SectionDto {
         sb.append("]");
         return sb.toString();
     }
+
 }

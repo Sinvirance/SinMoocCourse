@@ -44,10 +44,10 @@ select id, course_id, name from chapter;
 -- 小节表
 DROP table if exists `section`;
 CREATE TABLE `section` (
-    `id`         char(8)     not null default '' comment '小节ID',
+    `id`         char(8)     not null default '' comment '小节Id',
     `title`      varchar(50) not null comment '标题',
-    `course_id`  char(8) comment '课程|course.id',
-    `chapter_id` char(8) comment '大章|chapter.id',
+    `course_id`  char(8) not null comment '课程|course.id',
+    `chapter_id` char(8) not null comment '大章|chapter.id',
     `video`      varchar(200) comment '视频地址',
     `time`       int comment '时长|单位秒(s)',
     `charge`     char(1) comment '收费|C:收费;F:免费',
@@ -55,7 +55,8 @@ CREATE TABLE `section` (
     `created_at` datetime(3) comment '创建时间',
     `updated_at` datetime(3) comment '修改时间',
     primary key (`id`)
-) engine = innodb comment = '大章';
+) engine = innodb comment = '小节';
 -- 小节表测试数据
 insert into `section` (id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at)
 VALUES ('00000001','测试小节01', '00000001','00000000','', 500, 'F', 1, now(), now());
+select id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at from section;
