@@ -27,6 +27,7 @@ export default new Router({
             name: "welcome",
             component: Welcome
         }, {
+
             path: "business/chapter",
             name: "business/chapter",
             component: Chapter

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './app.vue'
 import router from './router'
 import axios from "axios";
+import filter from "./filter/filter";
 
 // 阻止启动生产消息
 Vue.config.productionTip = false;
@@ -25,6 +26,14 @@ axios.interceptors.response.use(function (response) {
     console.log("返回结果:", response);
     return response;
 }, error => {});
+
+/**
+ * 全局过滤器
+ */
+Object.keys(filter).forEach(key => {
+    /* Vue.filter()：把Array的某些元素过滤掉，然后返回剩下的元素,这里是将key去掉，留value  */
+    Vue.filter(key, filter[key])
+});
 
 new Vue({
     router,
