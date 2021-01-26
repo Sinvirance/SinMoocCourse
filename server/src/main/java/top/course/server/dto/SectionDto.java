@@ -3,7 +3,6 @@ package top.course.server.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.Date;
 
 /**
@@ -28,7 +27,7 @@ public class SectionDto {
     /* 大章|chapter.id */
     private String chapterId;
 
-    /* 视频地址 */
+    /* 视频 */
     private String video;
 
     /* 时长|单位秒(s) */

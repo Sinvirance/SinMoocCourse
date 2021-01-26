@@ -13,6 +13,7 @@ import top.course.server.util.CopyUtil;
 import top.course.server.util.UUIDUtil;
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Date;
 
 /**
  * @Author: Sinvirance
@@ -33,6 +34,7 @@ public class SectionService {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         SectionExample sectionExample = new SectionExample();
         List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
+        sectionExample.setOrderByClause("sort asc");
 
         PageInfo<Section> pageInfo = new PageInfo<>(sectionList);
         pageDto.setTotal(pageInfo.getTotal());
@@ -58,6 +60,9 @@ public class SectionService {
      * @param section (无ID)Section对象
      */
     private void insert(Section section) {
+        Date now = new Date();
+        section.setCreatedAt(now);
+        section.setUpdatedAt(now);
         section.setId(UUIDUtil.getShortUUID());
         sectionMapper.insert(section);
     }
@@ -67,6 +72,7 @@ public class SectionService {
      * @param section (有ID)Section对象
      */
     private void update(Section section) {
+        section.setUpdatedAt(new Date());
         sectionMapper.updateByPrimaryKey(section);
     }
 

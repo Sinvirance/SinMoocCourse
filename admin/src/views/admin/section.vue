@@ -22,12 +22,10 @@
         <th>标题</th>
         <th>课程</th>
         <th>大章</th>
-        <th>视频地址</th>
+        <th>视频</th>
         <th>时长</th>
         <th>收费</th>
         <th>顺序</th>
-        <th>创建时间</th>
-        <th>修改时间</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -41,8 +39,6 @@
         <td>{{section.time}}</td>
         <td>{{section.charge}}</td>
         <td>{{section.sort}}</td>
-        <td>{{section.createdAt}}</td>
-        <td>{{section.updatedAt}}</td>
         <td>
           <div class="hidden-sm hidden-xs btn-group">
             <button v-on:click="edit(section)" class="btn btn-xs btn-info">
@@ -66,16 +62,10 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">新增小节</h4>
+            <h4 class="modal-title">小节编辑</h4>
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-2 control-label">小节Id</label>
-                <div class="col-sm-10">
-                  <input v-model="section.id" class="form-control">
-                </div>
-              </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">标题</label>
                 <div class="col-sm-10">
@@ -95,7 +85,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">视频地址</label>
+                <label class="col-sm-2 control-label">视频</label>
                 <div class="col-sm-10">
                   <input v-model="section.video" class="form-control">
                 </div>
@@ -116,18 +106,6 @@
                 <label class="col-sm-2 control-label">顺序</label>
                 <div class="col-sm-10">
                   <input v-model="section.sort" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">创建时间</label>
-                <div class="col-sm-10">
-                  <input v-model="section.createdAt" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">修改时间</label>
-                <div class="col-sm-10">
-                  <input v-model="section.updatedAt" class="form-control">
                 </div>
               </div>
             </form>
@@ -200,7 +178,7 @@
         if (1 != 1
           || !Validator.require(_this.section.title, "标题")
           || !Validator.length(_this.section.title, "标题", 1, 50)
-          || !Validator.length(_this.section.video, "视频地址", 1, 200)
+          || !Validator.length(_this.section.video, "视频", 1, 200)
         ) {
           return;
         }
