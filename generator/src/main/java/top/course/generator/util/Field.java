@@ -40,6 +40,12 @@ public class Field {
     /* 字符串长度 */
     private Integer length;
 
+    /* 是否是枚举 */
+    private Boolean enums;
+
+    /* 枚举常量名: COURSE_LEVEL */
+    private String enumsConst;
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Field{");

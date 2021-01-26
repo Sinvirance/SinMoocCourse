@@ -160,9 +160,9 @@
       return {
         course: {},
         courses: [],
-        COURSE_CHARGE: COURSE_CHARGE,
         COURSE_LEVEL: COURSE_LEVEL,
-        COURSE_STATUS: COURSE_STATUS
+        COURSE_CHARGE: COURSE_CHARGE,
+        COURSE_STATUS: COURSE_STATUS,
       }
     },
 
