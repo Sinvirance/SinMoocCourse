@@ -134,10 +134,7 @@
         section: {},
         sections: [],
         // 前端枚举字段
-        CHARGE: [
-          {key:"C", value:"收费"},
-          {key:"F", value:"免费"}
-          ],
+        CHARGE: CHARGE,
       }
     },
 
