@@ -43,7 +43,7 @@ public class ${Domain}Service {
 
     /**
      * 保存: ${Domain}Dto对象有id属性值时更新，无值时新增
-     * @param ${Domain}Dto 数据传输对象
+     * @param ${domain}Dto 数据传输对象
      */
     public void save(${Domain}Dto ${domain}Dto) {
         ${Domain} ${domain} = CopyUtil.copy(${domain}Dto, ${Domain}.class);

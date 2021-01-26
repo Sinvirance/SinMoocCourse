@@ -59,6 +59,7 @@
                 <scope>provided</scope>
             </dependency>
 
+            <!-- 将server作为模块集成 -->
             <dependency>
                 <groupId>top.sinvirance</groupId>
                 <artifactId>server</artifactId>

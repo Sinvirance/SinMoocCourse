@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 </#if>
 </#list>
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Author: Sinvirance
@@ -16,6 +18,8 @@ import java.math.BigDecimal;
  * @Description: ${Domain}数据传输对象
  */
 
+@Getter
+@Setter
 public class ${Domain}Dto {
 
     <#list fieldList as field>
@@ -26,16 +30,7 @@ public class ${Domain}Dto {
     private ${field.javaType} ${field.nameHump};
 
     </#list>
-    <#list fieldList as field>
-    public ${field.javaType} get${field.nameBigHump}() {
-        return ${field.nameHump};
-    }
 
-    public void set${field.nameBigHump}(${field.javaType} ${field.nameHump}) {
-        this.${field.nameHump} = ${field.nameHump};
-    }
-
-    </#list>
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

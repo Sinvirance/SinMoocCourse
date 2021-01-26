@@ -46,8 +46,8 @@ DROP table if exists `section`;
 CREATE TABLE `section` (
     `id`         char(8)     not null default '' comment '小节Id',
     `title`      varchar(50) not null comment '标题',
-    `course_id`  char(8) not null comment '课程|course.id',
-    `chapter_id` char(8) not null comment '大章|chapter.id',
+    `course_id`  char(8) comment '课程|course.id',
+    `chapter_id` char(8) comment '大章|chapter.id',
     `video`      varchar(200) comment '视频地址',
     `time`       int comment '时长|单位秒(s)',
     `charge`     char(1) comment '收费|C:收费;F:免费',

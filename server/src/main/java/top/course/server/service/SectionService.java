@@ -11,7 +11,6 @@ import top.course.server.dto.PageDto;
 import top.course.server.mapper.SectionMapper;
 import top.course.server.util.CopyUtil;
 import top.course.server.util.UUIDUtil;
-
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class SectionService {
 
     /**
      * 保存: SectionDto对象有id属性值时更新，无值时新增
-     * @param SectionDto 数据传输对象
+     * @param sectionDto 数据传输对象
      */
     public void save(SectionDto sectionDto) {
         Section section = CopyUtil.copy(sectionDto, Section.class);

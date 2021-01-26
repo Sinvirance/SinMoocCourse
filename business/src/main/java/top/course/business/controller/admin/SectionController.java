@@ -7,6 +7,7 @@ import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
 import top.course.server.dto.SectionDto;
 import top.course.server.service.SectionService;
+import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
 
@@ -48,7 +49,10 @@ public class SectionController {
      */
     @PostMapping("/save")
     public ResponseDto<SectionDto> save(@RequestBody SectionDto sectionDto) {
-        /* 保存校验*/
+        /* 保存校验 */
+        ValidatorUtil.require(sectionDto.getTitle(), "标题");
+        ValidatorUtil.length(sectionDto.getTitle(), "标题", 1, 50);
+        ValidatorUtil.length(sectionDto.getVideo(), "视频地址", 1, 200);
 
         ResponseDto<SectionDto> responseDto = new ResponseDto<>();
         sectionService.save(sectionDto);

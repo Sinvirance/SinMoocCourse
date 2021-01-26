@@ -23,19 +23,18 @@ public class ValidatorUtil {
     }
 
     /**
-     * 字段长度校验
+     * 字段长度校验,当字段为空时，不进行校验
      * @param str 校验的字段值
      * @param fieldName 校验的字段名
      * @param min 最小长度
      * @param max 最大长度
      */
     public static void length(String str, String fieldName, int min, int max) {
-        int length = 0;
         if (!StringUtils.isEmpty(str)) {
-            length = str.length();
-        }
-        if (length < min || length > max) {
-            throw new ValidatorException(fieldName + "长度应该为" + min + "~" + max + "位");
+            int length = str.length();
+            if (length < min || length > max) {
+                throw new ValidatorException(fieldName + "长度应该为" + min + "~" + max + "位");
+            }
         }
     }
 }
