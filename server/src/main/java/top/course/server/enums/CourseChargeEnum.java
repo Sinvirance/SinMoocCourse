@@ -6,18 +6,18 @@ import lombok.Getter;
 /**
  * @Author: Sinvirance
  * @Date: 2021/1/26 20:32
- * @Description: 小节表`section`charge字段枚举常量类
+ * @Description: 课程表`course`charge字段枚举常量类
  */
 
 
 @Getter
 @AllArgsConstructor
-public enum SectionChargeEnum {
+public enum CourseChargeEnum {
 
-    /* 收费小节枚举常量 */
+    /* 收费课程枚举常量 */
     CHARGER("C", "收费"),
 
-    /* 免费小节枚举常量 */
+    /* 免费课程枚举常量 */
     FREE("F", "免费");
 
     private String code;

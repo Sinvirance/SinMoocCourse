@@ -1,5 +1,8 @@
 package top.course.generator.enums;
 
+import top.course.server.enums.CourseChargeEnum;
+import top.course.server.enums.CourseLevelEnum;
+import top.course.server.enums.CourseStatusEnum;
 import top.course.server.enums.SectionChargeEnum;
 
 import java.io.FileOutputStream;
@@ -24,7 +27,9 @@ public class EnumGenerator {
         long begin = System.currentTimeMillis();
         try {
             toJson(SectionChargeEnum.class, bufferObject, bufferArray);
-            // toJson(YesNoEnum.class, bufferObject, bufferArray);
+            toJson(CourseChargeEnum.class, bufferObject, bufferArray);
+            toJson(CourseLevelEnum.class, bufferObject, bufferArray);
+            toJson(CourseStatusEnum.class, bufferObject, bufferArray);
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             writeJs(buffer);
         } catch (Exception e) {
