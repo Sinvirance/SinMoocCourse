@@ -72,11 +72,9 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">课程ID</label>
+                <label class="col-sm-2 control-label">课程</label>
                 <div class="col-sm-10">
-                  <!--v-model简单来说就是实现一个-->
-                  <!--在给 <input /> 元素添加 v-model 属性时，默认会把 value 作为元素的属性，当触发点击事件时，会将值绑定传递过去-->
-                  <input v-model="chapter.courseId" class="form-control" placeholder="课程ID">
+                  <p class="form-control-static">{{course.name}}</p>
                 </div>
               </div>
             </form>
@@ -148,6 +146,7 @@
           // 获取组件 pagination 里定义的size
           // $refs 获取通过 ref 注册的引用来获取数据
           size: _this.$refs.pagination.size,
+          courseId: _this.course.id,
         }).then((response)=>{
           Loading.hide();
           // resp 就是后端的统一返回对象 ResponseDto
@@ -166,10 +165,12 @@
         let _this = this;
         // 保存时校验
         if (!Validator.require(_this.chapter.name, "名称")
-        || !Validator.require(_this.chapter.courseId, "课程ID")
         || !Validator.length(_this.chapter.courseId, "课程ID", 1, 8)) {
           return;
         }
+        // 添加大章课程id不应该由用户来决定，而是根据会话来里的course来决定
+        _this.chapter.courseId = _this.course.id;
+
         Loading.show();
         // 将上面点击事件传过来的 chapter 对象属性值，使用post请求传递后端
         _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/chapter/save", _this.chapter).then((response)=>{

@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 import top.course.server.domain.Chapter;
 import top.course.server.domain.ChapterExample;
 import top.course.server.dto.ChapterDto;
-import top.course.server.dto.PageDto;
+import top.course.server.dto.ChapterPageDto;
 import top.course.server.mapper.ChapterMapper;
 import top.course.server.util.CopyUtil;
 import top.course.server.util.UUIDUtil;
@@ -27,19 +27,23 @@ public class ChapterService {
     private ChapterMapper chapterMapper;
 
     /**
-     * chapter表列表分页查询
-     * @param pageDto 分页组件传输对象
+     * 查询: chapter表根据courseId进行分页列表
+     * @param chapterPageDto 大章分页组件传输对象
      */
-    public void list(PageDto pageDto) {
+    public void list(ChapterPageDto chapterPageDto) {
         // startPage 会对最近的第一个Select语句进行分页
-        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
+        PageHelper.startPage(chapterPageDto.getPage(), chapterPageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
+        ChapterExample.Criteria criteria = chapterExample.createCriteria();
+        if (!StringUtils.isEmpty(chapterPageDto.getCourseId())) {
+            criteria.andCourseIdEqualTo(chapterPageDto.getCourseId());
+        }
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
 
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
-        pageDto.setTotal(pageInfo.getTotal());
+        chapterPageDto.setTotal(pageInfo.getTotal());
         List<ChapterDto> chapterDtoList = CopyUtil.copyList(chapterList, ChapterDto.class);
-        pageDto.setList(chapterDtoList);
+        chapterPageDto.setList(chapterDtoList);
     }
 
     /**

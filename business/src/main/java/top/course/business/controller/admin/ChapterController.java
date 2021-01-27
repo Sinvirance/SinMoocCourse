@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import top.course.server.dto.ChapterDto;
-import top.course.server.dto.PageDto;
+import top.course.server.dto.ChapterPageDto;
 import top.course.server.dto.ResponseDto;
 import top.course.server.service.ChapterService;
 import top.course.server.util.ValidatorUtil;
@@ -33,14 +33,15 @@ public class ChapterController {
 
     /**
      * 查询: Chapter对象分页列表
-     * @param pageDto 分页信息传输对象
+     * @param chapterPageDto 大章分页信息传输对象
      * @return 统一返回响应对象
      */
     @PostMapping(value = "/list")
-    public ResponseDto<PageDto> list(@RequestBody(required = false) PageDto pageDto) {
-        ResponseDto<PageDto> responseDto = new ResponseDto<>();
-        chapterService.list(pageDto);
-        responseDto.setContent(pageDto);
+    public ResponseDto<ChapterPageDto> list(@RequestBody(required = false)ChapterPageDto chapterPageDto) {
+        ResponseDto<ChapterPageDto> responseDto = new ResponseDto<>();
+        ValidatorUtil.require(chapterPageDto.getCourseId(), "课程ID");
+        chapterService.list(chapterPageDto);
+        responseDto.setContent(chapterPageDto);
         return responseDto;
     }
 
