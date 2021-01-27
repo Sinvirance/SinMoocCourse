@@ -1,7 +1,13 @@
 <template>
   <div>
     <!--新增大章和刷新按钮-->
+    <h3>{{course.name}}</h3>
     <p>
+      <router-link to="/business/course" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-arrow-left"></i>
+        返回课程
+      </router-link>
+      &nbsp;
       <button v-on:click="add()" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-edit"></i>
         新增
@@ -98,7 +104,8 @@
         // object: {}
         chapter: {},
         // array: []
-        chapters: []
+        chapters: [],
+        course:{},
       }
     },
     // 在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
@@ -106,6 +113,12 @@
       let _this = this;
       // 在点击大章管理后，显示的内容：第一页，5条页面数据
       _this.$refs.pagination.size = 5;
+      // 从会话对象获取course对象
+      let course = SessionStorage.get("course") || {};
+      if (Tool.isEmpty(course)) {
+        _this.$router.push("/welcome");
+      }
+      _this.course = course;
       _this.list(1);
       // $parent 调用父组件admin的方法
       // this.$parent.activeSidebar("business-chapter-sidebar");
