@@ -3,6 +3,7 @@ package top.course.server.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import top.course.server.domain.Section;
 import top.course.server.domain.SectionExample;
@@ -56,6 +57,7 @@ public class SectionService {
      * 保存: SectionDto对象有id属性值时更新，无值时新增
      * @param sectionDto 数据传输对象
      */
+    @Transactional
     public void save(SectionDto sectionDto) {
         Section section = CopyUtil.copy(sectionDto, Section.class);
         if (StringUtils.isEmpty(sectionDto.getId())) {
@@ -63,6 +65,7 @@ public class SectionService {
         } else {
             this.update(section);
         }
+        // 遇到RuntimeException,才会回滚，所以根据需求，自定义异常选择是否继承RuntimeException
         courseService.updateTime(sectionDto.getCourseId());
     }
 
