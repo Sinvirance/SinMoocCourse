@@ -10,10 +10,11 @@ import top.course.server.service.CategoryService;
 import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: Sinvirance
- * @Date: 2021/xx/xx xx:xx
+ * @Date: 2021/01/29 01:14
  * @Description: Category控制层
  */
 
@@ -28,6 +29,18 @@ public class CategoryController {
 
     @Resource
     private CategoryService categoryService;
+
+    /**
+     * 查询: Category对象列表不分页
+     * @return 统一返回响应对象
+     */
+    @PostMapping("/all")
+    public ResponseDto<List> all() {
+        ResponseDto<List> responseDto = new ResponseDto<>();
+        List<CategoryDto> categoryDtoList = categoryService.all();
+        responseDto.setContent(categoryDtoList);
+        return responseDto;
+    }
 
     /**
      * 查询: Category对象分页列表

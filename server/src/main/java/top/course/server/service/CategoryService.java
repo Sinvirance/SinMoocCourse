@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * @Author: Sinvirance
- * @Date: 2021/xx/xx xx:xx
+ * @Date: 2021/01/29 01:14
  * @Description: Category持久层接口
  */
 
@@ -25,6 +25,18 @@ import java.util.List;
 public class CategoryService {
     @Resource
     private CategoryMapper categoryMapper;
+
+    /**
+     * 查询：category表信息
+     * @return categoryDtoList 分类信息传输对象
+     */
+    public List<CategoryDto> all() {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
+        List<CategoryDto> categoryDtoList = CopyUtil.copyList(categoryList, CategoryDto.class);
+        return categoryDtoList;
+    }
 
     /**
      * category表列表分页查询
