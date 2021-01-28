@@ -2,6 +2,8 @@ package top.course.server.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import top.course.server.domain.Course;
@@ -9,12 +11,13 @@ import top.course.server.domain.CourseExample;
 import top.course.server.dto.CourseDto;
 import top.course.server.dto.PageDto;
 import top.course.server.mapper.CourseMapper;
+import top.course.server.mapper.my.MyCourseMapper;
 import top.course.server.util.CopyUtil;
 import top.course.server.util.UUIDUtil;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Sinvirance
@@ -24,8 +27,14 @@ import java.util.Date;
 
 @Service
 public class CourseService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CourseService.class);
+
     @Resource
     private CourseMapper courseMapper;
+
+    @Resource
+    private MyCourseMapper myCourseMapper;
 
     /**
      * course表列表分页查询
@@ -83,5 +92,14 @@ public class CourseService {
      */
     public void delete(String id) {
         courseMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 更新: 根据更新id更新课程时长
+     * @param courseId Course对象Id
+     */
+    public void updateTime(String courseId) {
+        LOG.info("更新课程时长：{}", courseId);
+        myCourseMapper.updateTime(courseId);
     }
 }

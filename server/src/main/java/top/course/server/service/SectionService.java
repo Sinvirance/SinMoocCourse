@@ -27,6 +27,9 @@ public class SectionService {
     @Resource
     private SectionMapper sectionMapper;
 
+    @Resource
+    private CourseService courseService;
+
     /**
      * section表列表分页查询
      * @param sectionPageDto 小节分页组件传输对象
@@ -60,6 +63,7 @@ public class SectionService {
         } else {
             this.update(section);
         }
+        courseService.updateTime(sectionDto.getCourseId());
     }
 
     /**
