@@ -3,11 +3,12 @@ package top.course.business.controller.admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
 import top.course.server.dto.SectionDto;
+import top.course.server.dto.SectionPageDto;
 import top.course.server.service.SectionService;
 import top.course.server.util.ValidatorUtil;
+
 import javax.annotation.Resource;
 
 /**
@@ -30,14 +31,16 @@ public class SectionController {
 
     /**
      * 查询: Section对象分页列表
-     * @param pageDto 分页信息传输对象
+     * @param sectionPageDto 分页信息传输对象
      * @return 统一返回响应对象
      */
     @PostMapping(value = "/list")
-    public ResponseDto<PageDto> list(@RequestBody(required = false) PageDto pageDto) {
-        ResponseDto<PageDto> responseDto = new ResponseDto<>();
-        sectionService.list(pageDto);
-        responseDto.setContent(pageDto);
+    public ResponseDto<SectionPageDto> list(@RequestBody(required = false) SectionPageDto sectionPageDto) {
+        ResponseDto<SectionPageDto> responseDto = new ResponseDto<>();
+        ValidatorUtil.require(sectionPageDto.getCourseId(), "课程Id");
+        ValidatorUtil.require(sectionPageDto.getChapterId(), "大章Id");
+        sectionService.list(sectionPageDto);
+        responseDto.setContent(sectionPageDto);
         return responseDto;
     }
 
