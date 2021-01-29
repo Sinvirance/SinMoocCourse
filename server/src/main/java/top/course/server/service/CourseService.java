@@ -36,6 +36,9 @@ public class CourseService {
     @Resource
     private MyCourseMapper myCourseMapper;
 
+    @Resource
+    private CourseCategoryService courseCategoryService;
+
     /**
      * course表列表分页查询
      * @param pageDto 分页组件传输对象
@@ -63,6 +66,9 @@ public class CourseService {
         } else {
             this.update(course);
         }
+        // 批量保存课程分类
+        courseCategoryService.saveBatch(courseDto.getId(),courseDto.getCategorys());
+
     }
 
     /**

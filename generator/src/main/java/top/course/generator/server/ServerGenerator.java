@@ -51,7 +51,7 @@ public class ServerGenerator {
         System.out.println("Domain："+tableElement.attributeValue("domainObjectName"));
 
         /* 获取数据表所有列的成员变量File对象列表 */
-        List<Field> fieldList = DbUtil.getColumnByTableName(domain);
+        List<Field> fieldList = DbUtil.getColumnByTableName(tableName);
         /* 用于dto import，一种数据类型只需要import一次 */
         Set<String> typeSet = getJavaTypes(fieldList);
 
