@@ -34,6 +34,27 @@ VALUES ('00000001', '测试课程01', '这是一门测试课程', 7200, 19.9, ''
 select id, name, summary, time, price, image, level, charge, status, enroll, sort, created_at, updated_at from course;
 
 
+## 课程分类关联表：与课程表是一对多的关系
+drop table if exists `course_category`;
+create table `course_category` (
+    `id`          char(8) not null default '' comment 'id',
+    `course_id`   char(8) comment '课程|course.id',
+    `category_id` char(8) comment '分类|course.id',
+    primary key (`id`)
+) engine = innodb comment = '课程分类';
+select id, course_id, category_id from course_category;
+
+
+## 课程内容表: 与课程表是一对一的关系，一个课程只能有一个字段
+## 属于分库分表的一种理念，将大字段从主表中分离出来
+drop table if exists `course_content`;
+create table `course_content` (
+    `id`      char(8)    not null default '' comment '课程id',
+    `content` mediumtext not null comment '课程内容',
+    primary key (`id`)
+) engine = innodb comment ='课程内容';
+
+
 # 大章表
 DROP table if exists `chapter`;
 CREATE TABLE `chapter`(
@@ -144,13 +165,3 @@ insert into `category` (id, parent, name, sort) values ('00000701', '00000700', 
 insert into `category` (id, parent, name, sort) values ('00000702', '00000700', 'redis', 702);
 insert into `category` (id, parent, name, sort) values ('00000703', '00000700', 'mongodb', 703);
 select id, parent, name, sort from category;
-
-# 课程分类关联表
-drop table if exists `course_category`;
-create table `course_category` (
-    `id`          char(8) not null default '' comment 'id',
-    `course_id`   char(8) comment '课程|course.id',
-    `category_id` char(8) comment '分类|course.id',
-    primary key (`id`)
-) engine = innodb comment = '课程分类';
-select id, course_id, category_id from course_category;
