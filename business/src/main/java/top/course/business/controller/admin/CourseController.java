@@ -3,17 +3,20 @@ package top.course.business.controller.admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import top.course.server.dto.CourseCategoryDto;
 import top.course.server.dto.CourseDto;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
+import top.course.server.service.CourseCategoryService;
 import top.course.server.service.CourseService;
 import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: Sinvirance
- * @Date: 2021/xx/xx xx:xx
+ * @Date: 2021/01/29 01:14
  * @Description: Course控制层
  */
 
@@ -28,6 +31,9 @@ public class CourseController {
 
     @Resource
     private CourseService courseService;
+
+    @Resource
+    private CourseCategoryService courseCategoryService;
 
     /**
      * 查询: Course对象分页列表
@@ -70,6 +76,19 @@ public class CourseController {
     public ResponseDto<CourseDto> delete(@PathVariable String id) {
         ResponseDto<CourseDto> responseDto = new ResponseDto<>();
         courseService.delete(id);
+        return responseDto;
+    }
+
+
+    /**
+     * 查找: 课程的所有分类
+     * @param courseId 查找的Course对象id
+     */
+    @PostMapping("/list-category/{courseId}")
+    public ResponseDto<List<CourseCategoryDto>> listCategory(@PathVariable(value = "courseId") String courseId) {
+        ResponseDto<List<CourseCategoryDto>> responseDto = new ResponseDto<>();
+        List<CourseCategoryDto> dtoList = courseCategoryService.listByCourse(courseId);
+        responseDto.setContent(dtoList);
         return responseDto;
     }
 }

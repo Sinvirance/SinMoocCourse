@@ -3,6 +3,7 @@ package top.course.server.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import top.course.server.domain.CourseCategory;
 import top.course.server.domain.CourseCategoryExample;
@@ -18,7 +19,7 @@ import java.util.List;
 
 /**
  * @Author: Sinvirance
- * @Date: 2021/xx/xx xx:xx
+ * @Date: 2021/01/29 21:04
  * @Description: CourseCategory持久层接口
  */
 
@@ -85,6 +86,7 @@ public class CourseCategoryService {
      * @param courseId 对应的课程id
      * @param categorys CategoryDto对象列表
      */
+    @Transactional
     public void saveBatch(String courseId, List<CategoryDto> categorys) {
         CourseCategoryExample courseCategoryExample = new CourseCategoryExample();
         courseCategoryExample.createCriteria().andCategoryIdEqualTo(courseId);
@@ -97,5 +99,17 @@ public class CourseCategoryService {
             courseCategory.setCategoryId(categoryDto.getId());
             insert(courseCategory);
         }
+    }
+
+    /**
+     * 查找：课程分类表下的某个课程的所有分类
+     * @param courseId 对应课程id
+     * @return 以课程id为筛选id返回的分类列表
+     */
+    public List<CourseCategoryDto> listByCourse(String courseId) {
+        CourseCategoryExample courseCategoryExample = new CourseCategoryExample();
+        courseCategoryExample.createCriteria().andCourseIdEqualTo(courseId);
+        List<CourseCategory> courseCategoryList = courseCategoryMapper.selectByExample(courseCategoryExample);
+        return CopyUtil.copyList(courseCategoryList, CourseCategoryDto.class);
     }
 }

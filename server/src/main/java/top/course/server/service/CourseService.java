@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import top.course.server.domain.Course;
 import top.course.server.domain.CourseExample;
@@ -21,7 +22,7 @@ import java.util.List;
 
 /**
  * @Author: Sinvirance
- * @Date: 2021/xx/xx xx:xx
+ * @Date: 2021/01/29 01:29
  * @Description: Course持久层接口
  */
 
@@ -59,6 +60,7 @@ public class CourseService {
      * 保存: CourseDto对象有id属性值时更新，无值时新增
      * @param courseDto 数据传输对象
      */
+    @Transactional
     public void save(CourseDto courseDto) {
         Course course = CopyUtil.copy(courseDto, Course.class);
         if (StringUtils.isEmpty(courseDto.getId())) {
