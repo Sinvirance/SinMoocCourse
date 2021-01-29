@@ -152,19 +152,20 @@
     methods: {
 
       /**
-       * 添加分类功能,点击弹出表单
+       * 添加一级分类功能,点击弹出表单
        */
       add1() {
         let _this = this;
         _this.active = {};
-        _this.level1 = [];
         _this.category = {
           parent: "00000000"
         };
         $("#form-modal").modal("show");
       },
 
-
+      /**
+       * 添加二级分类功能,点击弹出表单
+       */
       add2() {
         let _this = this;
         if (Tool.isEmpty(_this.active)) {
@@ -176,7 +177,6 @@
         };
         $(".modal").modal("show");
       },
-
 
       /**
        * 查询分类列表
@@ -206,6 +206,12 @@
               }
             }
           }
+          _this.level2 = [];
+          // 对当前一级分类中选中的表格触发一次点击事件，以刷新二级菜单列表
+          // 注意：界面的渲染需要等vue绑定好变量后才做，所以加延时100ms
+          setTimeout(function () {
+            $("tr.active").trigger("click");
+          }, 100);
 
         })
       },
