@@ -3,6 +3,7 @@ package top.course.server.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import top.course.server.domain.Category;
 import top.course.server.domain.CategoryExample;
@@ -88,7 +89,23 @@ public class CategoryService {
      * 删除: 根据id删除category表数据
      * @param id id
      */
+    @Transactional
     public void delete(String id) {
+        deleteChildren(id);
         categoryMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 删除：根据父分类id删除子分类
+     * @param id 父分类id
+     */
+    private void deleteChildren(String id) {
+        Category category = categoryMapper.selectByPrimaryKey(id);
+        /* 判断该分类是否为一级分类 */
+        if ("00000000".equals(category.getParent())) {
+            CategoryExample categoryExample = new CategoryExample();
+            categoryExample.createCriteria().andParentEqualTo(category.getId());
+            categoryMapper.deleteByExample(categoryExample);
+        }
     }
 }
