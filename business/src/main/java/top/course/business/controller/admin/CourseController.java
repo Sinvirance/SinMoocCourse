@@ -3,10 +3,7 @@ package top.course.business.controller.admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import top.course.server.dto.CourseCategoryDto;
-import top.course.server.dto.CourseDto;
-import top.course.server.dto.PageDto;
-import top.course.server.dto.ResponseDto;
+import top.course.server.dto.*;
 import top.course.server.service.CourseCategoryService;
 import top.course.server.service.CourseService;
 import top.course.server.util.ValidatorUtil;
@@ -89,6 +86,31 @@ public class CourseController {
         ResponseDto<List<CourseCategoryDto>> responseDto = new ResponseDto<>();
         List<CourseCategoryDto> dtoList = courseCategoryService.listByCourse(courseId);
         responseDto.setContent(dtoList);
+        return responseDto;
+    }
+
+    /**
+     * 查找: 课程内容
+     * @param id 查找的Course对象id
+     * @return 统一返回响应对象
+     */
+    @GetMapping("/find-content/{id}")
+    public ResponseDto<CourseContentDto> findContent(@PathVariable String id) {
+        ResponseDto<CourseContentDto> responseDto = new ResponseDto<>();
+        CourseContentDto courseContentDto = courseService.findContent(id);
+        responseDto.setContent(courseContentDto);
+        return responseDto;
+    }
+
+    /**
+     * 保存: 课程内容
+     * @param courseContentDto 课程内容数据传输对象
+     * @return 统一返回响应对象
+     */
+    @PostMapping("/save-content")
+    public ResponseDto<CourseContentDto> saveContent(@RequestBody CourseContentDto courseContentDto) {
+        ResponseDto<CourseContentDto> responseDto = new ResponseDto<>();
+        courseService.saveContent(courseContentDto);
         return responseDto;
     }
 }

@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import top.course.server.domain.Course;
+import top.course.server.domain.CourseContent;
 import top.course.server.domain.CourseExample;
+import top.course.server.dto.CourseContentDto;
 import top.course.server.dto.CourseDto;
 import top.course.server.dto.PageDto;
+import top.course.server.mapper.CourseContentMapper;
 import top.course.server.mapper.CourseMapper;
 import top.course.server.mapper.my.MyCourseMapper;
 import top.course.server.util.CopyUtil;
@@ -39,6 +42,9 @@ public class CourseService {
 
     @Resource
     private CourseCategoryService courseCategoryService;
+
+    @Resource
+    private CourseContentMapper courseContentMapper;
 
     /**
      * course表列表分页查询
@@ -109,5 +115,36 @@ public class CourseService {
     public void updateTime(String courseId) {
         LOG.info("更新课程时长：{}", courseId);
         myCourseMapper.updateTime(courseId);
+    }
+
+    /**
+     * 查找: 根据传入的课程id获取course_content表信息
+     * @param id 课程id
+     * @return CourseContentDto 课程内容信息传输对象
+     */
+    public CourseContentDto findContent(String id) {
+        CourseContent content = courseContentMapper.selectByPrimaryKey(id);
+        if (content == null) {
+            return null;
+        }
+        return CopyUtil.copy(content, CourseContentDto.class);
+    }
+
+    /**
+     * 保存: 将课程内容新增或修改到课程内容表
+     * @param courseContentDto 课程内容信息传输对象
+     * @return 影响的行数
+     */
+    public int saveContent(CourseContentDto courseContentDto) {
+        CourseContent content = CopyUtil.copy(courseContentDto, CourseContent.class);
+        /*
+         * 本来按照正常的思路，保存到底是新增还是修改需要先判断course_content是否有对应课程课程id
+         * 但其实我们可以直接进行update，当没有更新到数据时，再去执行insert操作，这样减少了每次保存必须先进行查找的问题，减少了与数据表的交互
+         */
+        int i = courseContentMapper.updateByPrimaryKeyWithBLOBs(content);
+        if (i == 0) {
+            i = courseContentMapper.insert(content);
+        }
+        return i;
     }
 }
