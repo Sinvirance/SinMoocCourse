@@ -13,6 +13,7 @@ import top.course.server.domain.CourseExample;
 import top.course.server.dto.CourseContentDto;
 import top.course.server.dto.CourseDto;
 import top.course.server.dto.PageDto;
+import top.course.server.dto.SortDto;
 import top.course.server.mapper.CourseContentMapper;
 import top.course.server.mapper.CourseMapper;
 import top.course.server.mapper.my.MyCourseMapper;
@@ -75,7 +76,7 @@ public class CourseService {
             this.update(course);
         }
         // 批量保存课程分类
-        courseCategoryService.saveBatch(courseDto.getId(),courseDto.getCategorys());
+        courseCategoryService.saveBatch(course.getId(),courseDto.getCategorys());
 
     }
 
@@ -146,5 +147,23 @@ public class CourseService {
             i = courseContentMapper.insert(content);
         }
         return i;
+    }
+
+    /**
+     * 更新: 一门课程顺序改变，其他顺序也要改变
+     * @param sortDto 课程顺序数据传输对象
+     */
+    @Transactional
+    public void sort(SortDto sortDto) {
+        /* 修改当前记录的排序值 */
+        myCourseMapper.updateSort(sortDto);
+        /* 如果排序值变大 */
+        if (sortDto.getNewSort() > sortDto.getOldSort()) {
+            myCourseMapper.moveSortsForward(sortDto);
+        }
+        /* 如果排序值变小 */
+        if (sortDto.getNewSort() < sortDto.getOldSort()) {
+            myCourseMapper.moveSortsBackward(sortDto);
+        }
     }
 }
