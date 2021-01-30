@@ -3,13 +3,14 @@ package top.course.business.controller.admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import top.course.server.dto.TeacherDto;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
+import top.course.server.dto.TeacherDto;
 import top.course.server.service.TeacherService;
 import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: Sinvirance
@@ -39,6 +40,19 @@ public class TeacherController {
         ResponseDto<PageDto> responseDto = new ResponseDto<>();
         teacherService.list(pageDto);
         responseDto.setContent(pageDto);
+        return responseDto;
+    }
+
+
+    /**
+     * 查询: 所有Teacher表数据
+     * @return 统一返回响应对象
+     */
+    @PostMapping("/all")
+    public ResponseDto all() {
+        ResponseDto responseDto = new ResponseDto();
+        List<TeacherDto> teacherDtoList = teacherService.all();
+        responseDto.setContent(teacherDtoList);
         return responseDto;
     }
 

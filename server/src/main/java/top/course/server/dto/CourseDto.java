@@ -24,6 +24,9 @@ public class CourseDto {
     /* 名称 */
     private String name;
 
+    /* 课程讲师 */
+    private String teacherId;
+
     /* 概述 */
     private String summary;
 
@@ -67,6 +70,7 @@ public class CourseDto {
         final StringBuffer sb = new StringBuffer("CourseDto{");
         sb.append("id='").append(id).append('\'');
         sb.append(", name='").append(name).append('\'');
+        sb.append(", teacher='").append(teacherId).append('\'');
         sb.append(", summary='").append(summary).append('\'');
         sb.append(", time=").append(time);
         sb.append(", price=").append(price);
