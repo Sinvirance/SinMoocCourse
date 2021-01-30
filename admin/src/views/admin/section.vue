@@ -152,7 +152,9 @@
       }
       _this.course = course;
       _this.chapter = chapter;
-      _this.list(1);
+      _this.list(1)
+
+      this.$parent.activeSidebar("business-course-sidebar");
     },
 
     methods: {

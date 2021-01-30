@@ -124,7 +124,7 @@
       _this.course = course;
       _this.list(1);
       // $parent 调用父组件admin的方法
-      // this.$parent.activeSidebar("business-chapter-sidebar");
+      this.$parent.activeSidebar("business-course-sidebar");
     },
 
     methods: {
