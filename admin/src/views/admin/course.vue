@@ -15,7 +15,7 @@
     </p>
 
     <div class="row">
-      <div v-for="course in courses" class="col-md-2">
+      <div v-for="course in courses" class="col-lg-2">
         <div class="thumbnail search-thumbnail">
           <img v-show="!course.image" class="" src="/static/image/demo-course.jpg" />
           <img v-show="course.image" class="media-object" v-bind:src="course.image" />
@@ -35,6 +35,17 @@
             <h3 class="search-title">
               <a href="#" class="blue">{{course.name}}</a>
             </h3>
+
+            <!-- 讲师模块 -->
+            <div v-for="teacher in teachers.filter(t=>{return t.id===course.teacherId})" class="profile-activity clearfix">
+              <div>
+                <img v-show="!teacher.image" class="pull-left" src="/ace/assets/images/avatars/avatar5.png">
+                <img v-show="teacher.image" class="pull-left" v-bind:src="teacher.image">
+                <a class="user" href="#"> {{teacher.name}} </a>
+                <br>
+                {{teacher.position}}
+              </div>
+            </div>
             <p>
               <span class="blue bolder bigger-150">{{course.price}}&nbsp;<i class="fa fa-rmb"></i></span>&nbsp;
             </p>
@@ -42,7 +53,7 @@
             <p>
               <span class="badge badge-info">{{course.id}}</span>
               <span class="badge badge-info">排序：{{course.sort}}</span>
-              <span class="badge badge-info">时长：{{course.time | formatSecond}}</span>
+              <span class="badge badge-info">{{course.time | formatSecond}}</span>
             </p>
             <p>
               <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
@@ -615,5 +626,11 @@
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+
+@media (max-width: 1199px) {
+  .caption h3 {
+    font-size: 16px;
+  }
 }
 </style>
