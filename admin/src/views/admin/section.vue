@@ -61,47 +61,47 @@
 
     <!--新增或编辑小节功能表单-->
     <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog " role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">小节编辑</h4>
+            <h4 class="modal-title" >小节编辑</h4>
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
               <div class="form-group">
-                <label class="col-sm-2 control-label">标题</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">标题</label>
+                <div class="col-sm-9">
                   <input v-model="section.title" class="form-control">
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">课程</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">课程</label>
+                <div class="col-sm-9">
                   <p class="form-control-static">{{course.name}}</p>
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">大章</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">大章</label>
+                <div class="col-sm-9">
                   <p class="form-control-static">{{chapter.name}}</p>
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">视频</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">视频</label>
+                <div class="col-sm-9">
                   <input v-model="section.video" class="form-control">
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">时长</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">时长</label>
+                <div class="col-sm-9">
                   <input v-model="section.time" class="form-control">
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">收费</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">收费</label>
+                <div class="col-sm-9">
                   <!-- 选择收费与否下拉框 -->
                   <select v-model="section.charge" class="form-control">
                     <option v-for="o in SECTION_CHARGE" v-bind:value="o.key">{{o.value}}</option>
@@ -109,8 +109,8 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">顺序</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">顺序</label>
+                <div class="col-sm-9">
                   <input v-model="section.sort" class="form-control">
                 </div>
               </div>

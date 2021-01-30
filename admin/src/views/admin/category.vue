@@ -102,18 +102,18 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">父分类</label>
                 <div class="col-sm-10">
-                  <p class="form-control-static">{{active.name || "无"}}</p>
+                  <p class="form-control-static">{{active.name || "当前为顶级分类"}}</p>
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">名称</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">名称</label>
+                <div class="col-sm-9">
                   <input v-model="category.name" class="form-control">
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">顺序</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">顺序</label>
+                <div class="col-sm-9">
                   <input v-model="category.sort" class="form-control">
                 </div>
               </div>

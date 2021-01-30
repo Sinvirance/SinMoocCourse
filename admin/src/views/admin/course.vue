@@ -94,7 +94,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">概述</label>
                 <div class="col-sm-10">
-                  <textarea v-model="course.summary"  style="height: 50px;width: 470px;resize: none;" class="form-control"/>
+                  <textarea v-model="course.summary" class="form-control"/>
                 </div>
               </div>
               <div class="form-group">

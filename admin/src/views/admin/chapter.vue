@@ -71,14 +71,14 @@
           <div class="modal-body">
             <form class="form-horizontal">
               <div class="form-group">
-                <label class="col-sm-2 control-label">名称</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">名称</label>
+                <div class="col-sm-9">
                   <input v-model="chapter.name" class="form-control" placeholder="名称">
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label">课程</label>
-                <div class="col-sm-10">
+                <label class="col-md-2 control-label">课程</label>
+                <div class="col-sm-9">
                   <p class="form-control-static">{{course.name}}</p>
                 </div>
               </div>

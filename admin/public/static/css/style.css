@@ -2,3 +2,13 @@
 .table td {
   vertical-align: middle !important;
 }
+
+textarea {
+  height: 50px;
+  width: 470px;
+  resize: none;
+}
+
+.modal-title {
+  text-align: center;
+}
