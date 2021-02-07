@@ -86,16 +86,14 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-md-2 control-label">头像</label>
+                <label class="col-sm-2 control-label">头像</label>
                 <div class="col-sm-9">
-                  <button type="button" v-on:click="selectImage()" class="btn btn-white btn-default btn-round">
-                    <i class="ace-icon fa fa-upload"></i>
-                    上传头像
-                  </button>
-                  <input class="hidden" type="file" ref="file" v-on:change="uploadImage()" id="file-upload-input">
+                  <file v-bind:id="'image-upload'"
+                        v-bind:text="'上传头像'"
+                        v-bind:suffixs="['jpg', 'jpeg', 'png']"
+                        v-bind:after-upload="afterUpload"></file>
                   <div v-show="teacher.image" class="row">
-                    <div class="col-md-5">
-                      <!-- img-responsive: boostrap内置样式，图片自适应 -->
+                    <div class="col-md-8">
                       <img v-bind:src="teacher.image" class="img-responsive">
                     </div>
                   </div>
@@ -133,9 +131,10 @@
 
 <script>
   import Pagination from "../../components/pagination";
+  import File from "../../components/file";
 
   export default {
-    components: {Pagination},
+    components: {Pagination,File},
     name: "business-teacher",
     data: function() {
       return {
@@ -246,46 +245,11 @@
       /**
        * 表单方式上传头像图片
        */
-      uploadImage() {
+      afterUpload(resp) {
         let _this = this;
-        /* FormData 接口提供了一种表示表单数据的键值对 key/value 的构造方式 */
-        let formData = new window.FormData;
-        /* _this.$refs调用Dom节点元素值 */
-        let file = _this.$refs.file.files[0];
-
-        /* 判断文件格式 */
-        let suffixs = ["jpg", "jpeg", "png"];
-        let fileName = file.name;
-        let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toLowerCase();
-        let validateSuffix = false;
-        for (let i = 0; i < suffixs.length; i++) {
-          if (suffixs[i].toLowerCase() === suffix) {
-            validateSuffix = true;
-            break;
-          }
-        }
-        if (!validateSuffix) {
-          Toast.warning("文件格式不正确！只支持上传：" + suffixs.join(" "));
-          return;
-        }
-
-        /* FormData 接口的append() 方法 会添加一个新值到 FormData 对象内的一个已存在的键中，如果键不存在则会添加该键。当该键有值时，进行追加而不是覆盖 */
-        /* key：files 必须与后端名称一致*/
-        formData.append("file", file);
-        Loading.show();
-        _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload", formData).then((response) =>{
-          Loading.show();
-          let resp = response.data;
-          let image = resp.content;
-          console.log("头像地址：", image);
-          _this.teacher.image = image;
-        });
-      },
-
-      selectImage () {
-        $("#file-upload-input").trigger("click");
+        let image = resp.content;
+        _this.teacher.image = image;
       }
-
     }
   }
 </script>
