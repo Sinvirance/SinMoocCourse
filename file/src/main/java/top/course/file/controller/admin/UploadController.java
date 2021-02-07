@@ -48,6 +48,8 @@ public class UploadController {
         LOG.info(dest.getAbsolutePath());
 
         ResponseDto responseDto = new ResponseDto();
+        /* 将图片位置返回前端 */
+        responseDto.setContent("http://127.0.0.1:9000/file/f/teacher/" + key + "-" + filename);
         return responseDto;
     }
 
