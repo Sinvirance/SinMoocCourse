@@ -2,6 +2,7 @@ package top.course.file.controller.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,11 @@ public class UploadController {
 
     public static final String BUSINESS_NAME = "文件上传";
 
+    @Value("${file.path}")
+    private String FILE_PATH;
+
+    @Value("${file.domain}")
+    private String FILE_DOMAIN;
 
     /**
      * 讲师头像文件上传
@@ -42,14 +48,14 @@ public class UploadController {
 
         /* 保存文件 */
         String key = UUIDUtil.getShortUUID();
-        String fullPath = "D:\\Sinvirance\\WorkSpace\\JavaProject\\SinMooc\\static\\teacher\\" + key + "-" + filename;
+        String fullPath = FILE_PATH + "teacher/" + key + "-" + filename;
         File dest = new File(fullPath);
         file.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
 
         ResponseDto responseDto = new ResponseDto();
         /* 将图片位置返回前端 */
-        responseDto.setContent("http://127.0.0.1:9000/file/f/teacher/" + key + "-" + filename);
+        responseDto.setContent(FILE_DOMAIN + "f/teacher/" + key + "-" + filename);
         return responseDto;
     }
 

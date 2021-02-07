@@ -16,11 +16,11 @@
 
     <!--讲师数据分页显示列表-->
     <div class="row">
-      <div v-for="teacher in teachers" class="col-md-3 center">
+      <div v-for="teacher in teachers" class="col-md-2 center">
         <div>
           <span class="profile-picture">
-            <img v-show="!teacher.image" class="editable img-responsive editable-click editable-empty" src="/ace/assets/images/avatars/profile-pic.jpg" v-bind:title="teacher.intro"/>
-            <img v-show="teacher.image" class="media-object" v-bind:src="teacher.image" v-bind:title="teacher.intro"/>
+            <img v-show="!teacher.image" class="editable img-responsive editable-click editable-empty" src="/static/image/讲师头像/头像1.jpg" v-bind:title="teacher.intro"/>
+            <img v-show="teacher.image" class="editable img-responsive editable-click editable-empty" v-bind:src="teacher.image" v-bind:title="teacher.intro"/>
           </span>
 
           <div class="space-4"></div>
@@ -89,8 +89,12 @@
                 <label class="col-md-2 control-label">头像</label>
                 <div class="col-sm-9">
                   <input type="file" v-on:change="uploadImage()" id="file-upload-input">
-                  <!-- img-responsive: boostrap内置样式，图片自适应 -->
-                  <img v-bind:src="teacher.image" class="img-responsive">
+                  <div v-show="teacher.image" class="row">
+                    <div class="col-md-5">
+                      <!-- img-responsive: boostrap内置样式，图片自适应 -->
+                      <img v-bind:src="teacher.image" class="img-responsive">
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
