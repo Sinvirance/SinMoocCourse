@@ -88,7 +88,7 @@
               <div class="form-group">
                 <label class="col-md-2 control-label">头像</label>
                 <div class="col-sm-9">
-                  <input v-model="teacher.image" class="form-control">
+                  <input type="file" v-on:change="uploadImage()" id="file-upload-input">
                 </div>
               </div>
               <div class="form-group">
@@ -230,7 +230,26 @@
             }
           })
         })
-      }
+      },
+
+
+      /**
+       * 表单方式上传头像图片
+       */
+      uploadImage() {
+        let _this = this;
+        /* FormData 接口提供了一种表示表单数据的键值对 key/value 的构造方式 */
+        let formData = new window.FormData;
+        /* FormData 接口的append() 方法 会添加一个新值到 FormData 对象内的一个已存在的键中，如果键不存在则会添加该键。当该键有值时，进行追加而不是覆盖 */
+        /* key：files 必须与后端名称一致*/
+        formData.append("file", document.querySelector("#file-upload-input").files[0]);
+        Loading.show();
+        _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload", formData).then((response) =>{
+          Loading.show();
+          let resp = response.data;
+        });
+      },
+
     }
   }
 </script>
