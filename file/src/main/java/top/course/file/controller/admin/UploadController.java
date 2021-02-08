@@ -86,7 +86,8 @@ public class UploadController {
 
         ResponseDto responseDto = new ResponseDto();
         /* 将图片位置返回前端 */
-        responseDto.setContent(FILE_DOMAIN + path);
+        fileDto.setPath(FILE_DOMAIN + path);
+        responseDto.setContent(fileDto);
         return responseDto;
     }
 
