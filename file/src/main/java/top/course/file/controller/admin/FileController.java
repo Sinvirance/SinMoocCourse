@@ -2,12 +2,13 @@ package top.course.file.controller.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
-import top.course.server.dto.FileDto;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
 import top.course.server.service.FileService;
-import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
 
@@ -39,37 +40,6 @@ public class FileController {
         ResponseDto<PageDto> responseDto = new ResponseDto<>();
         fileService.list(pageDto);
         responseDto.setContent(pageDto);
-        return responseDto;
-    }
-
-    /**
-     * 保存: FileDto对象有id属性值时更新，无值时新增
-     * @param fileDto 数据传输对象
-     * @return 统一返回响应对象
-     */
-    @PostMapping("/save")
-    public ResponseDto<FileDto> save(@RequestBody FileDto fileDto) {
-        /* 保存校验 */
-        ValidatorUtil.require(fileDto.getPath(), "相对路径");
-        ValidatorUtil.length(fileDto.getPath(), "相对路径", 1, 100);
-        ValidatorUtil.length(fileDto.getName(), "文件名", 1, 100);
-        ValidatorUtil.length(fileDto.getSuffix(), "后缀", 1, 10);
-
-        ResponseDto<FileDto> responseDto = new ResponseDto<>();
-        fileService.save(fileDto);
-        responseDto.setContent(fileDto);
-        return responseDto;
-    }
-
-    /**
-     * 删除: 指定id的File对象
-     * @param id File对象id
-     * @return 统一返回响应对象
-     */
-    @DeleteMapping("/delete/{id}")
-    public ResponseDto<FileDto> delete(@PathVariable String id) {
-        ResponseDto<FileDto> responseDto = new ResponseDto<>();
-        fileService.delete(id);
         return responseDto;
     }
 }
