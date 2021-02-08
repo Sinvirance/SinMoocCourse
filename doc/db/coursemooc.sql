@@ -191,7 +191,7 @@ create table `file` (
     `name`       varchar(100) comment '文件名',
     `suffix`     varchar(10) comment '后缀',
     `size`       int comment '大小|字节B',
-    `use`        char(1) comment '用途|枚举[FileUseEnum]：COURSE("C", "讲师"), TEACHER("T", "课程")',
+    `use`        char(1) comment '用途|枚举[FileUseEnum]：COURSE("C", "课程"), TEACHER("T", "讲师")',
     `created_at` datetime(3) comment '创建时间',
     `updated_at` datetime(3) comment '修改时间',
     primary key (`id`),

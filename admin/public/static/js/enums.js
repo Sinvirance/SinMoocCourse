@@ -16,12 +16,12 @@ COURSE_STATUS = {
 　DRAFT: {key: "D", value: "草稿"}
 };
 FILE_USE = {
-　COURSE: {key: "C", value: "讲师"},
-　TEACHER: {key: "F", value: "课程"}
+　COURSE: {key: "C", value: "课程"},
+　TEACHER: {key: "F", value: "讲师"}
 };
 FILE_USE = {
-　COURSE: {key: "C", value: "讲师"},
-　TEACHER: {key: "F", value: "课程"}
+　COURSE: {key: "C", value: "课程"},
+　TEACHER: {key: "F", value: "讲师"}
 };
 
 SECTION_CHARGE_ARRAY = [
@@ -42,10 +42,10 @@ COURSE_STATUS_ARRAY = [
 　{key: "D", value: "草稿"}
 ];
 FILE_USE_ARRAY = [
-　{key: "C", value: "讲师"},
-　{key: "F", value: "课程"}
+　{key: "C", value: "课程"},
+　{key: "F", value: "讲师"}
 ];
 FILE_USE_ARRAY = [
-　{key: "C", value: "讲师"},
-　{key: "F", value: "课程"}
+　{key: "C", value: "课程"},
+　{key: "F", value: "讲师"}
 ];

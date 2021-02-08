@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import top.course.server.dto.FileDto;
 import top.course.server.dto.ResponseDto;
+import top.course.server.enums.FileUseEnum;
 import top.course.server.service.FileService;
 import top.course.server.util.UUIDUtil;
 
@@ -46,18 +47,28 @@ public class UploadController {
      * @return 统一返回响应对象
      */
     @PostMapping("upload")
-    public ResponseDto upload(@RequestParam MultipartFile file) throws IOException {
-        LOG.info("文件上传开始：{}", file);
+    public ResponseDto upload(@RequestParam MultipartFile file, String use) throws IOException {
+        LOG.info("文件上传开始");
         String fileName = file.getOriginalFilename();
         LOG.info(fileName);
         LOG.info(String.valueOf(file.getSize()));
 
         /* 保存文件 */
         String key = UUIDUtil.getShortUUID();
+        /* 获取前端传递的文件枚举类型 */
+        FileUseEnum fileUseEnum = FileUseEnum.getByCode(use);
+
+        /* 获取文件枚举类型名并根据名称创建文件夹当不存在时 */
+        String dir = fileUseEnum.name().toLowerCase();
+        File fullDir = new File(FILE_PATH + dir);
+        if (!fullDir.exists()) {
+            fullDir.mkdir();
+        }
+
         /* 文件格式 */
         String suffix = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-        /* 相对路径 */
-        String path = "teacher/" + key + "." + suffix;
+        /* 相对路径: File.separator 相当于文件夹分隔符 \ */
+        String path = dir + File.separator + key + "." + suffix;
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
         file.transferTo(dest);
@@ -70,7 +81,7 @@ public class UploadController {
         fileDto.setName(fileName);
         fileDto.setSize(Math.toIntExact(file.getSize()));
         fileDto.setSuffix(suffix);
-        fileDto.setUse("");
+        fileDto.setUse(use);
         fileService.save(fileDto);
 
         ResponseDto responseDto = new ResponseDto();
