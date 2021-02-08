@@ -15,9 +15,9 @@
     </p>
 
     <div class="row">
-      <div v-for="course in courses" class="col-lg-2">
+      <div v-for="course in courses" class="col-md-2">
         <div class="thumbnail search-thumbnail">
-          <img v-show="!course.image" class="" src="/static/image/demo-course.jpg" />
+          <img v-show="!course.image" class="" src="/static/image/课程封面/demo-course.jpg" />
           <img v-show="course.image" class="media-object" v-bind:src="course.image" />
           <div class="caption">
             <div class="clearfix">
@@ -111,6 +111,21 @@
                 </div>
               </div>
               <div class="form-group">
+                <label class="col-md-2 control-label">封面</label>
+                <div class="col-sm-9">
+                  <file v-bind:id="'image-upload'"
+                        v-bind:text="'上传封面'"
+                        v-bind:suffixs="['jpg', 'jpeg', 'png']"
+                        v-bind:use="FILE_USE.COURSE.key"
+                        v-bind:after-upload="afterUpload"></file>
+                  <div v-show="course.image" class="row">
+                    <div class="col-md-6">
+                      <img v-bind:src="course.image" class="img-responsive">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
                 <label class="col-md-2 control-label">概述</label>
                 <div class="col-sm-9">
                   <textarea v-model="course.summary" class="form-control"/>
@@ -126,12 +141,6 @@
                 <label class="col-md-2 control-label">价格(元)</label>
                 <div class="col-sm-9">
                   <input v-model="course.price" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-md-2 control-label">封面</label>
-                <div class="col-sm-9">
-                  <input v-model="course.image" class="form-control">
                 </div>
               </div>
               <div class="form-group">
@@ -263,9 +272,10 @@
 
 <script>
   import Pagination from "../../components/pagination";
+  import File from "../../components/file";
 
   export default {
-    components: {Pagination},
+    components: {Pagination, File},
     name: "business-course",
     data: function() {
       return {
@@ -274,6 +284,7 @@
         COURSE_LEVEL: COURSE_LEVEL,
         COURSE_CHARGE: COURSE_CHARGE,
         COURSE_STATUS: COURSE_STATUS,
+        FILE_USE: FILE_USE,
         categorys: [],
         teachers: [],
         tree: {},
@@ -609,6 +620,15 @@
           _this.teachers = resp.content;
         })
       },
+
+      /**
+       * 表单方式上传封面图片
+       */
+      afterUpload(resp) {
+        let _this = this;
+        let image = resp.content.path;
+        _this.course.image = image;
+      }
 
     }
   }
