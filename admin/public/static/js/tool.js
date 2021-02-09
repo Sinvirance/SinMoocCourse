@@ -23,6 +23,7 @@ Tool = {
     return !this.isEmpty();
   },
 
+
   /**
    * 长度校验
    * @param str 传递进来的字符串
@@ -33,6 +34,7 @@ Tool = {
   isLength: function (str, min, max) {
     return $.trim(str).length >= min && $.trim(str).length <= max;
   },
+
 
   /**
    * 时间格式化，date为空时取当前时间
@@ -60,6 +62,25 @@ Tool = {
       }
     }
     return format;
+  },
+
+
+  /**
+   * 移除对象数组中的对象
+   * @param array
+   * @param obj
+   * @returns {number}
+   */
+  removeObj: function (array, obj) {
+    let index = -1;
+    for (let i = 0; i < array.length; i++) {
+      if (array[i] === obj) {
+        array.splice(i, 1);
+        index = i;
+        break;
+      }
+    }
+    return index;
   }
 
 
