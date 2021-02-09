@@ -46,11 +46,15 @@ public class UploadController {
      * @return 统一返回响应对象
      */
     @PostMapping("upload")
-    public ResponseDto upload(@RequestParam MultipartFile file, String use) throws IOException {
-        LOG.info("文件上传开始");
-        String fileName = file.getOriginalFilename();
-        LOG.info(fileName);
-        LOG.info(String.valueOf(file.getSize()));
+    public ResponseDto upload(@RequestParam MultipartFile shard,
+                              String use,
+                              String name,
+                              String suffix,
+                              Integer size,
+                              Integer shardIndex,
+                              Integer shardSize,
+                              Integer shardTotal) throws IOException {
+        LOG.info("上传文件开始");
 
         /* 保存文件 */
         String key = UUIDUtil.getShortUUID();
@@ -64,23 +68,25 @@ public class UploadController {
             fullDir.mkdir();
         }
 
-        /* 文件格式 */
-        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
         /* 相对路径: File.separator 相当于文件夹分隔符 \ */
         String path = dir + File.separator + key + "." + suffix;
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
-        file.transferTo(dest);
+        shard.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
 
         /* 保存文件记录 */
         LOG.info("保存文件记录开始");
         FileDto fileDto = new FileDto();
         fileDto.setPath(path);
-        fileDto.setName(fileName);
-        fileDto.setSize(Math.toIntExact(file.getSize()));
+        fileDto.setName(name);
+        fileDto.setSize(size);
         fileDto.setSuffix(suffix);
         fileDto.setUse(use);
+        fileDto.setShardIndex(shardIndex);
+        fileDto.setShardSize(shardSize);
+        fileDto.setShardTotal(shardTotal);
+        fileDto.setKey(key);
         fileService.save(fileDto);
 
         ResponseDto responseDto = new ResponseDto();

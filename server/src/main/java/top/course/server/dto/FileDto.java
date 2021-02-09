@@ -1,13 +1,14 @@
 package top.course.server.dto;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 /**
  * @Author: Sinvirance
- * @Date: 2021/xx/xx xx:xx
+ * @Date: 2021/02/10 03:38
  * @Description: File数据传输对象
  */
 
@@ -41,23 +42,34 @@ public class FileDto {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
 
+    /* 分片索引 */
+    private Integer shardIndex;
+
+    /* 分片大小 */
+    private Integer shardSize;
+
+    /* 分片总数 */
+    private Integer shardTotal;
+
+    /* 分片文件唯一标识 */
+    private String key;
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", path=").append(path);
-        sb.append(", name=").append(name);
-        sb.append(", suffix=").append(suffix);
+        final StringBuffer sb = new StringBuffer("FileDto{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", path='").append(path).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", suffix='").append(suffix).append('\'');
         sb.append(", size=").append(size);
-        sb.append(", use=").append(use);
+        sb.append(", use='").append(use).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
-        sb.append("]");
+        sb.append(", shardIndex=").append(shardIndex);
+        sb.append(", shardSize=").append(shardSize);
+        sb.append(", shardTotal=").append(shardTotal);
+        sb.append(", key='").append(key).append('\'');
+        sb.append('}');
         return sb.toString();
     }
-
 }
