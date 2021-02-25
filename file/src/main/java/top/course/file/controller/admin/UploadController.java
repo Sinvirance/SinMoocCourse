@@ -9,7 +9,6 @@ import top.course.server.dto.FileDto;
 import top.course.server.dto.ResponseDto;
 import top.course.server.enums.FileUseEnum;
 import top.course.server.service.FileService;
-import top.course.server.util.UUIDUtil;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -42,7 +41,6 @@ public class UploadController {
 
     /**
      * 讲师头像文件上传
-     * @param file 上传的文件
      * @return 统一返回响应对象
      */
     @PostMapping("upload")
@@ -53,11 +51,11 @@ public class UploadController {
                               Integer size,
                               Integer shardIndex,
                               Integer shardSize,
-                              Integer shardTotal) throws IOException {
+                              Integer shardTotal,
+                              String key) throws IOException {
         LOG.info("上传文件开始");
 
         /* 保存文件 */
-        String key = UUIDUtil.getShortUUID();
         /* 获取前端传递的文件枚举类型 */
         FileUseEnum fileUseEnum = FileUseEnum.getByCode(use);
 
@@ -78,6 +76,7 @@ public class UploadController {
         /* 保存文件记录 */
         LOG.info("保存文件记录开始");
         FileDto fileDto = new FileDto();
+        LOG.info(path+":path");
         fileDto.setPath(path);
         fileDto.setName(name);
         fileDto.setSize(size);

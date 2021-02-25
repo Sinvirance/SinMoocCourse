@@ -40,7 +40,19 @@ export default {
       /* _this.$refs调用Dom节点元素值 */
       let file = _this.$refs.file.files[0];
 
-      /* 判断文件格式 */
+      console.log(file);
+      // md5 是信息摘要算法，相同文件只会生成一个key
+      // 生成文件标识，标识多次上传分片的是不是同一个文件
+      /* 生成16进值的MD5 */
+      let key = hex_md5(file);
+      /* 用于缩短md5密钥的长度 */
+      /* 转化为10进制的md5 */
+      let key10 = parseInt(key, 16);
+      /* 转化为62进制的md5 大小写字母52个+10个阿拉伯数字 */
+      let key62 = Tool._10to62(key10);
+      console.log(key62 + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
+
+    /* 判断文件格式 */
       let suffixs = _this.suffixs;
       let fileName = file.name;
       let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toLowerCase();
@@ -86,6 +98,7 @@ export default {
       formData.append('name', file.name);
       formData.append('suffix', suffix);
       formData.append('size', size);
+      formData.append('key', key62);
       Loading.show();
       _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload", formData).then((response) =>{
         Loading.hide();
