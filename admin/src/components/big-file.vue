@@ -50,7 +50,6 @@ export default {
       let key10 = parseInt(key, 16);
       /* 转化为62进制的md5 大小写字母52个+10个阿拉伯数字 */
       let key62 = Tool._10to62(key10);
-      console.log(key62 + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
 
     /* 判断文件格式 */
       let suffixs = _this.suffixs;
@@ -72,10 +71,10 @@ export default {
       /* 对于大文件进行分片 */
       /* 每个分片大小 */
       let shardSize = 20 * 1024 * 1024;
-      /* 分片初始索引 */
-      let shardIndex = 0;
+      /* 分片初始索引, 1 表示第一个分片 */
+      let shardIndex = 2;
       /* 当前分片内存中起始位置 */
-      let start = shardIndex * shardSize;
+      let start = (shardIndex - 1) * shardSize;
       /* 当前分片内存结束位置 */
       let end = Math.min(file.size, start + shardSize);
       /* file.slice: 截取文件 */

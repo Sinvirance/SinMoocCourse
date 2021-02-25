@@ -3,7 +3,7 @@ package top.course.server.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 import top.course.server.domain.File;
 import top.course.server.domain.FileExample;
 import top.course.server.dto.FileDto;
@@ -13,8 +13,8 @@ import top.course.server.util.CopyUtil;
 import top.course.server.util.UUIDUtil;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Sinvirance
@@ -43,15 +43,17 @@ public class FileService {
     }
 
     /**
-     * 保存: FileDto对象有id属性值时更新，无值时新增
+     * 保存: FileDto对象文件标识key存在属性值时更新，无值时新增
      * @param fileDto 数据传输对象
      */
     public void save(FileDto fileDto) {
         File file = CopyUtil.copy(fileDto, File.class);
-        if (StringUtils.isEmpty(fileDto.getId())) {
+        File fileDb = selectByKey(fileDto.getKey());
+        if (fileDb == null) {
             this.insert(file);
         } else {
-            this.update(file);
+            fileDb.setShardIndex(fileDto.getShardIndex());
+            this.update(fileDb);
         }
     }
 
@@ -82,5 +84,21 @@ public class FileService {
      */
     public void delete(String id) {
         fileMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 查询: 根据File表标识key获取File对象
+     * @param key 文件标识key
+     * @return File对象
+     */
+    public File selectByKey(String key) {
+        FileExample example = new FileExample();
+        example.createCriteria().andKeyEqualTo(key);
+        List<File> fileList = fileMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(fileList)) {
+            return null;
+        } else {
+            return fileList.get(0);
+        }
     }
 }
