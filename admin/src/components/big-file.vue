@@ -72,7 +72,7 @@ export default {
       /* 每个分片大小 */
       let shardSize = 20 * 1024 * 1024;
       /* 分片初始索引, 1 表示第一个分片 */
-      let shardIndex = 2;
+      let shardIndex = 1;
       /* 当前分片内存中起始位置 */
       let start = (shardIndex - 1) * shardSize;
       /* 当前分片内存结束位置 */
@@ -113,7 +113,6 @@ export default {
       fileReader.onload = function(e) {
         // target 事件属性可返回事件的目标节点（触发该事件的节点），如生成事件的元素、文档或窗口。
         let base64 = e.target.result;
-        console.log("base64:", base64);
         let param = {
           'shard': base64,
           'shardIndex': shardIndex,

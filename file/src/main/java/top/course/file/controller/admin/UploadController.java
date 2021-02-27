@@ -67,7 +67,11 @@ public class UploadController {
         }
 
         /* 相对路径: File.separator 相当于文件夹分隔符 \ */
-        String path = dir + File.separator + key + "." + suffix;
+        String path = new StringBuffer(dir).
+                append(File.separator).
+                append(key).append(".").
+                append(fileDto.getShardIndex()).
+                append(suffix).append(".").toString();
         String fullPath = FILE_PATH + path;
         File dest = new File(fullPath);
         shard.transferTo(dest);
