@@ -102,8 +102,7 @@ public class UploadController {
 
 
     /**
-     * 测试：已有的分片追加合并
-     * @return 统一返回响应对象
+     * 合并分片成文件并将分片删除
      */
     public void merge(FileDto fileDto) throws Exception {
         LOG.info("合并分片开始");
@@ -136,5 +135,16 @@ public class UploadController {
             }
         }
         LOG.info("合并分片结束");
+
+        System.gc();
+
+        LOG.info("删除分片开始");
+        for (int i = 0; i < shardTotal; i++) {
+            String filePath = FILE_PATH + path + "." + (i + 1);
+            File file = new File(filePath);
+            boolean result = file.delete();
+            LOG.info("删除{},{}", filePath, result ? "成功" : "失败");
+        }
+        LOG.info("删除分片结束");
     }
 }
