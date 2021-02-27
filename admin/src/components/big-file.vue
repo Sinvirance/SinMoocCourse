@@ -85,27 +85,57 @@ export default {
       let shardTotal = Math.ceil(size / shardSize); //总片数
 
 
-      /* FormData 接口的append() 方法 会添加一个新值到 FormData 对象内的一个已存在的键中，如果键不存在则会添加该键。当该键有值时，进行追加而不是覆盖 */
-      /* key：files 必须与后端名称一致*/
-      formData.append("shard", fileShard);
-      /* 将枚举类型传递给后端 */
-      formData.append("use", _this.use)
-      formData.append('shard', fileShard);
-      formData.append('shardIndex', shardIndex);
-      formData.append('shardSize', shardSize);
-      formData.append('shardTotal', shardTotal);
-      formData.append('name', file.name);
-      formData.append('suffix', suffix);
-      formData.append('size', size);
-      formData.append('key', key62);
-      Loading.show();
-      _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload", formData).then((response) =>{
-        Loading.hide();
-        let resp = response.data;
-        console.log("文件上传成功：", resp);
-        _this.afterUpload(resp);
-        $("#" + _this.inputId + "-input").val("");
-      });
+      // /* FormData 接口的append() 方法 会添加一个新值到 FormData 对象内的一个已存在的键中，如果键不存在则会添加该键。当该键有值时，进行追加而不是覆盖 */
+      // /* key：files 必须与后端名称一致*/
+      // formData.append("shard", fileShard);
+      // /* 将枚举类型传递给后端 */
+      // formData.append("use", _this.use)
+      // formData.append('shard', fileShard);
+      // formData.append('shardIndex', shardIndex);
+      // formData.append('shardSize', shardSize);
+      // formData.append('shardTotal', shardTotal);
+      // formData.append('name', file.name);
+      // formData.append('suffix', suffix);
+      // formData.append('size', size);
+      // formData.append('key', key62);
+      // Loading.show();
+      // _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload", formData).then((response) =>{
+      //   Loading.hide();
+      //   let resp = response.data;
+      //   console.log("文件上传成功：", resp);
+      //   _this.afterUpload(resp);
+      //   $("#" + _this.inputId + "-input").val("");
+      // });
+
+      /* 将文件转为base64进行传输 */
+      let fileReader = new FileReader();
+      /* 文件上传监听事件 */
+      fileReader.onload = function(e) {
+        // target 事件属性可返回事件的目标节点（触发该事件的节点），如生成事件的元素、文档或窗口。
+        let base64 = e.target.result;
+        console.log("base64:", base64);
+        let param = {
+          'shard': base64,
+          'shardIndex': shardIndex,
+          'shardSize': shardSize,
+          'shardTotal': shardTotal,
+          'use': _this.use,
+          'name': file.name,
+          'suffix': suffix,
+          'size': file.size,
+          'key': key62
+        };
+
+        Loading.show();
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response)=>{
+          Loading.hide();
+          let resp = response.data;
+          console.log("上传文件成功：", resp);
+          _this.afterUpload(resp);
+          $("#" + _this.inputId + "-input").val("");
+        });
+      };
+      fileReader.readAsDataURL(fileShard);
     },
 
     selectFile() {

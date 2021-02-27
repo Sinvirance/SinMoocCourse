@@ -9,6 +9,7 @@ import top.course.server.dto.FileDto;
 import top.course.server.dto.ResponseDto;
 import top.course.server.enums.FileUseEnum;
 import top.course.server.service.FileService;
+import top.course.server.util.Base64ToMultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -44,16 +45,15 @@ public class UploadController {
      * @return 统一返回响应对象
      */
     @PostMapping("upload")
-    public ResponseDto upload(@RequestParam MultipartFile shard,
-                              String use,
-                              String name,
-                              String suffix,
-                              Integer size,
-                              Integer shardIndex,
-                              Integer shardSize,
-                              Integer shardTotal,
-                              String key) throws IOException {
+    public ResponseDto upload(@RequestBody FileDto fileDto) throws IOException {
         LOG.info("上传文件开始");
+
+        String use = fileDto.getUse();
+        String key = fileDto.getKey();
+        String suffix = fileDto.getSuffix();
+        String shardBase64 = fileDto.getShard();
+        MultipartFile shard = Base64ToMultipartFile.base64ToMultipart(shardBase64);
+
 
         /* 保存文件 */
         /* 获取前端传递的文件枚举类型 */
@@ -75,17 +75,8 @@ public class UploadController {
 
         /* 保存文件记录 */
         LOG.info("保存文件记录开始");
-        FileDto fileDto = new FileDto();
         LOG.info(path+":path");
         fileDto.setPath(path);
-        fileDto.setName(name);
-        fileDto.setSize(size);
-        fileDto.setSuffix(suffix);
-        fileDto.setUse(use);
-        fileDto.setShardIndex(shardIndex);
-        fileDto.setShardSize(shardSize);
-        fileDto.setShardTotal(shardTotal);
-        fileDto.setKey(key);
         fileService.save(fileDto);
 
         ResponseDto responseDto = new ResponseDto();

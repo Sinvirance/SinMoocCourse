@@ -54,6 +54,9 @@ public class FileDto {
     /* 分片文件唯一标识 */
     private String key;
 
+    /* base64 */
+    private String shard;
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("FileDto{");
@@ -69,6 +72,7 @@ public class FileDto {
         sb.append(", shardSize=").append(shardSize);
         sb.append(", shardTotal=").append(shardTotal);
         sb.append(", key='").append(key).append('\'');
+        sb.append(", shard='").append(shard).append('\'');
         sb.append('}');
         return sb.toString();
     }
