@@ -29,14 +29,18 @@ export default {
       default: null
     },
   },
+
   data: function () {
     return {}
   },
+
   methods: {
+
+    /**
+     * 文件上传
+     */
     uploadFile() {
       let _this = this;
-      /* FormData 接口提供了一种表示表单数据的键值对 key/value 的构造方式 */
-      let formData = new window.FormData;
       /* _this.$refs调用Dom节点元素值 */
       let file = _this.$refs.file.files[0];
 
@@ -51,7 +55,7 @@ export default {
       /* 转化为62进制的md5 大小写字母52个+10个阿拉伯数字 */
       let key62 = Tool._10to62(key10);
 
-    /* 判断文件格式 */
+      /* 判断文件格式 */
       let suffixs = _this.suffixs;
       let fileName = file.name;
       let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toLowerCase();
@@ -73,71 +77,74 @@ export default {
       let shardSize = 20 * 1024 * 1024;
       /* 分片初始索引, 1 表示第一个分片 */
       let shardIndex = 1;
-      /* 当前分片内存中起始位置 */
-      let start = (shardIndex - 1) * shardSize;
-      /* 当前分片内存结束位置 */
-      let end = Math.min(file.size, start + shardSize);
-      /* file.slice: 截取文件 */
-      let fileShard = file.slice(start, end);
       /* 文件大小 */
       let size = file.size;
       /* 分片页数 */
       let shardTotal = Math.ceil(size / shardSize); //总片数
 
+      let param = {
+        'shardIndex': shardIndex,
+        'shardSize': shardSize,
+        'shardTotal': shardTotal,
+        'use': _this.use,
+        'name': file.name,
+        'suffix': suffix,
+        'size': file.size,
+        'key': key62
+      };
 
-      // /* FormData 接口的append() 方法 会添加一个新值到 FormData 对象内的一个已存在的键中，如果键不存在则会添加该键。当该键有值时，进行追加而不是覆盖 */
-      // /* key：files 必须与后端名称一致*/
-      // formData.append("shard", fileShard);
-      // /* 将枚举类型传递给后端 */
-      // formData.append("use", _this.use)
-      // formData.append('shard', fileShard);
-      // formData.append('shardIndex', shardIndex);
-      // formData.append('shardSize', shardSize);
-      // formData.append('shardTotal', shardTotal);
-      // formData.append('name', file.name);
-      // formData.append('suffix', suffix);
-      // formData.append('size', size);
-      // formData.append('key', key62);
-      // Loading.show();
-      // _this.$ajax.post(process.env.VUE_APP_SERVER + "/file/admin/upload", formData).then((response) =>{
-      //   Loading.hide();
-      //   let resp = response.data;
-      //   console.log("文件上传成功：", resp);
-      //   _this.afterUpload(resp);
-      //   $("#" + _this.inputId + "-input").val("");
-      // });
+      _this.upload(param);
+    },
 
+    /**
+     * 文件上传具体逻辑
+     * @param param 文件各个参数
+     */
+    upload: function (param) {
+      let _this = this;
+      let shardIndex = param.shardIndex;
+      let shardTotal = param.shardTotal;
+      let shardSize = param.shardSize;
+      let fileShard = _this.getFileShard(shardIndex, shardSize);
       /* 将文件转为base64进行传输 */
       let fileReader = new FileReader();
       /* 文件上传监听事件 */
       fileReader.onload = function(e) {
         // target 事件属性可返回事件的目标节点（触发该事件的节点），如生成事件的元素、文档或窗口。
+        /* 获得该分片文件的Base64文件 */
         let base64 = e.target.result;
-        let param = {
-          'shard': base64,
-          'shardIndex': shardIndex,
-          'shardSize': shardSize,
-          'shardTotal': shardTotal,
-          'use': _this.use,
-          'name': file.name,
-          'suffix': suffix,
-          'size': file.size,
-          'key': key62
-        };
+        param.shard = base64;
 
         Loading.show();
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response)=>{
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
           Loading.hide();
           let resp = response.data;
           console.log("上传文件成功：", resp);
-          _this.afterUpload(resp);
+          /* 判断文件分片是否上传完毕，否则继续上传 */
+          if (shardIndex < shardTotal) {
+            // 上传下一个分片
+            param.shardIndex = param.shardIndex + 1;
+            _this.upload(param);
+          } else {
+            _this.afterUpload(resp);
+          }
           $("#" + _this.inputId + "-input").val("");
         });
       };
       fileReader.readAsDataURL(fileShard);
     },
 
-    selectFile() {
+
+    getFileShard: function (shardIndex, shardSize) {
+      let _this = this;
+      let file = _this.$refs.file.files[0];
+      let start = (shardIndex - 1) * shardSize;	//当前分片起始位置
+      let end = Math.min(file.size, start + shardSize); //当前分片结束位置
+      let fileShard = file.slice(start, end); //从文件中截取当前的分片数据
+      return fileShard;
+    },
+
+    selectFile () {
       let _this = this;
       $("#" + _this.inputId + "-input").trigger("click");
     }
