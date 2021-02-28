@@ -74,7 +74,7 @@ export default {
 
       /* 对于大文件进行分片 */
       /* 每个分片大小 */
-      let shardSize = 20 * 1024 * 1024;
+      let shardSize = 10 * 1024 * 1024;
       /* 分片初始索引, 1 表示第一个分片 */
       let shardIndex = 1;
       /* 文件大小 */
@@ -93,14 +93,43 @@ export default {
         'key': key62
       };
 
-      _this.upload(param);
+      _this.check(param);
     },
 
+
     /**
-     * 文件上传具体逻辑
+     * 检查文件状态，是否已上传过？传到第几个分片？
+     */
+    check (param) {
+      let _this = this;
+      _this.$ajax.get(process.env.VUE_APP_SERVER + '/file/admin/check/' + param.key).then((response)=>{
+        let resp = response.data;
+        if (resp.success) {
+          let obj = resp.content;
+          if (!obj) {
+            param.shardIndex = 1;
+            console.log("没有找到文件记录，从分片1开始上传");
+            _this.upload(param);
+          } else {
+            param.shardIndex = obj.shardIndex + 1;
+
+            console.log("找到文件记录，从分片" + param.shardIndex + "开始上传");
+            _this.upload(param);
+          }
+        } else {
+          Toast.warning("文件上传失败");
+          /* 将表单的inputId清空 */
+          $("#" + _this.inputId + "-input").val("");
+        }
+      })
+    },
+
+
+    /**
+     * 将文件数据转成Base64传输
      * @param param 文件各个参数
      */
-    upload: function (param) {
+    upload (param) {
       let _this = this;
       let shardIndex = param.shardIndex;
       let shardTotal = param.shardTotal;
@@ -135,7 +164,7 @@ export default {
     },
 
 
-    getFileShard: function (shardIndex, shardSize) {
+    getFileShard (shardIndex, shardSize) {
       let _this = this;
       let file = _this.$refs.file.files[0];
       let start = (shardIndex - 1) * shardSize;	//当前分片起始位置

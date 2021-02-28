@@ -147,4 +147,20 @@ public class UploadController {
         }
         LOG.info("删除分片结束");
     }
+
+
+    /**
+     * 根据文件标识检查分片是否被上传
+     * @param key 文件标识key
+     * @return 统一返回响应对象
+     */
+    @GetMapping("/check/{key}")
+    public ResponseDto check(@PathVariable String key) {
+        LOG.info("检查上传分片开始：{}", key);
+        ResponseDto responseDto = new ResponseDto();
+        FileDto fileDto = fileService.findByKey(key);
+        responseDto.setContent(fileDto);
+        return responseDto;
+    }
+
 }

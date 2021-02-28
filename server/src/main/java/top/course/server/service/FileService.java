@@ -101,4 +101,15 @@ public class FileService {
             return fileList.get(0);
         }
     }
+
+
+    /**
+     * 查询: 根据文件标识获得对应文件记录
+     * @param key 文件标识key
+     * @return File传输对象
+     */
+    public FileDto findByKey(String key) {
+        return CopyUtil.copy(selectByKey(key), FileDto.class);
+    }
+
 }
