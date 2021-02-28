@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h3 class="lighter">
+    <h4 class="lighter">
       <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
       <router-link to="/business/course" class="pink"> {{course.name}} </router-link>
-    </h3>
+    </h4>
     <hr>
     <!--新增和刷新按钮-->
     <p>

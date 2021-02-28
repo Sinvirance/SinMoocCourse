@@ -110,7 +110,11 @@ export default {
             param.shardIndex = 1;
             console.log("没有找到文件记录，从分片1开始上传");
             _this.upload(param);
-          } else {
+          } else if (obj.shardIndex === obj.shardTotal) {
+            Toast.success("文件极速秒传成功！");
+            _this.afterUpload(resp);
+            $("#" + _this.inputId + "-input").val("");
+          }else {
             param.shardIndex = obj.shardIndex + 1;
 
             console.log("找到文件记录，从分片" + param.shardIndex + "开始上传");
@@ -137,6 +141,8 @@ export default {
       let fileShard = _this.getFileShard(shardIndex, shardSize);
       /* 将文件转为base64进行传输 */
       let fileReader = new FileReader();
+
+      Progress.show(parseInt(100 * (shardIndex - 1) / shardTotal));
       /* 文件上传监听事件 */
       fileReader.onload = function(e) {
         // target 事件属性可返回事件的目标节点（触发该事件的节点），如生成事件的元素、文档或窗口。
@@ -144,17 +150,19 @@ export default {
         let base64 = e.target.result;
         param.shard = base64;
 
-        Loading.show();
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
           Loading.hide();
           let resp = response.data;
           console.log("上传文件成功：", resp);
+
+          Progress.show(parseInt(100 * shardIndex / shardTotal));
           /* 判断文件分片是否上传完毕，否则继续上传 */
           if (shardIndex < shardTotal) {
             // 上传下一个分片
             param.shardIndex = param.shardIndex + 1;
             _this.upload(param);
           } else {
+            Progress.hide();
             _this.afterUpload(resp);
             $("#" + _this.inputId + "-input").val("");
           }

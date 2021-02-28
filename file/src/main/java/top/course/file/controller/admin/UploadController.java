@@ -93,7 +93,7 @@ public class UploadController {
         fileDto.setPath(FILE_DOMAIN + path);
         responseDto.setContent(fileDto);
 
-        if (fileDto.getShardIndex() == fileDto.getShardTotal()) {
+        if (fileDto.getShardIndex().equals(fileDto.getShardTotal())) {
             this.merge(fileDto);
         }
 
@@ -137,6 +137,7 @@ public class UploadController {
         LOG.info("合并分片结束");
 
         System.gc();
+        Thread.sleep(100);
 
         LOG.info("删除分片开始");
         for (int i = 0; i < shardTotal; i++) {
@@ -159,6 +160,9 @@ public class UploadController {
         LOG.info("检查上传分片开始：{}", key);
         ResponseDto responseDto = new ResponseDto();
         FileDto fileDto = fileService.findByKey(key);
+        if (fileDto != null) {
+            fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
+        }
         responseDto.setContent(fileDto);
         return responseDto;
     }
