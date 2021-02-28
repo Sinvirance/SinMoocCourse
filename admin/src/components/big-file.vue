@@ -48,7 +48,7 @@ export default {
       // md5 是信息摘要算法，相同文件只会生成一个key
       // 生成文件标识，标识多次上传分片的是不是同一个文件
       /* 生成16进值的MD5 */
-      let key = hex_md5(file);
+      let key = hex_md5(file.name + file.size + file.type);
       /* 用于缩短md5密钥的长度 */
       /* 转化为10进制的md5 */
       let key10 = parseInt(key, 16);
