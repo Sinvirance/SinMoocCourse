@@ -150,7 +150,7 @@ export default {
         let base64 = e.target.result;
         param.shard = base64;
 
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/oss-append', param).then((response) => {
           Loading.hide();
           let resp = response.data;
           console.log("上传文件成功：", resp);
