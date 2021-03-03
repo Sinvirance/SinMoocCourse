@@ -120,6 +120,7 @@ CREATE TABLE `section` (
 insert into `section` (id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at)
 VALUES ('00000001','测试小节01', '00000001','00000000','', 500, 'F', 1, now(), now());
 select id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at from section;
+alter table `section` add column (`vod` CHAR(32) COMMENT 'VOD|阿里云VOD');
 
 
 ## 分类表
