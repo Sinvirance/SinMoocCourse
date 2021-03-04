@@ -90,11 +90,11 @@
               <div class="form-group">
                 <label class="col-md-2 control-label">视频</label>
                 <div class="col-sm-9">
-                  <big-file v-bind:input-id="'video-upload'"
-                        v-bind:text="'上传视频'"
-                        v-bind:suffixs="['mp4']"
-                        v-bind:use="FILE_USE.COURSE.key"
-                        v-bind:after-upload="afterUpload"></big-file>
+                  <VOD v-bind:input-id="'video-upload'"
+                       v-bind:text="'上传VOD'"
+                       v-bind:suffixs="['mp4']"
+                       v-bind:use="FILE_USE.COURSE.key"
+                       v-bind:after-upload="afterUpload"></VOD>
                   <div v-show="section.video" class="row">
                     <div class="col-md-9">
                       <video v-bind:src="section.video" id="video" controls="controls"></video>
@@ -149,10 +149,11 @@
 
 <script>
   import Pagination from "../../components/pagination";
-  import BigFile from "../../components/big-file";
+  // import BigFile from "../../components/big-file";
+  import VOD from "../../components/vod";
 
   export default {
-    components: {Pagination,BigFile},
+    components: {Pagination,VOD},
     name: "business-section",
     data: function() {
       return {
@@ -292,7 +293,11 @@
       getTime() {
         let _this = this;
         let ele = document.getElementById("video");
-        _this.section.time = parseInt(ele.duration, 10);
+        /* 增加延时解决渲染时间不足够导致时长获取为NAN */
+        setTimeout(function () {
+          let ele = document.getElementById("video");
+          _this.section.time = parseInt(ele.duration, 10);
+        }, 300);
       },
     }
   }
