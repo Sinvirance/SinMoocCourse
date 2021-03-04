@@ -62,7 +62,7 @@ public class OssController {
      */
     @PostMapping("oss-append")
     public ResponseDto fileUpload(@RequestBody FileDto fileDto) throws IOException {
-        LOG.info("文件上传开始");
+        LOG.info("OSS文件上传开始");
         String use = fileDto.getUse();
         String key = fileDto.getKey();
         String suffix = fileDto.getSuffix();
@@ -103,7 +103,7 @@ public class OssController {
         ossClient.shutdown();
 
         /* 保存文件记录 */
-        LOG.info("保存文件记录开始");
+        LOG.info("OSS保存文件记录开始");
         fileDto.setPath(path);
         fileService.save(fileDto);
 
@@ -123,7 +123,7 @@ public class OssController {
      */
     @PostMapping("/oss-simple")
     public ResponseDto fileUpload(@RequestParam MultipartFile file, String use) throws Exception {
-        LOG.info("上传文件开始");
+        LOG.info("OSS上传文件开始");
         FileUseEnum useEnum = FileUseEnum.getByCode(use);
         String key = UUIDUtil.getShortUUID();
         String fileName = file.getOriginalFilename();
@@ -148,5 +148,24 @@ public class OssController {
 
         return responseDto;
     }
+
+
+    /**
+     * 根据文件标识检查分片是否被上传
+     * @param key 文件标识key
+     * @return 统一返回响应对象
+     */
+    @GetMapping("/oss-check/{key}")
+    public ResponseDto check(@PathVariable String key) {
+        LOG.info("OSS检查上传分片开始：{}", key);
+        ResponseDto responseDto = new ResponseDto();
+        FileDto fileDto = fileService.findByKey(key);
+        if (fileDto != null) {
+            fileDto.setPath(ossDomain + fileDto.getPath());
+        }
+        responseDto.setContent(fileDto);
+        return responseDto;
+    }
+
 
 }

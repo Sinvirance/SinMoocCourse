@@ -27,8 +27,11 @@ export default {
     shardSize: {
       default: 50 * 1024
     },
-    url: {
+    uploadUrl: {
       default: "oss-append"
+    },
+    checkUrl: {
+      default: "oss-check/"
     },
     afterUpload: {
       type: Function,
@@ -108,7 +111,7 @@ export default {
      */
     check (param) {
       let _this = this;
-      _this.$ajax.get(process.env.VUE_APP_SERVER + '/file/admin/check/' + param.key).then((response)=>{
+      _this.$ajax.get(process.env.VUE_APP_SERVER + '/file/admin/' + _this.checkUrl + param.key).then((response)=>{
         let resp = response.data;
         if (resp.success) {
           let obj = resp.content;
@@ -156,7 +159,7 @@ export default {
         let base64 = e.target.result;
         param.shard = base64;
 
-        _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/' + _this.url, param).then((response) => {
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/' + _this.uploadUrl, param).then((response) => {
           Loading.hide();
           let resp = response.data;
           console.log("上传文件成功：", resp);
