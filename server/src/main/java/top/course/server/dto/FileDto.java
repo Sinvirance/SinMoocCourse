@@ -57,6 +57,9 @@ public class FileDto {
     /* base64 */
     private String shard;
 
+    /* 阿里云vod */
+    private String vod;
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("FileDto{");
@@ -73,6 +76,7 @@ public class FileDto {
         sb.append(", shardTotal=").append(shardTotal);
         sb.append(", key='").append(key).append('\'');
         sb.append(", shard='").append(shard).append('\'');
+        sb.append(", vod='").append(vod).append('\'');
         sb.append('}');
         return sb.toString();
     }

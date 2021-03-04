@@ -44,13 +44,13 @@
         <!--每次建好数据表后，都需要执行一次 Mybatis-generator,并将已经生成过的数据库表注释，防止再次生成-->
         <!--<table tableName="test" domainObjectName="Test"/>-->
         <!--<table tableName="chapter" domainObjectName="Chapter"/>-->
-        <table tableName="section" domainObjectName="Section"/>
+        <!--<table tableName="section" domainObjectName="Section"/>-->
         <!--<table tableName="course" domainObjectName="Course"/>-->
         <!--<table tableName="category" domainObjectName="Category"/>-->
         <!--<table tableName="course_category" domainObjectName="CourseCategory"/>-->
         <!--<table tableName="course_content" domainObjectName="CourseContent"/>-->
         <!--<table tableName="teacher" domainObjectName="Teacher"/>-->
         <!--<table tableName="course_content_file" domainObjectName="CourseContentFile"/>-->
-        <!--<table tableName="file" domainObjectName="File"/>-->
+        <table tableName="file" domainObjectName="File"/>
     </context>
 </generatorConfiguration>

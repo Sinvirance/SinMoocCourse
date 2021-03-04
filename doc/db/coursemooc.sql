@@ -216,4 +216,5 @@ alter table `file` add column (`shard_size` int comment '分片大小|B');
 alter table `file` add column (`shard_total` int comment '分片总数');
 alter table `file` add column (`key` varchar(32) comment '文件标识');
 alter table `file` add unique key key_unique (`key`);
-select `id`, `path`, `name`,`suffix`, `size`, `use`, `shard_index`, `shard_size`, `shard_total`, `key`, `created_at`, `updated_at` from file;
+alter table `file` add column (`vod` char(32) comment 'vod|阿里云vod');
+select `id`, `path`, `name`,`suffix`, `size`, `use`, `vod`, `shard_index`, `shard_size`, `shard_total`, `key`, `created_at`, `updated_at` from file;
