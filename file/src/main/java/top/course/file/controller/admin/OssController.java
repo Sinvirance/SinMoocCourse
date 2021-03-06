@@ -35,25 +35,25 @@ public class OssController {
 
     private static final Logger LOG = LoggerFactory.getLogger(OssController.class);
 
-    @Value("${accessKeyId}")
+    @Value("${oss.accessKeyId}")
     private String accessKeyId;
 
-    @Value("${accessKeySecret}")
+    @Value("${oss.accessKeySecret}")
     private String accessKeySecret;
 
-    @Value("${endpoint}")
+    @Value("${oss.endpoint}")
     private String endpoint;
 
-    @Value("${ossDomain}")
+    @Value("${oss.ossDomain}")
     private String ossDomain;
 
-    @Value("${bucket}")
+    @Value("${oss.bucket}")
     private String bucket;
 
     @Resource
     private FileService fileService;
 
-    public static final String BUSINESS_NAME = "文件上传";
+    public static final String BUSINESS_NAME = "OOS文件上传";
 
     /**
      * 阿里云OSS 追加上传
