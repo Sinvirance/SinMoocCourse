@@ -5,7 +5,7 @@
             v-bind:use="use"
             v-bind:after-upload="afterUpload"
             v-bind:shard-size="1000 * 1024 * 1024"
-            v-bind:url="'vod'"></big-file>
+            v-bind:uploadUrl="'vod'"></big-file>
 </template>
 
 <script>
