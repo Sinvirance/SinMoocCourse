@@ -140,6 +140,18 @@ public class VodUtil {
     }
 
 
+    /**
+     * 获取播放凭证函数
+     * @param client
+     * @return
+     */
+    public static GetVideoPlayAuthResponse getVideoPlayAuth(DefaultAcsClient client, String videoId) throws Exception {
+        GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest();
+        request.setVideoId(videoId);
+        return client.getAcsResponse(request);
+    }
+
+
     public static void main(String[] argv) {
         //AccessKeyId
         String accessKeyId = "LTAI4G6S5opNkQwySdjfxFev";

@@ -27,7 +27,7 @@
       <tr>
         <th>小节Id</th>
         <th>标题</th>
-        <th>视频</th>
+        <th>VOD</th>
         <th>时长</th>
         <th>收费</th>
         <th>顺序</th>
@@ -38,12 +38,16 @@
       <tr v-for="section in sections">
         <td>{{section.id}}</td>
         <td>{{section.title}}</td>
-        <td>{{section.video}}</td>
+        <td>{{section.vod}}</td>
         <td>{{section.time | formatSecond}}</td>
         <td>{{SECTION_CHARGE | optionKV(section.charge)}}</td>
         <td>{{section.sort}}</td>
         <td>
           <div class="hidden-sm hidden-xs btn-group">
+            <!-- 加入入点击播放视频按钮 -->
+            <button v-on:click="play(section)" class="btn btn-xs btn-info">
+              <i class="ace-icon fa fa-video-camera bigger-120"></i>
+            </button>
             <button v-on:click="edit(section)" class="btn btn-xs btn-info">
               <i class="ace-icon fa fa-pencil bigger-120"></i>
             </button>
@@ -98,7 +102,8 @@
                   <div v-show="section.video" class="row">
                     <div class="col-md-9">
                       <!-- 载入阿里云播放器,隐藏原生播放器，当不要删除需要通过他来获取时长  -->
-                      <Player ref="player"></Player>
+                      <player v-bind:player-id="'form-player-div'"
+                              ref="player"></player>
                       <video v-bind:src="section.video" id="video" controls="controls" class="hidden"></video>
                     </div>
                   </div>
@@ -146,6 +151,9 @@
         </div>
       </div>
     </div>
+
+    <!-- 视频播放查看窗口 -->
+    <modal-player ref="modalPlayer"></modal-player>
   </div>
 </template>
 
@@ -154,9 +162,10 @@
   // import BigFile from "../../components/big-file";
   import VOD from "../../components/vod";
   import Player from "../../components/player"
+  import ModalPlayer from "../../components/modal-player"
 
   export default {
-    components: {Pagination,VOD,Player},
+    components: {Pagination,VOD,Player,ModalPlayer},
     name: "business-section",
     data: function() {
       return {
@@ -299,15 +308,21 @@
        */
       getTime() {
         let _this = this;
-        let ele = document.getElementById("video");
         /* 增加延时解决渲染时间不足够导致时长获取为NAN */
         setTimeout(function () {
           let ele = document.getElementById("video");
-          console.log(ele);
           _this.section.time = parseInt(ele.duration, 10);
-          console.log(_this.section.time);
         }, 3000);
       },
+
+      /**
+       * 播放视频
+       * @param section
+       */
+      play(section) {
+        let _this = this;
+        _this.$refs.modalPlayer.playVod(section.vod);
+      }
     }
   }
 </script>
