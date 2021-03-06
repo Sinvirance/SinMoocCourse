@@ -97,7 +97,9 @@
                        v-bind:after-upload="afterUpload"></VOD>
                   <div v-show="section.video" class="row">
                     <div class="col-md-9">
-                      <video v-bind:src="section.video" id="video" controls="controls"></video>
+                      <!-- 载入阿里云播放器,隐藏原生播放器，当不要删除需要通过他来获取时长  -->
+                      <Player ref="player"></Player>
+                      <video v-bind:src="section.video" id="video" controls="controls" class="hidden"></video>
                     </div>
                   </div>
                 </div>
@@ -151,9 +153,10 @@
   import Pagination from "../../components/pagination";
   // import BigFile from "../../components/big-file";
   import VOD from "../../components/vod";
+  import Player from "../../components/player"
 
   export default {
-    components: {Pagination,VOD},
+    components: {Pagination,VOD,Player},
     name: "business-section",
     data: function() {
       return {
@@ -287,6 +290,7 @@
         _this.section.video = video;
         _this.section.vod = vod;
         _this.getTime();
+        _this.$refs.player.playUrl(video);
       },
 
 
@@ -302,7 +306,7 @@
           console.log(ele);
           _this.section.time = parseInt(ele.duration, 10);
           console.log(_this.section.time);
-        }, 1000);
+        }, 3000);
       },
     }
   }
