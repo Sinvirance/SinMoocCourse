@@ -17,7 +17,7 @@ import java.util.*;
 
 public class ServerGenerator {
 
-    static String MODULE = "business";
+    static String MODULE = "system";
     static String toServicePath = "server\\src\\main\\java\\top\\course\\server\\service\\";
     static String toDtoPath = "server\\src\\main\\java\\top\\course\\server\\dto\\";
     static String toControllerPath = MODULE + "\\src\\main\\java\\top\\course\\" + MODULE + "\\controller\\admin\\";

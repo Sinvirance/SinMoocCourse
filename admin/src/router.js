@@ -10,6 +10,7 @@ import Teacher from "./views/admin/teacher";
 import Chapter from "./views/admin/chapter"
 import Section from "./views/admin/section"
 import File from "./views/admin/file"
+import User from "./views/admin/user"
 
 Vue.use(Router);
 
@@ -62,6 +63,10 @@ export default new Router({
             path: "file/file",
             name: "file/file",
             component: File
+        }, {
+            path: "system/user",
+            name: "system/user",
+            component: User
         }]
     }]
 })
