@@ -295,23 +295,23 @@
                 <li>
                   <a href="#">
                     <i class="ace-icon fa fa-cog"></i>
-                    Settings
+                    系统设置
                   </a>
                 </li>
 
                 <li>
                   <a href="profile.html">
                     <i class="ace-icon fa fa-user"></i>
-                    Profile
+                    个人信息
                   </a>
                 </li>
 
                 <li class="divider"></li>
 
                 <li>
-                  <a href="#">
+                  <a v-on:click="logout()" href="#">
                     <i class="ace-icon fa fa-power-off"></i>
-                    Logout
+                    退出登录
                   </a>
                 </li>
               </ul>
@@ -529,7 +529,8 @@
       $("body").attr("class", "no-skin");
       // 为了实现登录到 welcome 页面也具有激活样式
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
-
+      /* 初始化页面时重新加载js */
+      $.getScript('/ace/assets/js/ace.min.js');
       _this.LoginUser = SessionStorage.getLoginUser();
     },
 
@@ -548,9 +549,11 @@
       }
     },
     methods: {
+
       login(){
         this.$router.push("/admin")
       },
+
       /**
        * 菜单激活样式，id是当前点击的菜单的id
        * @param id
@@ -568,7 +571,25 @@
           parentLi.siblings().find("li").removeClass("active");
           parentLi.addClass("open active");
         }
-      }
+      },
+
+      /**
+       * 点击退出登录
+       */
+      logout () {
+        let _this = this;
+        Loading.show();
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/user/logout').then((response)=>{
+          Loading.hide();
+          let resp = response.data;
+          if (resp.success) {
+            SessionStorage.setLoginUser(null);
+            _this.$router.push("/login")
+          } else {
+            Toast.warning(resp.message)
+          }
+        });
+      },
     }
   }
 </script>

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+import top.course.server.constant.Constants;
 import top.course.server.dto.LoginUserDto;
 import top.course.server.dto.UserDto;
 import top.course.server.dto.PageDto;
@@ -12,6 +13,7 @@ import top.course.server.service.UserService;
 import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author: Sinvirance
@@ -93,14 +95,29 @@ public class UserController {
     /**
      * 用户登录
      * @param userDto User数据传输对象
+     * @param request 请求对象
      * @return 统一返回响应对象：携带登录用户信息传输对象 LoginUserDto 返回给前端
      */
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody UserDto userDto) {
+    public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request) {
         userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         ResponseDto responseDto = new ResponseDto();
         LoginUserDto loginUserDto = userService.login(userDto);
+        request.getSession().setAttribute(Constants.LOGIN_USER, loginUserDto);
         responseDto.setContent(loginUserDto);
+        return responseDto;
+    }
+
+
+    /**
+     * 用户退出登录
+     * @param request 请求对象
+     * @return 统一返回响应对象：携带登录用户信息传输对象 LoginUserDto 返回给前端
+     */
+    @GetMapping("/logout")
+    public ResponseDto login(HttpServletRequest request) {
+        ResponseDto responseDto = new ResponseDto();
+        request.getSession().removeAttribute(Constants.LOGIN_USER);
         return responseDto;
     }
 }
