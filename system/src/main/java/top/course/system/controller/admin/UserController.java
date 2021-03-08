@@ -2,6 +2,7 @@ package top.course.system.controller.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import top.course.server.dto.UserDto;
 import top.course.server.dto.PageDto;
@@ -49,6 +50,7 @@ public class UserController {
      */
     @PostMapping("/save")
     public ResponseDto<UserDto> save(@RequestBody UserDto userDto) {
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         /* 保存校验 */
         ValidatorUtil.require(userDto.getLoginName(), "登陆名");
         ValidatorUtil.length(userDto.getLoginName(), "登陆名", 1, 50);
