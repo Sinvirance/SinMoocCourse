@@ -524,8 +524,6 @@
       // 为了实现登录到 welcome 页面也具有激活样式
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
 
-      /* 初始化页面时重新加载js */
-      $.getScript('/ace/assets/js/ace.min.js');
     },
 
     // watch: 监听Vue实例的数据变化，这里是监听 $route 的变化

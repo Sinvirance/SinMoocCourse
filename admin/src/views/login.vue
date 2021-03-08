@@ -28,14 +28,15 @@
                       <fieldset>
                         <label class="block clearfix">
                           <span class="block input-icon input-icon-right">
-                            <input type="text" class="form-control" placeholder="Username"/>
+                            <!-- v-model 用于双向绑定表单数据，只能用于表单 -->
+                            <input v-model="user.loginName" type="text" class="form-control" placeholder="用户名"/>
                             <i class="ace-icon fa fa-user"></i>
                           </span>
                         </label>
 
                         <label class="block clearfix">
                           <span class="block input-icon input-icon-right">
-                            <input type="password" class="form-control" placeholder="Password"/>
+                            <input v-model="user.password" type="password" class="form-control" placeholder="密码"/>
                             <i class="ace-icon fa fa-lock"></i>
                           </span>
                         </label>
@@ -77,6 +78,12 @@
 <script>
   export default {
     name: "login",
+    data: function () {
+      return {
+        user: {},
+      }
+    },
+
     // 在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作。
     mounted: function () {
       // 删除样式
@@ -87,9 +94,26 @@
     },
     methods: {
       login(){
-        // 想要导航到不同的URL，使用router.push()方法，这个方法会向history栈添加一个新纪录，所以，当用户点击浏览器后退按钮时，会回到之前的URL
-        this.$router.push("/welcome")
-      }
+        let _this = this;
+
+        /* 登陆时加密 */
+        _this.user.password = hex_md5(_this.user.password + KEY);
+        Loading.show();
+        _this.$ajax.post(process.env.VUE_APP_SERVER + '/system/admin/user/login', _this.user).then(
+            (response) => {
+              Loading.hide();
+              let resp = response.data;
+              if (resp.success) {
+                console.log(resp.content);
+                // 想要导航到不同的URL，使用router.push()方法，这个方法会向history栈添加一个新纪录，所以，当用户点击浏览器后退按钮时，会回到之前的URL
+                _this.$router.push("/welcome")
+              } else {
+                Toast.warning(resp.message);
+                _this.user.password = null;
+              }
+            })
+      },
+
     }
   }
 </script>

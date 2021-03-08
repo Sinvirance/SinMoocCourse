@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+import top.course.server.dto.LoginUserDto;
 import top.course.server.dto.UserDto;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
@@ -72,6 +73,34 @@ public class UserController {
     public ResponseDto<UserDto> delete(@PathVariable String id) {
         ResponseDto<UserDto> responseDto = new ResponseDto<>();
         userService.delete(id);
+        return responseDto;
+    }
+
+    /**
+     * 更新：指定idUser对象的password
+     * @param userDto User数据传输对象
+     * @return 统一返回响应对象
+     */
+    @PostMapping("/save-password")
+    public ResponseDto savePassword(@RequestBody UserDto userDto) {
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
+        ResponseDto responseDto = new ResponseDto();
+        userService.savePassword(userDto);
+        responseDto.setContent(userDto);
+        return responseDto;
+    }
+
+    /**
+     * 用户登录
+     * @param userDto User数据传输对象
+     * @return 统一返回响应对象：携带登录用户信息传输对象 LoginUserDto 返回给前端
+     */
+    @PostMapping("/login")
+    public ResponseDto login(@RequestBody UserDto userDto) {
+        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
+        ResponseDto responseDto = new ResponseDto();
+        LoginUserDto loginUserDto = userService.login(userDto);
+        responseDto.setContent(loginUserDto);
         return responseDto;
     }
 }
