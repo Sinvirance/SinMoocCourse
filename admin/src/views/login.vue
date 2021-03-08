@@ -104,7 +104,8 @@
               Loading.hide();
               let resp = response.data;
               if (resp.success) {
-                console.log(resp.content);
+                console.log("登录成功:", resp.content);
+                SessionStorage.setLoginUser(resp.content);
                 // 想要导航到不同的URL，使用router.push()方法，这个方法会向history栈添加一个新纪录，所以，当用户点击浏览器后退按钮时，会回到之前的URL
                 _this.$router.push("/welcome")
               } else {

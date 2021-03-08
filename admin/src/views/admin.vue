@@ -285,7 +285,7 @@
                 <img class="nav-user-photo" src="../../public/ace/assets/images/avatars/user.jpg" alt="Jason's Photo" />
                 <span class="user-info">
 									<small>Welcome,</small>
-									Jason
+									{{LoginUser.name}}
 								</span>
 
                 <i class="ace-icon fa fa-caret-down"></i>
@@ -359,7 +359,7 @@
           <li class="" id="welcome-sidebar">
             <router-link to="/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
-              <span class="menu-text"> 欢迎管理员 </span>
+              <span class="menu-text"> 欢迎管理员: {{LoginUser.name}} </span>
             </router-link>
 
             <b class="arrow"></b>
@@ -516,6 +516,12 @@
 <script>
   export default {
     name: "admin",
+    data: function () {
+      return {
+        LoginUser: {},
+      }
+    },
+
     mounted: function() {
       //
       let _this = this;
@@ -524,6 +530,7 @@
       // 为了实现登录到 welcome 页面也具有激活样式
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
 
+      _this.LoginUser = SessionStorage.getLoginUser();
     },
 
     // watch: 监听Vue实例的数据变化，这里是监听 $route 的变化

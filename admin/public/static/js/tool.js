@@ -100,5 +100,6 @@ Tool = {
       arr.unshift(chars[mod]);
     } while (number);
     return arr.join('');
-  }
+  },
+
 }
