@@ -61,7 +61,9 @@
               <div class="form-group">
                 <label class="col-md-2 control-label">登陆名</label>
                 <div class="col-sm-9">
-                  <input v-model="user.loginName" class="form-control">
+                  <!-- 修改用户信息时，用户名不可编辑  -->
+                  <!-- 根据 v-bind:disabled="user.id" 根据id有无值来判断是否为只读 -->
+                  <input v-model="user.loginName" v-bind:disabled="user.id" class="form-control">
                 </div>
               </div>
               <div class="form-group">
