@@ -365,8 +365,8 @@
             <b class="arrow"></b>
           </li>
 
-          <li class="active open">
-            <a href="#" class="dropdown-toggle">
+          <li class="">
+            <a href="" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 系统管理 </span>
 
@@ -376,7 +376,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-              <li class="active" id="system-user-sidebar">
+              <li class="" id="system-user-sidebar">
                 <router-link to="/system/user">
                   <i class="menu-icon fa fa-caret-right"></i>
                   用户管理
@@ -395,8 +395,8 @@
             </ul>
           </li>
 
-          <li class="#">
-            <a href="#" class="dropdown-toggle">
+          <li class="">
+            <a href="" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 业务管理 </span>
 
@@ -407,7 +407,7 @@
 
             <ul class="submenu">
               <!--添加激活选中样式-->
-              <li class="active" id="business-category-sidebar">
+              <li class="" id="business-category-sidebar">
                 <router-link to="/business/category">
                   <i class="menu-icon fa fa-caret-right"></i>
                   分类管理
@@ -415,7 +415,7 @@
 
                 <b class="arrow"></b>
               </li>
-              <li class="active" id="business-course-sidebar">
+              <li class="" id="business-course-sidebar">
                 <router-link to="/business/course">
                   <i class="menu-icon fa fa-caret-right"></i>
                   课程管理
@@ -423,7 +423,7 @@
 
                 <b class="arrow"></b>
               </li>
-              <li class="active" id="business-teacher-sidebar">
+              <li class="" id="business-teacher-sidebar">
                 <router-link to="/business/teacher">
                   <i class="menu-icon fa fa-caret-right"></i>
                   讲师管理
@@ -435,7 +435,7 @@
           </li>
 
           <li class="">
-            <a href="#" class="dropdown-toggle">
+            <a href="" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 文件管理 </span>
 
@@ -446,7 +446,7 @@
 
             <ul class="submenu">
               <!--添加激活选中样式-->
-              <li class="active" id="file-file-sidebar">
+              <li class="" id="file-file-sidebar">
                 <router-link to="/file/file">
                   <i class="menu-icon fa fa-caret-right"></i>
                   文件管理
@@ -556,6 +556,7 @@
         let parentLi = $("#" + id).parents("li");
         if (parentLi) {
           parentLi.siblings().removeClass("open active");
+          parentLi.siblings().find("li").removeClass("active");
           parentLi.addClass("open active");
         }
       }
