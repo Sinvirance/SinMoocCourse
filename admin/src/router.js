@@ -23,6 +23,7 @@ Router.prototype.push = function push(location) {
 export default new Router({
     mode: "history",
     base: process.env.BASE_URL,
+
     routes: [{
         path: "*",
         redirect: "/login",
@@ -36,6 +37,9 @@ export default new Router({
         path: "/",
         name: "admin",
         component: Admin,
+        meta: {
+            loginRequire: true
+        },
         // 配置 admin 子路由
         children: [{
             path: "welcome",

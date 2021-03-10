@@ -121,13 +121,10 @@
       login(){
         let _this = this;
 
-        console.log(_this.user.password);
         let md5 = hex_md5(_this.user.password);
-        console.log(md5);
         let rememberUser = LocalStorage.get(LOCAL_KEY_REMEMBER_USER) || {};
         if (md5 !== rememberUser.md5) {
           _this.user.password = hex_md5(_this.user.password + KEY);
-          console.log(_this.user.password);
         }
 
         _this.user.imageCodeToken = _this.imageCodeToken;
