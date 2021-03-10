@@ -1,21 +1,22 @@
 package top.course.system.controller.admin;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import top.course.server.constant.Constants;
 import top.course.server.dto.LoginUserDto;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
 import top.course.server.dto.UserDto;
 import top.course.server.service.UserService;
+import top.course.server.util.UUIDUtil;
 import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Sinvirance
@@ -100,11 +101,10 @@ public class UserController {
     /**
      * 用户登录
      * @param userDto User数据传输对象
-     * @param request 请求对象
      * @return 统一返回响应对象：携带登录用户信息传输对象 LoginUserDto 返回给前端
      */
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request) {
+    public ResponseDto login(@RequestBody UserDto userDto) {
         LOG.info("用户登录开始");
         userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         ResponseDto responseDto = new ResponseDto();
@@ -127,11 +127,14 @@ public class UserController {
             return responseDto;
         } else {
             // 验证通过后，移除验证码
-            request.getSession().removeAttribute(userDto.getImageCodeToken());
+            // request.getSession().removeAttribute(userDto.getImageCodeToken());
+            redisTemplate.delete(userDto.getImageCodeToken());
         }
 
         LoginUserDto loginUserDto = userService.login(userDto);
-        request.getSession().setAttribute(Constants.LOGIN_USER, loginUserDto);
+        String token = UUIDUtil.getShortUUID();
+        loginUserDto.setToken(token);
+        redisTemplate.opsForValue().set(token, JSON.toJSONString(loginUserDto), 3600, TimeUnit.SECONDS);
         responseDto.setContent(loginUserDto);
         return responseDto;
     }
@@ -139,13 +142,14 @@ public class UserController {
 
     /**
      * 用户退出登录
-     * @param request 请求对象
+     * @param token 登录凭证
      * @return 统一返回响应对象：携带登录用户信息传输对象 LoginUserDto 返回给前端
      */
-    @GetMapping("/logout")
-    public ResponseDto login(HttpServletRequest request) {
+    @GetMapping("/logout/{token}")
+    public ResponseDto login(@PathVariable String token) {
         ResponseDto responseDto = new ResponseDto();
-        request.getSession().removeAttribute(Constants.LOGIN_USER);
+        redisTemplate.delete(token);
+        LOG.info("从redis中删除Token：{}", token);
         return responseDto;
     }
 }

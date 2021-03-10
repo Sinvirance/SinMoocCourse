@@ -285,7 +285,7 @@
                 <img class="nav-user-photo" src="../../public/ace/assets/images/avatars/user.jpg" alt="Jason's Photo" />
                 <span class="user-info">
 									<small>Welcome,</small>
-									{{LoginUser.name}}
+									{{loginUser.name}}
 								</span>
 
                 <i class="ace-icon fa fa-caret-down"></i>
@@ -359,7 +359,7 @@
           <li class="" id="welcome-sidebar">
             <router-link to="/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
-              <span class="menu-text"> 欢迎管理员: {{LoginUser.name}} </span>
+              <span class="menu-text"> 欢迎管理员: {{loginUser.name}} </span>
             </router-link>
 
             <b class="arrow"></b>
@@ -518,7 +518,7 @@
     name: "admin",
     data: function () {
       return {
-        LoginUser: {},
+        loginUser: {},
       }
     },
 
@@ -531,7 +531,7 @@
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
       /* 初始化页面时重新加载js */
       $.getScript('/ace/assets/js/ace.min.js');
-      _this.LoginUser = SessionStorage.getLoginUser();
+      _this.loginUser = SessionStorage.getLoginUser();
     },
 
     // watch: 监听Vue实例的数据变化，这里是监听 $route 的变化
@@ -573,13 +573,14 @@
         }
       },
 
+
       /**
        * 点击退出登录
        */
       logout () {
         let _this = this;
         Loading.show();
-        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/user/logout').then((response)=>{
+        _this.$ajax.get(process.env.VUE_APP_SERVER + '/system/admin/user/logout/' + _this.loginUser.token).then((response)=>{
           Loading.hide();
           let resp = response.data;
           if (resp.success) {
