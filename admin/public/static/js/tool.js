@@ -19,8 +19,8 @@ Tool = {
    * 非空校验
    * @returns {boolean}
    */
-  isNotEmpty: function () {
-    return !this.isEmpty();
+  isNotEmpty: function (obj) {
+    return !this.isEmpty(obj);
   },
 
 

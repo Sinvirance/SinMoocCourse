@@ -15,8 +15,15 @@ Vue.prototype.$ajax = axios;
  * axios request拦截器
  */
 axios.interceptors.request.use(function (config) {
-    // 在发送请求之前做些什么
+    /* 在请求时统一打印请求数据 */
     console.log("请求:", config);
+
+    /* 当用户token不为空时，为所有请求头加上token */
+    let token = SessionStorage.getLoginUser().token;
+    if (Tool.isNotEmpty(token)) {
+      config.headers.token = token;
+      console.log("请求headers增加token:", token);
+    }
     return config;
 }, //对请求错误做些什么
  error => {});
