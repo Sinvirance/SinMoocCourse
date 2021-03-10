@@ -25,19 +25,22 @@ public class UserDto {
     /* 密码 */
     private String password;
 
+    /* 登录验证码 */
+    private String imageCode;
+
+    /* 图像验证码Token */
+    private String imageCodeToken;
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", loginName=").append(loginName);
-        sb.append(", name=").append(name);
-        sb.append(", password=").append(password);
-        sb.append("]");
+        final StringBuffer sb = new StringBuffer("UserDto{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", loginName='").append(loginName).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", imageCode='").append(imageCode).append('\'');
+        sb.append(", imageCodeToken='").append(imageCodeToken).append('\'');
+        sb.append('}');
         return sb.toString();
     }
-
 }

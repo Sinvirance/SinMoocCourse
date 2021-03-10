@@ -3,12 +3,13 @@ package top.course.system.controller.admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import top.course.server.constant.Constants;
 import top.course.server.dto.LoginUserDto;
-import top.course.server.dto.UserDto;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
+import top.course.server.dto.UserDto;
 import top.course.server.service.UserService;
 import top.course.server.util.ValidatorUtil;
 
@@ -100,8 +101,29 @@ public class UserController {
      */
     @PostMapping("/login")
     public ResponseDto login(@RequestBody UserDto userDto, HttpServletRequest request) {
+        LOG.info("用户登录开始");
         userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
         ResponseDto responseDto = new ResponseDto();
+
+        /* 根据验证码token去获取缓存中的验证码，和用户输入的验证码是否一致 */
+        String imageCode = (String) request.getSession().getAttribute(userDto.getImageCodeToken());
+        if (StringUtils.isEmpty(imageCode)) {
+            responseDto.setSuccess(false);
+            responseDto.setMessage("验证码已过期");
+            LOG.info("用户登录失败，验证码已过期");
+            return responseDto;
+        }
+        /* 比较验证码不区分大小写 */
+        if (!imageCode.equalsIgnoreCase(userDto.getImageCode())) {
+            responseDto.setSuccess(false);
+            responseDto.setMessage("验证码不对");
+            LOG.info("用户登录失败，验证码不对");
+            return responseDto;
+        } else {
+            // 验证通过后，移除验证码
+            request.getSession().removeAttribute(userDto.getImageCodeToken());
+        }
+
         LoginUserDto loginUserDto = userService.login(userDto);
         request.getSession().setAttribute(Constants.LOGIN_USER, loginUserDto);
         responseDto.setContent(loginUserDto);

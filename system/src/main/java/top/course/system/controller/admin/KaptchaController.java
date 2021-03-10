@@ -25,9 +25,11 @@ import java.io.ByteArrayOutputStream;
 @RequestMapping("/admin/kaptcha")
 public class KaptchaController {
 
-    @Qualifier("getWebKaptcha")
+    @Qualifier("getDefaultKaptcha")
     @Autowired
     DefaultKaptcha defaultKaptcha;
+
+    public static final String BUSINESS_NAME = "登录验证";
 
     @GetMapping("/image-code/{imageCodeToken}")
     public void imageCode(@PathVariable(value = "imageCodeToken") String imageCodeToken, HttpServletRequest request, HttpServletResponse httpServletResponse) throws Exception{
