@@ -25,7 +25,7 @@ import java.io.ByteArrayOutputStream;
 @RequestMapping("/admin/kaptcha")
 public class KaptchaController {
 
-    @Qualifier("getDefaultKaptcha")
+    @Qualifier("getWebKaptcha")
     @Autowired
     DefaultKaptcha defaultKaptcha;
 
