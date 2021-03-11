@@ -11,6 +11,7 @@ import Chapter from "./views/admin/chapter"
 import Section from "./views/admin/section"
 import File from "./views/admin/file"
 import User from "./views/admin/user"
+import Resource from "./views/admin/resource"
 
 Vue.use(Router);
 
@@ -77,6 +78,10 @@ export default new Router({
             path: "system/user",
             name: "system/user",
             component: User
+        }, {
+            path: "system/resource",
+            name: "system/resource",
+            component: Resource
         }]
     }]
 })

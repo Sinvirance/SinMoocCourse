@@ -1,15 +1,15 @@
-# 数据库建立时设定字符集 utf8mb4 建表时再次无需指定
+## 数据库建立时设定字符集 utf8mb4 建表时再次无需指定
 USE coursemooc;
 
-# 测试表
-CREATE TABLE `test`(
+## 测试表
+CREATE TABLE `test` (
     `id`   varchar(255) NOT NULL,
     `name` varchar(255) NULL,
     PRIMARY KEY (`id`)
 ) CHARACTER SET = utf8mb4;
 
 
--- 课程表
+## 课程表
 DROP table if exists `course`;
 CREATE TABLE `course` (
     id         char(8)     not null default '' comment 'id',
@@ -28,7 +28,7 @@ CREATE TABLE `course` (
     primary key (id)
 ) engine = innodb comment ='课程';
 
--- 课程表测试数据
+## 课程表测试数据
 INSERT INTO course (id, name, summary, time, price, image, level, charge, status, enroll, sort, created_at, updated_at)
 VALUES ('00000001', '测试课程01', '这是一门测试课程', 7200, 19.9, '', 0, 'C', 'D', 100, 0, now(), now());
 select id, name, teacher_id, summary, time, price, image, level, charge, status, enroll, sort, created_at, updated_at from course;
@@ -60,24 +60,24 @@ create table `course_content` (
 ## 课程内容文件表
 drop table if exists `course_content_file`;
 create table `course_content_file` (
-  `id` char(8) not null default '' comment 'id',
-  `course_id` char(8) not null comment '课程id',
-  `url` varchar(100) comment '地址',
-  `name` varchar(100) comment '文件名',
-  `size` int comment '大小|字节b',
-  primary key (`id`)
-) engine=innodb default charset=utf8mb4 comment='课程内容文件';
+    `id`        char(8) not null default '' comment 'id',
+    `course_id` char(8) not null comment '课程id',
+    `url`       varchar(100) comment '地址',
+    `name`      varchar(100) comment '文件名',
+    `size`      int comment '大小|字节b',
+    primary key (`id`)
+) engine = innodb comment ='课程内容文件';
 
 
-# 大章表
+## 大章表
 DROP table if exists `chapter`;
-CREATE TABLE `chapter`(
+CREATE TABLE `chapter` (
     `id`        char(8) not null comment '大章ID',
     `course_id` char(8) comment '课程ID',
     `name`      varchar(50) comment '名称',
     primary key (`id`)
 ) engine = innodb comment = '大章';
-# 大章表测试数据
+## 大章表测试数据
 insert into `chapter` (id, course_id, name) values ('00000001', '00000000', '测试大章01');
 insert into `chapter` (id, course_id, name) values ('00000002', '00000000', '测试大章02');
 insert into `chapter` (id, course_id, name) values ('00000003', '00000000', '测试大章03');
@@ -101,7 +101,7 @@ insert into `chapter` (id, course_id, name) values ('00000020', '00000000', '测
 select id, course_id, name from chapter;
 
 
--- 小节表
+## 小节表
 DROP table if exists `section`;
 CREATE TABLE `section` (
     `id`         char(8)     not null default '' comment '小节Id',
@@ -116,7 +116,7 @@ CREATE TABLE `section` (
     `updated_at` datetime(3) comment '修改时间',
     primary key (`id`)
 ) engine = innodb comment = '小节';
--- 小节表测试数据
+## 小节表测试数据
 insert into `section` (id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at)
 VALUES ('00000001','测试小节01', '00000001','00000000','', 500, 'F', 1, now(), now());
 select id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at from section;
@@ -223,12 +223,34 @@ select `id`, `path`, `name`,`suffix`, `size`, `use`, `vod`, `shard_index`, `shar
 ## 用户表
 drop table if exists `user`;
 create table `user` (
-    `id` char(8) not null default '' comment 'id',
+    `id`         char(8)     not null default '' comment 'id',
     `login_name` varchar(50) not null comment '登陆名',
-    `name` varchar(50) comment '昵称',
-    `password` char(32) not null comment '密码',
+    `name`       varchar(50) comment '昵称',
+    `password`   char(32)    not null comment '密码',
     primary key (`id`),
     unique key `login_name_unique` (`login_name`)
 ) engine = innodb comment ='用户';
 insert into `user` (id, login_name, name, password) values ('10000000', 'test', '测试', '202cb962ac59075b964b07152d234b70');
 select `id`, `login_name`, `name`, `password` from user;
+
+
+## 资源表
+drop table if exists `resource`;
+create table `resource`(
+    `id`      char(6)      not null default '' comment 'id',
+    `name`    varchar(100) not null comment '名称|菜单或按钮',
+    `page`    varchar(50)  null comment '页面|路由',
+    `request` varchar(200) null comment '请求|接口',
+    `parent`  char(6) comment '父id',
+    primary key (`id`)
+) engine = innodb comment ='资源';
+## 资源表测试数据
+insert into `resource` values ('01', '系统管理', null, null, null);
+insert into `resource` values ('0101', '用户管理', '/system/user', null, '01');
+insert into `resource` values ('010101', '保存', null, '["/system/admin/user/list", "/system/admin/user/save"]', '0101');
+insert into `resource` values ('010102', '删除', null, '["/system/admin/user/delete"]', '0101');
+insert into `resource` values ('010103', '重置密码', null, '["/system/admin/user/save#password"]', '0101');
+insert into `resource` values ('0102', '资源管理', '/system/resource', null, '01');
+insert into `resource` values ('010201', '保存/显示', null, '["/system/admin/resource"]', '0102');
+insert into `resource` values ('0103', '角色管理', '/system/role', null, '01');
+insert into `resource` values ('010301', '角色/权限管理', null, '["/system/admin/role"]', '0103');
