@@ -10,6 +10,7 @@ import top.course.server.service.ResourceService;
 import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: Sinvirance
@@ -66,6 +67,20 @@ public class ResourceController {
     public ResponseDto<ResourceDto> delete(@PathVariable String id) {
         ResponseDto<ResourceDto> responseDto = new ResponseDto<>();
         resourceService.delete(id);
+        return responseDto;
+    }
+
+
+
+    /**
+     * 资源树查询
+     * @return 统一返回响应对象
+     */
+    @GetMapping("/load-tree")
+    public ResponseDto<List<ResourceDto>> loadTree() {
+        ResponseDto<List<ResourceDto>> responseDto = new ResponseDto<>();
+        List<ResourceDto> resourceDtoList = resourceService.loadTree();
+        responseDto.setContent(resourceDtoList);
         return responseDto;
     }
 }

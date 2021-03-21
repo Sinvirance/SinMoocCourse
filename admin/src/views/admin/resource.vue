@@ -3,7 +3,7 @@
     <!--新增资源和刷新按钮-->
     <p>
       <!--点击触发事件查询list()-->
-      <button v-on:click="list(1)" class="btn btn-white btn-default btn-round">
+      <button v-on:click="list()" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-refresh "></i>
         刷新
       </button>
@@ -20,68 +20,33 @@
         </button>
       </div>
       <div class="col-md-6">
+        <ul id="tree" class="ztree"></ul>
       </div>
     </div>
     <hr>
 
     <!--资源数据分页显示列表-->
-    <table id="simple-table" class="table  table-bordered table-hover">
-      <thead>
-      <tr>
-        <th>id</th>
-        <th>名称</th>
-        <th>页面</th>
-        <th>请求</th>
-        <th>父id</th>
-        <th>操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="resource in resources">
-        <td>{{resource.id}}</td>
-        <td>{{resource.name}}</td>
-        <td>{{resource.page}}</td>
-        <td>{{resource.request}}</td>
-        <td>{{resource.parent}}</td>
-        <td>
-          <div class="hidden-sm hidden-xs btn-group">
-            <button v-on:click="edit(resource)" class="btn btn-xs btn-info">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
-            <button v-on:click="del(resource.id)" class="btn btn-xs btn-danger">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
     <!-- 分页组件显示 -->
-    <pagination ref="pagination" v-bind:list="list"/>
-
     <!--资源不需要编辑资源功能表单-->
   </div>
 </template>
 
 <script>
-  import Pagination from "../../components/pagination";
 
   export default {
-    components: {Pagination},
     name: "system-resource",
     data: function() {
       return {
         resource: {},
         resources: [],
         resourceStr: "",
+        tree: {},
       }
     },
 
     mounted: function() {
       let _this = this;
-      _this.$refs.pagination.size = 5;
-      _this.list(1);
+      _this.list();
     },
 
     methods: {
@@ -91,20 +56,17 @@
        */
 
       /**
-       * 显示指定页码的资源列表
-       * @param page 前端传入查询的页码数
+       * 显示资源树
        */
-      list(page) {
+      list() {
         let _this = this;
         Loading.show();
-        _this.$ajax.post(process.env.VUE_APP_SERVER + "/system/admin/resource/list",{
-          page: page,
-          size: _this.$refs.pagination.size,
-        }).then((response)=>{
+        _this.$ajax.get(process.env.VUE_APP_SERVER + "/system/admin/resource/load-tree").then((response)=>{
           Loading.hide();
           let resp = response.data
-          _this.resources = resp.content.list;
-          _this.$refs.pagination.render(page, resp.content.total);
+          _this.resources = resp.content;
+          /* 初始化资源树 */
+          _this.initTree();
         })
       },
 
@@ -135,10 +97,6 @@
         })
       },
 
-      /**
-       * 表单修改已有资源数据
-       * @param resource
-       */
 
       /**
        * 根据资源id删除对应数据
@@ -158,7 +116,28 @@
             }
           })
         })
-      }
+      },
+
+
+      /**
+       * 初始资源树
+       */
+      initTree() {
+        let _this = this;
+        let setting = {
+          data: {
+            simpleData: {
+              idKey: "id",
+              pIdKey: "parent",
+              rootPId: "",
+              // enable: true
+            }
+          }
+        };
+
+        _this.zTree = $.fn.zTree.init($("#tree"), setting, _this.resources);
+        _this.zTree.expandAll(true);
+      },
     }
   }
 </script>

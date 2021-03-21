@@ -122,4 +122,47 @@ public class ResourceService {
             }
         }
     }
+
+
+    /**
+     * 按约定将列表转成树
+     * 要求：ID要正序排列
+     * @return Resource传输对象列表
+     */
+    public List<ResourceDto> loadTree() {
+        /* 按照id正序查询数据库Resource表记录 */
+        ResourceExample example = new ResourceExample();
+        example.setOrderByClause("id asc");
+        List<Resource> resourceList = resourceMapper.selectByExample(example);
+        List<ResourceDto> resourceDtoList = CopyUtil.copyList(resourceList, ResourceDto.class);
+
+        /* 从id逆序，也就是最后一个开始查询 */
+        for (int i = resourceDtoList.size() - 1; i >= 0; i--) {
+            // 当前要移动的记录
+            ResourceDto child = resourceDtoList.get(i);
+
+            // 如果当前节点没有父节点，则不用往下了
+            if (StringUtils.isEmpty(child.getParent())) {
+                continue;
+            }
+
+            /* 查找 parent_id == id, 将parent_id 记录其放入 id子树中 */
+            for (int j = i - 1; j >= 0; j--) {
+                ResourceDto parent = resourceDtoList.get(j);
+                if (child.getParent().equals(parent.getId())) {
+                    /* 当id记录子树为空时，开辟新的ArrayList空间 */
+                    if (CollectionUtils.isEmpty(parent.getChildren())) {
+                        parent.setChildren(new ArrayList<>());
+                    }
+
+                    // 添加到最前面，否则会变成倒序，因为循环是从后往前循环的
+                    parent.getChildren().add(0, child);
+
+                    // 子节点找到父节点后，删除列表中的子节点
+                    resourceDtoList.remove(child);
+                }
+            }
+        }
+        return resourceDtoList;
+    }
 }
