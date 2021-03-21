@@ -3,8 +3,8 @@ package top.course.system.controller.admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import top.course.server.dto.ResourceDto;
 import top.course.server.dto.PageDto;
+import top.course.server.dto.ResourceDto;
 import top.course.server.dto.ResponseDto;
 import top.course.server.service.ResourceService;
 import top.course.server.util.ValidatorUtil;
@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 
 /**
  * @Author: Sinvirance
- * @Date: 2021/xx/xx xx:xx
+ * @Date: 2021/03/18 20:44
  * @Description: Resource控制层
  */
 
@@ -44,20 +44,16 @@ public class ResourceController {
 
     /**
      * 保存: ResourceDto对象有id属性值时更新，无值时新增
-     * @param resourceDto 数据传输对象
+     * @param jsonStr 数据传输对象
      * @return 统一返回响应对象
      */
     @PostMapping("/save")
-    public ResponseDto<ResourceDto> save(@RequestBody ResourceDto resourceDto) {
+    public ResponseDto<ResourceDto> save(@RequestBody String jsonStr) {
         /* 保存校验 */
-        ValidatorUtil.require(resourceDto.getName(), "名称");
-        ValidatorUtil.length(resourceDto.getName(), "名称", 1, 100);
-        ValidatorUtil.length(resourceDto.getPage(), "页面", 1, 50);
-        ValidatorUtil.length(resourceDto.getRequest(), "请求", 1, 200);
+        ValidatorUtil.require(jsonStr, "资源");
 
         ResponseDto<ResourceDto> responseDto = new ResponseDto<>();
-        resourceService.save(resourceDto);
-        responseDto.setContent(resourceDto);
+        resourceService.saveJson(jsonStr);
         return responseDto;
     }
 
