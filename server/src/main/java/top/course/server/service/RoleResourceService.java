@@ -6,13 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import top.course.server.domain.RoleResource;
 import top.course.server.domain.RoleResourceExample;
-import top.course.server.dto.RoleResourceDto;
 import top.course.server.dto.PageDto;
+import top.course.server.dto.RoleResourceDto;
 import top.course.server.mapper.RoleResourceMapper;
 import top.course.server.util.CopyUtil;
 import top.course.server.util.UUIDUtil;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,5 +78,22 @@ public class RoleResourceService {
      */
     public void delete(String id) {
         roleResourceMapper.deleteByPrimaryKey(id);
+    }
+
+
+    /**
+     * 查询: 对应角色的所有资源
+     * @param roleId 角色对应Id
+     * @return 角色对应资源列表 resourceIdList
+     */
+    public List<String> listResource(String roleId) {
+        RoleResourceExample example = new RoleResourceExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        List<RoleResource> roleResourceList = roleResourceMapper.selectByExample(example);
+        List<String> resourceIdList = new ArrayList<>();
+        for (RoleResource roleResource : roleResourceList) {
+            resourceIdList.add(roleResource.getResourceId());
+        }
+        return resourceIdList;
     }
 }

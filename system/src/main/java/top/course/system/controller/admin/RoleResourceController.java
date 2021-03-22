@@ -3,13 +3,14 @@ package top.course.system.controller.admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import top.course.server.dto.RoleResourceDto;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
+import top.course.server.dto.RoleResourceDto;
 import top.course.server.service.RoleResourceService;
 import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: Sinvirance
@@ -68,6 +69,20 @@ public class RoleResourceController {
     public ResponseDto<RoleResourceDto> delete(@PathVariable String id) {
         ResponseDto<RoleResourceDto> responseDto = new ResponseDto<>();
         roleResourceService.delete(id);
+        return responseDto;
+    }
+
+    /**
+     * 查询: 对应角色的所有资源
+     * @param roleId 角色对应Id
+     * @return 统一返回响应对象
+     */
+    @GetMapping("/list-resource/{roleId}")
+    public ResponseDto<List<String>> listResource(@PathVariable String roleId) {
+        LOG.info("加载资源开始");
+        ResponseDto<List<String>> responseDto = new ResponseDto<>();
+        List<String> resourceIdList = roleResourceService.listResource(roleId);
+        responseDto.setContent(resourceIdList);
         return responseDto;
     }
 }
