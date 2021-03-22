@@ -3,13 +3,14 @@ package top.course.system.controller.admin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import top.course.server.dto.RoleUserDto;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
+import top.course.server.dto.RoleUserDto;
 import top.course.server.service.RoleUserService;
 import top.course.server.util.ValidatorUtil;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: Sinvirance
@@ -68,6 +69,20 @@ public class RoleUserController {
     public ResponseDto<RoleUserDto> delete(@PathVariable String id) {
         ResponseDto<RoleUserDto> responseDto = new ResponseDto<>();
         roleUserService.delete(id);
+        return responseDto;
+    }
+
+    /**
+     * 查询: 对应角色的所有用户
+     * @param roleId 角色对应Id
+     * @return 统一返回响应对象
+     */
+    @GetMapping("/list-user/{roleId}")
+    public ResponseDto<List<String>> listUser(@PathVariable String roleId) {
+        LOG.info("加载用户开始");
+        ResponseDto<List<String>> responseDto = new ResponseDto<>();
+        List<String> userIdList = roleUserService.listUser(roleId);
+        responseDto.setContent(userIdList);
         return responseDto;
     }
 }

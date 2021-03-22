@@ -6,13 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import top.course.server.domain.RoleUser;
 import top.course.server.domain.RoleUserExample;
-import top.course.server.dto.RoleUserDto;
 import top.course.server.dto.PageDto;
+import top.course.server.dto.RoleUserDto;
 import top.course.server.mapper.RoleUserMapper;
 import top.course.server.util.CopyUtil;
 import top.course.server.util.UUIDUtil;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,5 +78,22 @@ public class RoleUserService {
      */
     public void delete(String id) {
         roleUserMapper.deleteByPrimaryKey(id);
+    }
+
+
+    /**
+     * 查询: 角色Id对应所有用户
+     * @param roleId 角色对应Id
+     * @return 角色对应的用户列表 userIdList
+     */
+    public List<String> listUser(String roleId) {
+        RoleUserExample example = new RoleUserExample();
+        example.createCriteria().andRoleIdEqualTo(roleId);
+        List<RoleUser> roleUserList = roleUserMapper.selectByExample(example);
+        List<String> userIdList = new ArrayList<>();
+        for (int i = 0, l = roleUserList.size(); i < l; i++) {
+            userIdList.add(roleUserList.get(i).getUserId());
+        }
+        return userIdList;
     }
 }
