@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 
 /**
  * @Author: Sinvirance
- * @Date: 2021/xx/xx xx:xx
+ * @Date: 2021/03/23 01:29
  * @Description: Role控制层
  */
 
@@ -70,6 +70,19 @@ public class RoleController {
     public ResponseDto<RoleDto> delete(@PathVariable String id) {
         ResponseDto<RoleDto> responseDto = new ResponseDto<>();
         roleService.delete(id);
+        return responseDto;
+    }
+
+    /**
+     * 保存: 对应角色资源
+     * @param roleDto 具有角色对应资源的角色前后端传输对象
+     */
+    @PostMapping("/save-resource")
+    public ResponseDto<RoleDto> saveResource(@RequestBody RoleDto roleDto) {
+        LOG.info("保存角色资源关联开始");
+        ResponseDto<RoleDto> responseDto = new ResponseDto<>();
+        roleService.saveResource(roleDto);
+        responseDto.setContent(roleDto);
         return responseDto;
     }
 }
