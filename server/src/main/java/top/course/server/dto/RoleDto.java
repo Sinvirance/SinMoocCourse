@@ -27,6 +27,10 @@ public class RoleDto {
     /* 角色对应资源 */
     private List<String> resourceIds;
 
+    /* 角色对应用户 */
+    private List<String> userIds;
+
+
 
     @Override
     public String toString() {
@@ -35,6 +39,7 @@ public class RoleDto {
         sb.append(", name='").append(name).append('\'');
         sb.append(", desc='").append(desc).append('\'');
         sb.append(", resourceIds=").append(resourceIds);
+        sb.append(", userIds=").append(userIds);
         sb.append('}');
         return sb.toString();
     }

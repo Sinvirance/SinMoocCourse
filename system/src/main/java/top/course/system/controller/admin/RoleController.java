@@ -85,4 +85,17 @@ public class RoleController {
         responseDto.setContent(roleDto);
         return responseDto;
     }
+
+    /**
+     * 保存: 对应角色用户
+     * @param roleDto 具有角色对应用户的角色前后端传输对象
+     */
+    @PostMapping("/save-user")
+    public ResponseDto<RoleDto> saveUser(@RequestBody RoleDto roleDto) {
+        LOG.info("保存角色用户关联开始");
+        ResponseDto<RoleDto> responseDto = new ResponseDto<>();
+        roleService.saveUser(roleDto);
+        responseDto.setContent(roleDto);
+        return responseDto;
+    }
 }

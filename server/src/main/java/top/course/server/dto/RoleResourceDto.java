@@ -22,7 +22,6 @@ public class RoleResourceDto {
     /* 资源|id */
     private String resourceId;
 
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
