@@ -1,5 +1,8 @@
 package top.course.gateway.filter;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -54,6 +57,7 @@ public class LoginAdminGatewayFilter implements GatewayFilter, Ordered {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
+        /* 从redis中获取登录对象 */
         Object object = redisTemplate.opsForValue().get(token);
         if (object == null) {
             LOG.warn( "token无效，请求被拦截" );
@@ -62,6 +66,31 @@ public class LoginAdminGatewayFilter implements GatewayFilter, Ordered {
             return exchange.getResponse().setComplete();
         } else {
             LOG.info("已登录：{}", object);
+
+            /* 增加权限校验，没有引入server模块，gateway里没有LoginUserDto，所以全部用JSON操作 */
+            LOG.info("接口权限校验，请求地址：{}", path);
+            /* 默认请求权限为否 */
+            boolean exist = false;
+            /* 将登录对象转为JSONObject格式 */
+            JSONObject loginUserDto = JSON.parseObject(String.valueOf(object));
+            /* 获取登录对象中的请求列表 */
+            JSONArray requests = loginUserDto.getJSONArray("requests");
+            /* 遍历所有【权限请求】，判断当前请求的地址是否在【权限请求】里 */
+            for (Object o : requests) {
+                String request = (String) o;
+                if (path.contains(request)) {
+                    exist = true;
+                    break;
+                }
+            }
+            if (exist) {
+                LOG.info("权限校验通过");
+            } else {
+                LOG.warn("权限校验未通过");
+                /* 返回401状态码 */
+                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                return exchange.getResponse().setComplete();
+            }
             return chain.filter(exchange);
         }
     }
