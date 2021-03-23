@@ -358,7 +358,7 @@
         <!-- 侧边栏 -->
         <ul class="nav nav-list">
           <!-- 跳转welcome界面 -->
-          <li class="" id="welcome-sidebar">
+          <li v-show="hasResource('00')"  class="" id="welcome-sidebar">
             <router-link to="/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
               <span class="menu-text"> 欢迎管理员: {{loginUser.name}} </span>
@@ -543,6 +543,12 @@
       /* 初始化页面时重新加载js */
       $.getScript('/ace/assets/js/ace.min.js');
       _this.loginUser = SessionStorage.getLoginUser();
+
+      /* 第一次加载admin.vue，需要判断路由权限，例如登录或者刷新 */
+      if (!_this.hasResourceRouter(_this.$route.name)) {
+        Toast.warning("无权限跳转");
+        _this.$router.push("/login");
+      }
     },
 
     // watch: 监听Vue实例的数据变化，这里是监听 $route 的变化
@@ -552,6 +558,14 @@
         handler:function(val, oldVal){
           console.log("---->页面跳转：", val, oldVal);
           let _this = this;
+
+          /* 单进行侧边栏切换时，需要判断路由权限，让其重新登录 */
+          if (!_this.hasResourceRouter(val.name)) {
+            Toast.warning("无权限跳转");
+            _this.$router.push("/login");
+            return;
+          }
+
           _this.$nextTick(function(){  //页面加载完成后执行
             // 获取 route.js 下的name属性，将其转化为id,将id作为激活id
             _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
@@ -609,7 +623,25 @@
        */
       hasResource(id) {
         return Tool.hasResource(id);
-      }
+      },
+
+      /**
+       * 查找是否有权限
+       * @param router 路由地址
+       */
+      hasResourceRouter(router) {
+        let _this = this;
+        let resources = SessionStorage.getLoginUser().resources;
+        if (Tool.isEmpty(resources)) {
+          return false;
+        }
+        for (let i = 0; i < resources.length; i++) {
+          if (router === resources[i].page) {
+            return true;
+          }
+        }
+        return false;
+      },
     }
   }
 </script>
