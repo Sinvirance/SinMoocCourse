@@ -1,5 +1,6 @@
 package top.course.server.service;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -11,14 +12,17 @@ import top.course.server.domain.User;
 import top.course.server.domain.UserExample;
 import top.course.server.dto.LoginUserDto;
 import top.course.server.dto.PageDto;
+import top.course.server.dto.ResourceDto;
 import top.course.server.dto.UserDto;
 import top.course.server.exception.BusinessException;
 import top.course.server.exception.BusinessExceptionCode;
 import top.course.server.mapper.UserMapper;
+import top.course.server.mapper.my.MyUserMapper;
 import top.course.server.util.CopyUtil;
 import top.course.server.util.UUIDUtil;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -31,6 +35,9 @@ import java.util.List;
 public class UserService {
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private MyUserMapper myUserMapper;
 
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
@@ -137,10 +144,41 @@ public class UserService {
             throw new BusinessException(BusinessExceptionCode.USER_LOGIN_ERROR);
         } else {
             if (user.getPassword().equals(userDto.getPassword())) {
-                return CopyUtil.copy(user, LoginUserDto.class);
+                /* 登录成功 */
+                LoginUserDto loginUserDto = CopyUtil.copy(user, LoginUserDto.class);
+                /* 为登录用户读取权限 */
+                setAuth(loginUserDto);
+                return loginUserDto;
             }
             LOG.info("用户密码错误, 输入密码：{}, 数据库密码：{}", userDto.getPassword(), user.getPassword());
             throw new BusinessException(BusinessExceptionCode.USER_LOGIN_ERROR);
         }
+    }
+
+
+    /**
+     * 设置登录用户资源认证
+     * @param loginUserDto 登录用户前后端传输对象
+     */
+    private void setAuth(LoginUserDto loginUserDto) {
+        /* 获取当前登录用户的资源列表将其放入前后端传输对象中 */
+        List<ResourceDto> resourceDtoList = myUserMapper.findResources(loginUserDto.getId());
+        loginUserDto.setResources(resourceDtoList);
+
+        HashSet<String> requestSet = new HashSet<>();
+        /* 对有资源的请求进行整理 */
+        /* 当前端资源非空时 */
+        if (!CollectionUtils.isEmpty(resourceDtoList)) {
+            for (ResourceDto resourceDto : resourceDtoList) {
+                String request = resourceDto.getRequest();
+                List<String> requestList = JSON.parseArray(request, String.class);
+                /* 当后端请求非空时 */
+                if (!CollectionUtils.isEmpty(requestList)) {
+                    requestSet.addAll(requestList);
+                }
+            }
+        }
+        LOG.info("有权限的请求：{}", requestSet);
+        loginUserDto.setRequests(requestSet);
     }
 }
