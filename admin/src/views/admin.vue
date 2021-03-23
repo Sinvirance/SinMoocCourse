@@ -355,28 +355,29 @@
           </div>
         </div><!-- /.sidebar-shortcuts -->
 
+        <!-- 侧边栏 -->
         <ul class="nav nav-list">
+          <!-- 跳转welcome界面 -->
           <li class="" id="welcome-sidebar">
             <router-link to="/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
               <span class="menu-text"> 欢迎管理员: {{loginUser.name}} </span>
             </router-link>
-
             <b class="arrow"></b>
           </li>
 
-          <li class="">
+          <!-- 系统管理项 -->
+          <li v-show="hasResource('01')" class="">
             <a href="" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 系统管理 </span>
 
               <b class="arrow fa fa-angle-down"></b>
             </a>
-
             <b class="arrow"></b>
-
             <ul class="submenu">
-              <li class="" id="system-user-sidebar">
+              <!-- 跳转用户管理界面 -->
+              <li v-show="hasResource('0101')" class="" id="system-user-sidebar">
                 <router-link to="/system/user">
                   <i class="menu-icon fa fa-caret-right"></i>
                   用户管理
@@ -384,7 +385,8 @@
                 <b class="arrow"></b>
               </li>
 
-              <li class="" id="system-resource-sidebar">
+              <!-- 跳转资源管理界面 -->
+              <li v-show="hasResource('0102')" class="" id="system-resource-sidebar">
                 <router-link to="/system/resource">
                   <i class="menu-icon fa fa-caret-right"></i>
                   资源管理
@@ -392,14 +394,17 @@
                 <b class="arrow"></b>
               </li>
 
-              <li class="" id="system-role-sidebar">
+              <!-- 跳转角色管理界面 -->
+              <li v-show="hasResource('0103')" class="" id="system-role-sidebar">
                 <router-link to="/system/role">
                   <i class="menu-icon fa fa-caret-right"></i>
                   角色管理
                 </router-link>
               </li>
             </ul>
+          </li>
 
+          <!-- 业务管理项-->
           <li class="">
             <a href="" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
@@ -407,11 +412,10 @@
 
               <b class="arrow fa fa-angle-down"></b>
             </a>
-
             <b class="arrow"></b>
-
             <ul class="submenu">
-              <!--添加激活选中样式-->
+              <!-- 跳转分类管理界面 -->
+              <!--添加激活选中样式 id="business-category-sidebar"-->
               <li class="" id="business-category-sidebar">
                 <router-link to="/business/category">
                   <i class="menu-icon fa fa-caret-right"></i>
@@ -420,6 +424,8 @@
 
                 <b class="arrow"></b>
               </li>
+
+              <!-- 跳转课程管理界面 -->
               <li class="" id="business-course-sidebar">
                 <router-link to="/business/course">
                   <i class="menu-icon fa fa-caret-right"></i>
@@ -428,6 +434,8 @@
 
                 <b class="arrow"></b>
               </li>
+
+              <!-- 跳转讲师管理界面 -->
               <li class="" id="business-teacher-sidebar">
                 <router-link to="/business/teacher">
                   <i class="menu-icon fa fa-caret-right"></i>
@@ -439,16 +447,16 @@
             </ul>
           </li>
 
+          <!-- 跳转文件管理项 -->
           <li class="">
             <a href="" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 文件管理 </span>
-
               <b class="arrow fa fa-angle-down"></b>
             </a>
 
             <b class="arrow"></b>
-
+            <!-- 跳转文件管理界面 -->
             <ul class="submenu">
               <!--添加激活选中样式-->
               <li class="" id="file-file-sidebar">
@@ -456,14 +464,12 @@
                   <i class="menu-icon fa fa-caret-right"></i>
                   文件管理
                 </router-link>
-
                 <b class="arrow"></b>
               </li>
             </ul>
           </li>
 
-
-        </ul><!-- /.nav-list -->
+        </ul>
 
         <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
           <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
@@ -596,6 +602,14 @@
           }
         });
       },
+
+      /**
+       * 查找是否有权限
+       * @param id 权限id
+       */
+      hasResource(id) {
+        return Tool.hasResource(id);
+      }
     }
   }
 </script>
