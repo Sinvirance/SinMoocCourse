@@ -405,7 +405,7 @@
           </li>
 
           <!-- 业务管理项-->
-          <li class="">
+          <li v-show="hasResource('02')" class="">
             <a href="" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 业务管理 </span>
@@ -416,7 +416,7 @@
             <ul class="submenu">
               <!-- 跳转分类管理界面 -->
               <!--添加激活选中样式 id="business-category-sidebar"-->
-              <li class="" id="business-category-sidebar">
+              <li v-show="hasResource('0201')" class="" id="business-category-sidebar">
                 <router-link to="/business/category">
                   <i class="menu-icon fa fa-caret-right"></i>
                   分类管理
@@ -426,7 +426,7 @@
               </li>
 
               <!-- 跳转课程管理界面 -->
-              <li class="" id="business-course-sidebar">
+              <li v-show="hasResource('0202')" class="" id="business-course-sidebar">
                 <router-link to="/business/course">
                   <i class="menu-icon fa fa-caret-right"></i>
                   课程管理
@@ -436,7 +436,7 @@
               </li>
 
               <!-- 跳转讲师管理界面 -->
-              <li class="" id="business-teacher-sidebar">
+              <li v-show="hasResource('0203')" class="" id="business-teacher-sidebar">
                 <router-link to="/business/teacher">
                   <i class="menu-icon fa fa-caret-right"></i>
                   讲师管理
@@ -448,7 +448,7 @@
           </li>
 
           <!-- 跳转文件管理项 -->
-          <li class="">
+          <li v-show="hasResource('03')" class="">
             <a href="" class="dropdown-toggle">
               <i class="menu-icon fa fa-list"></i>
               <span class="menu-text"> 文件管理 </span>
