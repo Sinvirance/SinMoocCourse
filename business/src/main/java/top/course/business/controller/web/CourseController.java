@@ -47,4 +47,21 @@ public class CourseController {
         responseDto.setContent(courseDtoList);
         return responseDto;
     }
+
+
+    /**
+     * 热门课程查询：报名最多的的3门课程
+     * @return 统一返回响应对象(包含热门课程列表)
+     */
+    @GetMapping("/list-hot")
+    public ResponseDto<List<CourseDto>> listHot() {
+        PageDto pageDto = new PageDto<>();
+        /* 通过设置分页条件获得查询内容 */
+        pageDto.setPage(1);
+        pageDto.setSize(3);
+        ResponseDto<List<CourseDto>> responseDto = new ResponseDto<>();
+        List<CourseDto> courseDtoList = courseService.listHot(pageDto);
+        responseDto.setContent(courseDtoList);
+        return responseDto;
+    }
 }

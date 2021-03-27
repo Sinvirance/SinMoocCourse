@@ -19,6 +19,7 @@ import top.course.server.mapper.CourseContentMapper;
 import top.course.server.mapper.CourseMapper;
 import top.course.server.mapper.my.MyCourseMapper;
 import top.course.server.util.CopyUtil;
+import top.course.server.util.DateUtil;
 import top.course.server.util.UUIDUtil;
 
 import javax.annotation.Resource;
@@ -79,6 +80,25 @@ public class CourseService {
         List<Course> courseList = courseMapper.selectByExample(courseExample);
         return CopyUtil.copyList(courseList, CourseDto.class);
     }
+
+
+    /**
+     * 热门课程列表查询，按创建日期倒序
+     * @param pageDto 分页组件传输对象
+     * @return 新课列表
+     */
+    public List<CourseDto> listHot(PageDto pageDto) {
+        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
+        CourseExample courseExample = new CourseExample();
+        /* 查询结果为已发布的,距离现在3个月报名人数最多的 */
+        courseExample.createCriteria().andEnrollGreaterThanOrEqualTo(50).
+                andCreatedAtGreaterThanOrEqualTo(DateUtil.BeforeMonthDate(3))
+                .andStatusEqualTo(CourseStatusEnum.PUBLISH.getCode());
+        courseExample.setOrderByClause("enroll desc");
+        List<Course> courseList = courseMapper.selectByExample(courseExample);
+        return CopyUtil.copyList(courseList, CourseDto.class);
+    }
+
 
     /**
      * 保存: CourseDto对象有id属性值时更新，无值时新增
