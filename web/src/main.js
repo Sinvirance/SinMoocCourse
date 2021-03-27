@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import App from './app.vue'
 import router from "./router";
+import axios from "axios";
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+/* 每一个vue组件都是Vue的实例，所以组件内this可以拿到Vue.prototype上添加的属性和方法 */
+Vue.prototype.$ajax = axios;
 
 new Vue({
   router,
