@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import top.course.server.dto.CourseDto;
+import top.course.server.dto.CoursePageDto;
 import top.course.server.dto.PageDto;
 import top.course.server.dto.ResponseDto;
+import top.course.server.enums.CourseStatusEnum;
 import top.course.server.service.CourseService;
 
 import javax.annotation.Resource;
@@ -65,11 +67,12 @@ public class CourseController {
 
 
     /**
-     * 首页课程数据列表查询
+     * 首页课程数据列表查询: 查询已发布的课程
      */
     @PostMapping("/list")
-    public ResponseDto list(@RequestBody PageDto pageDto) {
+    public ResponseDto list(@RequestBody CoursePageDto pageDto) {
         ResponseDto responseDto = new ResponseDto();
+        pageDto.setStatus(CourseStatusEnum.PUBLISH.getCode());
         courseService.list(pageDto);
         responseDto.setContent(pageDto);
         return responseDto;

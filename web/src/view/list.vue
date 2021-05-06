@@ -1,9 +1,9 @@
 <template>
   <main role="main">
-    <div className="album py-5 bg-light">
-      <div className="container">
-        <div className="row">
-          <div v-for="o in courses" className="col-md-4">
+    <div class="album py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div v-for="o in courses" class="col-md-4">
             <the-course v-bind:course="o"></the-course>
           </div>
           <h2 v-show="courses.length === 0" >课程还未上架</h2>
@@ -53,10 +53,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-h2 {
-  text-align:center;
-  margin:50px 0;
-}
-</style>

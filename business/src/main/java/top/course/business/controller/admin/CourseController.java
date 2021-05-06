@@ -38,7 +38,7 @@ public class CourseController {
      * @return 统一返回响应对象
      */
     @PostMapping(value = "/list")
-    public ResponseDto<PageDto> list(@RequestBody(required = false) PageDto pageDto) {
+    public ResponseDto<PageDto> list(@RequestBody(required = false) CoursePageDto pageDto) {
         ResponseDto<PageDto> responseDto = new ResponseDto<>();
         courseService.list(pageDto);
         responseDto.setContent(pageDto);

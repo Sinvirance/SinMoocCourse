@@ -10,10 +10,7 @@ import org.springframework.util.StringUtils;
 import top.course.server.domain.Course;
 import top.course.server.domain.CourseContent;
 import top.course.server.domain.CourseExample;
-import top.course.server.dto.CourseContentDto;
-import top.course.server.dto.CourseDto;
-import top.course.server.dto.PageDto;
-import top.course.server.dto.SortDto;
+import top.course.server.dto.*;
 import top.course.server.enums.CourseStatusEnum;
 import top.course.server.mapper.CourseContentMapper;
 import top.course.server.mapper.CourseMapper;
@@ -53,9 +50,14 @@ public class CourseService {
      * course表列表分页查询
      * @param pageDto 分页组件传输对象
      */
-    public void list(PageDto pageDto) {
+    public void list(CoursePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         CourseExample courseExample = new CourseExample();
+        /* 外部网站查询带有课程状态的课程 */
+        CourseExample.Criteria criteria = courseExample.createCriteria();
+        if (!StringUtils.isEmpty(pageDto.getStatus())) {
+            criteria.andStatusEqualTo(pageDto.getStatus());
+        }
         List<Course> courseList = courseMapper.selectByExample(courseExample);
         courseExample.setOrderByClause("sort asc");
 
