@@ -47,23 +47,14 @@ public class CourseService {
     private CourseContentMapper courseContentMapper;
 
     /**
-     * course表列表分页查询
+     * course表列表分页查询：当有分类时，关联分类课程表
      * @param pageDto 分页组件传输对象
      */
     public void list(CoursePageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
-        CourseExample courseExample = new CourseExample();
-        /* 外部网站查询带有课程状态的课程 */
-        CourseExample.Criteria criteria = courseExample.createCriteria();
-        if (!StringUtils.isEmpty(pageDto.getStatus())) {
-            criteria.andStatusEqualTo(pageDto.getStatus());
-        }
-        List<Course> courseList = courseMapper.selectByExample(courseExample);
-        courseExample.setOrderByClause("sort asc");
-
-        PageInfo<Course> pageInfo = new PageInfo<>(courseList);
+        List<CourseDto> courseDtoList = myCourseMapper.list(pageDto);
+        PageInfo<CourseDto> pageInfo = new PageInfo<>(courseDtoList);
         pageDto.setTotal(pageInfo.getTotal());
-        List<CourseDto> courseDtoList = CopyUtil.copyList(courseList, CourseDto.class);
         pageDto.setList(courseDtoList);
     }
 

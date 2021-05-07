@@ -1,7 +1,11 @@
 package top.course.server.mapper.my;
 
 import org.apache.ibatis.annotations.Param;
+import top.course.server.dto.CourseDto;
+import top.course.server.dto.CoursePageDto;
 import top.course.server.dto.SortDto;
+
+import java.util.List;
 
 /**
  * @Author: Sinvirance
@@ -18,4 +22,7 @@ public interface MyCourseMapper {
     void moveSortsForward(SortDto sortDto);
 
     void moveSortsBackward(SortDto sortDto);
+
+    List<CourseDto> list(@Param("pageDto") CoursePageDto pageDto);
+
 }
