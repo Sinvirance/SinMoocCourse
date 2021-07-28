@@ -230,7 +230,7 @@ create table `user` (
     primary key (`id`),
     unique key `login_name_unique` (`login_name`)
 ) engine = innodb comment ='用户';
-insert into `user` (id, login_name, name, password) values ('10000000', 'test', '测试', '202cb962ac59075b964b07152d234b70');
+insert into `user` (id, login_name, name, password) values ('10000000', 'test', '测试', '7c7a6dd08fcc91cc7bb35edc60b13d06');
 select `id`, `login_name`, `name`, `password` from user;
 
 

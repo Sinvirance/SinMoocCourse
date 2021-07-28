@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/admin/kaptcha")
 public class KaptchaController {
 
-    @Qualifier("getDefaultKaptcha")
+    @Qualifier("getWebKaptcha")
     @Autowired
     DefaultKaptcha defaultKaptcha;
 
