@@ -81,12 +81,21 @@ public class TeacherService {
 
 
     /**
-     查询：所有teacher表信息
+     * 查询：所有teacher表信息
      * @return teacherDtoList 讲师信息传输对象
      */
     public List<TeacherDto> all() {
         TeacherExample teacherExample = new TeacherExample();
         List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
         return CopyUtil.copyList(teacherList, TeacherDto.class);
+    }
+
+    /**
+     * 查询：根据课程id查询课程讲师
+     * @param id 课程 id
+     */
+    public TeacherDto findById(String id) {
+        Teacher teacher = teacherMapper.selectByPrimaryKey(id);
+        return CopyUtil.copy(teacher, TeacherDto.class);
     }
 }

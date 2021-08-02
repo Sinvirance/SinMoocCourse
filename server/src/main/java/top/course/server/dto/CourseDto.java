@@ -57,6 +57,18 @@ public class CourseDto {
     /* 分类集合 */
     private List<CategoryDto> categorys;
 
+    /* 课程大章 */
+    private List<ChapterDto> chapters;
+
+    /* 课程小节 */
+    private List<SectionDto> sections;
+
+    /* 课程介绍 */
+    private String content;
+
+    /* 课程教师 */
+    private TeacherDto teacher;
+
     /* 创建时间 */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdAt;
@@ -70,7 +82,7 @@ public class CourseDto {
         final StringBuffer sb = new StringBuffer("CourseDto{");
         sb.append("id='").append(id).append('\'');
         sb.append(", name='").append(name).append('\'');
-        sb.append(", teacher='").append(teacherId).append('\'');
+        sb.append(", teacherId='").append(teacherId).append('\'');
         sb.append(", summary='").append(summary).append('\'');
         sb.append(", time=").append(time);
         sb.append(", price=").append(price);
@@ -81,6 +93,10 @@ public class CourseDto {
         sb.append(", enroll=").append(enroll);
         sb.append(", sort=").append(sort);
         sb.append(", categorys=").append(categorys);
+        sb.append(", chapters=").append(chapters);
+        sb.append(", sections=").append(sections);
+        sb.append(", content='").append(content).append('\'');
+        sb.append(", teacher=").append(teacher);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');

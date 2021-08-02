@@ -92,9 +92,21 @@ public class SectionService {
 
     /**
      * 删除: 根据id删除section表数据
-     * @param id id
+     * @param id 课程id
      */
     public void delete(String id) {
         sectionMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 查询：根据id查询对应id所有节
+     * @param courseId 课程id
+     */
+    public List<SectionDto> listByCourse(String courseId) {
+        SectionExample example = new SectionExample();
+        example.createCriteria().andCourseIdEqualTo(courseId);
+        List<Section> sectionList = sectionMapper.selectByExample(example);
+        List<SectionDto> sectionDtoList = CopyUtil.copyList(sectionList, SectionDto.class);
+        return sectionDtoList;
     }
 }

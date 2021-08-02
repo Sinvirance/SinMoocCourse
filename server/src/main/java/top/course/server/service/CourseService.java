@@ -46,6 +46,15 @@ public class CourseService {
     @Resource
     private CourseContentMapper courseContentMapper;
 
+    @Resource
+    private TeacherService teacherService;
+
+    @Resource
+    private ChapterService chapterService;
+
+    @Resource
+    private SectionService sectionService;
+
     /**
      * course表列表分页查询：当有分类时，关联分类课程表
      * @param pageDto 分页组件传输对象
@@ -195,5 +204,37 @@ public class CourseService {
         if (sortDto.getNewSort() < sortDto.getOldSort()) {
             myCourseMapper.moveSortsBackward(sortDto);
         }
+    }
+
+    /**
+     * 查询: 对应id的课程详情
+     * @param id 课程id
+     */
+    public CourseDto findCourse(String id) {
+        Course course = courseMapper.selectByPrimaryKey(id);
+        if (course == null || !CourseStatusEnum.PUBLISH.getCode().equals(course.getStatus())) {
+            return null;
+        }
+        CourseDto courseDto = CopyUtil.copy(course, CourseDto.class);
+
+        /* 查询内容 */
+        CourseContent content = courseContentMapper.selectByPrimaryKey(id);
+        if (content != null) {
+            courseDto.setContent(content.getContent());
+        }
+
+        // 查找讲师信息
+        TeacherDto teacherDto = teacherService.findById(courseDto.getTeacherId());
+        courseDto.setTeacher(teacherDto);
+
+        // 查找章信息
+        List<ChapterDto> chapterDtoList = chapterService.listByCourse(id);
+        courseDto.setChapters(chapterDtoList);
+
+        // 查找节信息
+        List<SectionDto> sectionDtoList = sectionService.listByCourse(id);
+        courseDto.setSections(sectionDtoList);
+
+        return courseDto;
     }
 }
