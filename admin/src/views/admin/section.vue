@@ -308,11 +308,11 @@
        */
       getTime() {
         let _this = this;
-        /* 增加延时解决渲染时间不足够导致时长获取为NAN */
-        setTimeout(function () {
-          let ele = document.getElementById("video");
-          _this.section.time = parseInt(ele.duration, 10);
-        }, 3000);
+        /* 使用 canplay 函数获取 */
+				let ele = document.getElementById("video");
+				ele.oncanplay=function(){
+					_this.section.time = parseInt(ele.duration)
+				}
       },
 
       /**
