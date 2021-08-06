@@ -7,6 +7,7 @@ import Category from "./views/admin/category";
 import Course from "./views/admin/course";
 import Content from "./views/admin/content";
 import Teacher from "./views/admin/teacher";
+import Member from "./views/admin/member";
 import Chapter from "./views/admin/chapter"
 import Section from "./views/admin/section"
 import File from "./views/admin/file"
@@ -63,6 +64,10 @@ export default new Router({
             path: "business/teacher",
             name: "business/teacher",
             component: Teacher
+        }, {
+            path: "business/member",
+            name: "business/member",
+            component: Member
         }, {
             path: "business/chapter",
             name: "business/chapter",

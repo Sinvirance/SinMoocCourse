@@ -300,3 +300,20 @@ create table `role_user` (
 ) engine=innodb comment='角色用户关联';
 insert into `role_user` values ('00000000', '00000000', '10000000');
 select `id`, `role_id`, `user_id` from role_user;
+
+
+## 会员表
+drop table if exists `member`;
+create table `member` (
+  `id` char(8) not null default '' comment 'id',
+  `mobile` varchar(11) comment '手机号',
+  `password` char(32) not null comment '密码',
+  `name` varchar(50) comment '昵称',
+  `photo` varchar(200) comment '头像url',
+  `register_time` datetime(3) comment '注册时间',
+  primary key (`id`),
+  unique key `mobile_unique` (`mobile`)
+) engine=innodb default charset=utf8mb4 comment='会员';
+insert into `member` (id, mobile, password, name, photo, register_time)
+ values ('00000000', '12345678901', 'e70e2222a9d67c4f2eae107533359aa4', '测试', null, now());
+select `id`, `mobile`, `password`, `name`, `photo`, `register_time` from coursemooc.member;
