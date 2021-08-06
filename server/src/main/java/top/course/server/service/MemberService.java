@@ -62,6 +62,7 @@ public class MemberService {
     private void insert(Member member) {
         Date now = new Date();
         member.setId(UUIDUtil.getShortUUID());
+        member.setRegisterTime(now);
         memberMapper.insert(member);
     }
 
