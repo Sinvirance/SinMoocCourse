@@ -88,15 +88,15 @@ Tool = {
   /**
    * 保存登录用户信息
    */
-  setLoginUser: function (loginUser) {
-    SessionStorage.set(SESSION_KEY_LOGIN_USER, loginUser);
+  setLoginMember: function (loginMember) {
+    SessionStorage.set(SESSION_KEY_LOGIN_MEMBER, loginMember);
   },
 
   /**
    * 获取登录用户信息
    */
-  getLoginUser: function () {
-    return SessionStorage.get(SESSION_KEY_LOGIN_USER) || {};
+  getLoginMember: function () {
+    return SessionStorage.get(SESSION_KEY_LOGIN_MEMBER) || {};
   },
 
   /**
@@ -145,7 +145,6 @@ Tool = {
     return array.sort(function (obj1, obj2) {
       let val1 = obj1[key];
       let val2 = obj2[key];
-      console.log(val1, val2);
       if (val1 < val2) {
         return -1;
       } else if (val1 > val2) {

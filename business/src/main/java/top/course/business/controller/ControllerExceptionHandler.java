@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import top.course.server.dto.ChapterDto;
 import top.course.server.dto.ResponseDto;
+import top.course.server.exception.BusinessException;
 import top.course.server.exception.ValidatorException;
 
 
@@ -34,6 +35,21 @@ public class ControllerExceptionHandler {
         // LOG.warn(e.getMessage());
         LOG.warn("------------- 【大章】保存失败，参数错误 -------------");
         responseDto.setMessage("请求参数异常");
+        return responseDto;
+    }
+
+    /**
+     * 用于拦截业务异常类
+     * @param e 自定义业务一场
+     * @return 统一响应对象，isSuccess=false
+     */
+    @ExceptionHandler(value = BusinessException.class)
+    @ResponseBody
+    public ResponseDto businessExceptionHandler(BusinessException e) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setSuccess(false);
+        LOG.error("业务异常：{}", e.getCode().getDesc());
+        responseDto.setMessage(e.getCode().getDesc());
         return responseDto;
     }
 }

@@ -35,6 +35,8 @@ public class KaptchaController {
     @Resource
     public RedisTemplate redisTemplate;
 
+    public static final String BUSINESS_NAME = "图片验证";
+
     @GetMapping("/image-code/{imageCodeToken}")
     public void imageCode(@PathVariable(value = "imageCodeToken") String imageCodeToken, HttpServletRequest request, HttpServletResponse httpServletResponse) throws Exception{
         ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();

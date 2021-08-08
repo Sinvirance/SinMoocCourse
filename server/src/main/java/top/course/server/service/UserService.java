@@ -151,7 +151,8 @@ public class UserService {
                 return loginUserDto;
             }
             LOG.info("用户密码错误, 输入密码：{}, 数据库密码：{}", userDto.getPassword(), user.getPassword());
-            throw new BusinessException(BusinessExceptionCode.USER_LOGIN_ERROR);
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+
         }
     }
 
