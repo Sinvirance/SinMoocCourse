@@ -6,10 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.course.server.dto.LoginMemberDto;
 import top.course.server.dto.MemberDto;
 import top.course.server.dto.ResponseDto;
@@ -95,6 +92,18 @@ public class MemberController {
         loginMemberDto.setToken(token);
         redisTemplate.opsForValue().set(token, JSON.toJSONString(loginMemberDto), 3600, TimeUnit.SECONDS);
         responseDto.setContent(loginMemberDto);
+        return responseDto;
+    }
+
+    /**
+     * 退出登录
+     * @param token 当前登录会员token
+     */
+    @GetMapping("/logout/{token}")
+    public ResponseDto logout(@PathVariable String token) {
+        ResponseDto responseDto = new ResponseDto();
+        redisTemplate.delete(token);
+        LOG.info("从redis中删除token:{}", token);
         return responseDto;
     }
 }
