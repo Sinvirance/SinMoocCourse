@@ -149,14 +149,22 @@
        */
       openLoginModal() {
         let _this = this;
-        // 显示登录框时就刷新一次验证码图片
-        _this.loadImageCode();
         $("#login-modal").modal("show");
       },
 
       //---------------登录框、注册框、忘记密码框切换-----------------
       toLoginDiv() {
         let _this = this;
+
+        // 从缓存中获取记住的用户名密码，如果获取不到，说明上一次没有勾选“记住我”
+        let rememberMember = LocalStorage.get(LOCAL_KEY_REMEMBER_MEMBER);
+        if (rememberMember) {
+          _this.member = rememberMember;
+        }
+
+        // 显示登录框时就刷新一次验证码图片
+        _this.loadImageCode();
+
         _this.MODAL_STATUS = _this.STATUS_LOGIN
       },
       toRegisterDiv() {
@@ -213,8 +221,7 @@
               // 新：这里保存密码密文，并保存密文md5，用于检测密码是否被重新输入过
               let md5 = hex_md5(_this.member.password);
               LocalStorage.set(LOCAL_KEY_REMEMBER_MEMBER, {
-                loginName: loginMember.loginName,
-                // password: _this.member.passwordShow,
+								mobile: loginMember.mobile,
                 password: _this.member.password,
                 md5: md5
               });
