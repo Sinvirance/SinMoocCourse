@@ -32,6 +32,8 @@
             </li>
           </ul>
           <span class="text-white">欢迎：</span>
+					<span v-show="loginMember.id" class="text-white pr-3">您好：{{loginMember.name}}</span>
+
 					<button v-on:click="openLoginModal()" class="btn btn-outline-light my-2 my-sm-0" type="submit">登录/注册</button>
         </div>
       </div>
@@ -45,6 +47,15 @@
   export default {
     name: 'theHeader',
     components: {TheLogin},
+		data: function () {
+      return {
+        loginMember: {}
+      }
+    },
+    mounted() {
+      let _this = this;
+      _this.loginMember = Tool.getLoginMember();
+    },
     methods: {
       /**
        * 打开登录注册窗口
@@ -54,6 +65,11 @@
         _this.$refs.loginComponent.openLoginModal();
       },
 
-    }
+			setLoginMember(loginMember) {
+        let _this = this;
+        _this.loginMember = loginMember;
+      },
+
+		}
   }
 </script>
