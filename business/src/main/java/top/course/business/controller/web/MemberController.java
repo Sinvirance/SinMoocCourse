@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import top.course.server.dto.LoginMemberDto;
 import top.course.server.dto.MemberDto;
 import top.course.server.dto.ResponseDto;
+import top.course.server.exception.BusinessException;
 import top.course.server.service.MemberService;
 import top.course.server.util.UUIDUtil;
 import top.course.server.util.ValidatorUtil;
@@ -104,6 +105,19 @@ public class MemberController {
         ResponseDto responseDto = new ResponseDto();
         redisTemplate.delete(token);
         LOG.info("从redis中删除token:{}", token);
+        return responseDto;
+    }
+
+    /**
+     * 校验手机号是否存在
+     * 存在则success=true，不存在则success=false
+     */
+    @GetMapping(value = "/is-mobile-exist/{mobile}")
+    public ResponseDto isMobileExist(@PathVariable(value = "mobile") String mobile) throws BusinessException {
+        LOG.info("查询手机号是否存在开始");
+        ResponseDto responseDto = new ResponseDto();
+        MemberDto memberDto = memberService.findByMobile(mobile);
+        responseDto.setSuccess(memberDto != null);
         return responseDto;
     }
 }

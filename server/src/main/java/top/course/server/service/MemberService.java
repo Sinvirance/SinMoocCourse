@@ -90,6 +90,16 @@ public class MemberService {
         memberMapper.deleteByPrimaryKey(id);
     }
 
+
+    /**
+     * 查询：根据手机号查找member表会员信息
+     * @param mobile 手机号
+     */
+    public MemberDto findByMobile(String mobile) {
+        Member member = this.selectByMobile(mobile);
+        return CopyUtil.copy(member, MemberDto.class);
+    }
+
     /**
      * 查询：根据手机号查找member表会员信息
      * @param mobile 手机号
