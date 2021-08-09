@@ -16,8 +16,8 @@ import java.util.regex.Pattern;
 
 public class EnumGenerator {
     /* 前端枚举常量位置 */
-    // static String path = "admin\\public\\static\\js\\enums.js";
-    static String path = "web\\public\\static\\js\\enums.js";
+     static String path = "admin\\public\\static\\js\\enums.js";
+    //static String path = "web\\public\\static\\js\\enums.js";
 
     public static void main(String[] args) {
         StringBuffer bufferObject = new StringBuffer();
@@ -30,6 +30,8 @@ public class EnumGenerator {
             toJson(CourseStatusEnum.class, bufferObject, bufferArray);
             toJson(FileUseEnum.class, bufferObject, bufferArray);
             toJson(FileUseEnum.class, bufferObject, bufferArray);
+            toJson(SmsUseEnum.class, bufferObject, bufferArray);
+            toJson(SmsStatusEnum.class, bufferObject, bufferArray);
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             writeJs(buffer);
         } catch (Exception e) {

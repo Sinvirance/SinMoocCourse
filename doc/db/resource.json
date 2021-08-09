@@ -37,25 +37,30 @@
         "children": [
             {"id": "020301", "name": "增删改查", "request": ["/business/admin/teacher"]}
         ]
-    },  {
+    }, {
         "id": "0204", "name": "会员管理", "page": "business/member",
         "children": [
             {"id": "020401", "name": "增删改查", "request": ["/business/admin/member"]}
         ]
     }, {
-        "id": "0205", "name": "课程管理-大章管理", "page": "business/chapter",
+        "id": "0205", "name": "短信管理", "page": "business/sms",
         "children": [
-            {"id": "020501", "name": "增删改查", "request": ["/business/admin/chapter", "/business/admin/chapter/all"]}
+            {"id": "020501", "name": "增删改查", "request": ["/business/admin/sms"]}
         ]
     }, {
-        "id": "0206", "name": "课程管理-小节管理", "page": "business/section",
+        "id": "0206", "name": "课程管理-大章管理", "page": "business/chapter",
         "children": [
-            {"id": "020601", "name": "增删改查", "request": ["/business/admin/section", "/business/admin/section/all"]}
+            {"id": "020601", "name": "增删改查", "request": ["/business/admin/chapter", "/business/admin/chapter/all"]}
         ]
     }, {
-        "id": "0207", "name": "课程管理-内容管理", "page": "business/content",
+        "id": "0207", "name": "课程管理-小节管理", "page": "business/section",
         "children": [
-            {"id": "020701", "name": "增删改查", "request": ["/business/admin/content", "/business/admin/content/all"]}
+            {"id": "020701", "name": "增删改查", "request": ["/business/admin/section", "/business/admin/section/all"]}
+        ]
+    }, {
+        "id": "0208", "name": "课程管理-内容管理", "page": "business/content",
+        "children": [
+            {"id": "020801", "name": "增删改查", "request": ["/business/admin/content", "/business/admin/content/all"]}
         ]
     }]
 }, {

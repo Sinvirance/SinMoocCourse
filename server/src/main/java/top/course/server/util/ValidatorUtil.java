@@ -16,7 +16,7 @@ public class ValidatorUtil {
      * @param str 校验的字段值
      * @param fieldName 校验的字段名
      */
-    public static void require(String str, String fieldName) {
+    public static void require(Object str, String fieldName) {
         if (StringUtils.isEmpty(str)) {
             throw new ValidatorException(fieldName + "不能为空");
         }

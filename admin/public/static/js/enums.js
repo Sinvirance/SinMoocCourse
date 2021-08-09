@@ -23,6 +23,14 @@ FILE_USE = {
 　COURSE: {key: "C", value: "课程"},
 　TEACHER: {key: "F", value: "讲师"}
 };
+SMS_USE = {
+　REGISTER: {key: "R", value: "注册"},
+　FORGET: {key: "F", value: "忘记密码"}
+};
+SMS_STATUS = {
+　USED: {key: "U", value: "已使用"},
+　NOT_USED: {key: "N", value: "未使用"}
+};
 
 SECTION_CHARGE_ARRAY = [
 　{key: "C", value: "收费"},
@@ -48,4 +56,12 @@ FILE_USE_ARRAY = [
 FILE_USE_ARRAY = [
 　{key: "C", value: "课程"},
 　{key: "F", value: "讲师"}
+];
+SMS_USE_ARRAY = [
+　{key: "R", value: "注册"},
+　{key: "F", value: "忘记密码"}
+];
+SMS_STATUS_ARRAY = [
+　{key: "U", value: "已使用"},
+　{key: "N", value: "未使用"}
 ];
