@@ -2,6 +2,8 @@ package top.course.server.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import top.course.server.domain.Sms;
@@ -27,8 +29,11 @@ import java.util.List;
 
 @Service
 public class SmsService {
+
     @Resource
     private SmsMapper smsMapper;
+
+    private static final Logger LOG = LoggerFactory.getLogger(SmsService.class);
 
     /**
      * sms表列表分页查询
@@ -122,4 +127,29 @@ public class SmsService {
 
     }
 
+    /**
+     * 验证码5分钟内有效，且操作类型要一致
+     * @param smsDto 短信传输对象
+     */
+    public void validCode(SmsDto smsDto) {
+        SmsExample example = new SmsExample();
+        SmsExample.Criteria criteria = example.createCriteria();
+        // 查找5分钟内同手机号同操作发送记录
+        criteria.andMobileEqualTo(smsDto.getMobile()).andUseEqualTo(smsDto.getUse()).andAtGreaterThan(new Date(new Date().getTime() - 1 * 60 * 1000));
+        List<Sms> smsList = smsMapper.selectByExample(example);
+
+        if (smsList != null && smsList.size() > 0) {
+            Sms smsDb = smsList.get(0);
+            if (!smsDb.getCode().equals(smsDto.getCode())) {
+                LOG.warn("短信验证码不正确");
+                throw new BusinessException(BusinessExceptionCode.MOBILE_CODE_ERROR);
+            } else {
+                smsDto.setStatus(SmsStatusEnum.USED.getCode());
+                smsMapper.updateByPrimaryKey(smsDb);
+            }
+        } else {
+            LOG.warn("短信验证码不存在或已过期，请重新发送短信");
+            throw new BusinessException(BusinessExceptionCode.MOBILE_CODE_EXPIRED);
+        }
+    }
 }

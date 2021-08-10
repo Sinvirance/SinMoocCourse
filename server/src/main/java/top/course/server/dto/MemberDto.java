@@ -41,6 +41,9 @@ public class MemberDto {
     /* 图片验证码token */
     private String imageCodeToken;
 
+    /* 短信验证码 */
+    private String smsCode;
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("MemberDto{");
@@ -52,6 +55,7 @@ public class MemberDto {
         sb.append(", registerTime=").append(registerTime);
         sb.append(", imageCode='").append(imageCode).append('\'');
         sb.append(", imageCodeToken='").append(imageCodeToken).append('\'');
+        sb.append(", smsCode='").append(smsCode).append('\'');
         sb.append('}');
         return sb.toString();
     }

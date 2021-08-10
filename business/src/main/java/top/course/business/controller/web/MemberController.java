@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import top.course.server.dto.LoginMemberDto;
 import top.course.server.dto.MemberDto;
 import top.course.server.dto.ResponseDto;
+import top.course.server.dto.SmsDto;
+import top.course.server.enums.SmsUseEnum;
 import top.course.server.exception.BusinessException;
 import top.course.server.service.MemberService;
+import top.course.server.service.SmsService;
 import top.course.server.util.UUIDUtil;
 import top.course.server.util.ValidatorUtil;
 
@@ -38,6 +41,8 @@ public class MemberController {
     @Resource(name = "redisTemplate")
     private RedisTemplate redisTemplate;
 
+    @Resource
+    private SmsService smsService;
 
     /**
      * 注册会员 Member, id 有值更新，无值新增
@@ -53,6 +58,14 @@ public class MemberController {
 
         /* 密码加密 */
         memberDto.setPassword(DigestUtils.md5DigestAsHex(memberDto.getPassword().getBytes()));
+
+        /* 校验短信验证码 */
+        SmsDto smsDto = new SmsDto();
+        smsDto.setMobile(memberDto.getMobile());
+        smsDto.setCode(memberDto.getSmsCode());
+        smsDto.setUse(SmsUseEnum.REGISTER.getCode());
+        smsService.validCode(smsDto);
+        LOG.info("短信验证码校验通过");
 
         ResponseDto responseDto = new ResponseDto();
         memberService.save(memberDto);
