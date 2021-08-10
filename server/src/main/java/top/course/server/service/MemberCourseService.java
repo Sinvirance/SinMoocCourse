@@ -3,6 +3,7 @@ package top.course.server.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import top.course.server.domain.MemberCourse;
 import top.course.server.domain.MemberCourseExample;
@@ -13,8 +14,8 @@ import top.course.server.util.CopyUtil;
 import top.course.server.util.UUIDUtil;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Sinvirance
@@ -62,6 +63,7 @@ public class MemberCourseService {
     private void insert(MemberCourse memberCourse) {
         Date now = new Date();
         memberCourse.setId(UUIDUtil.getShortUUID());
+        memberCourse.setAt(now);
         memberCourseMapper.insert(memberCourse);
     }
 
@@ -79,5 +81,42 @@ public class MemberCourseService {
      */
     public void delete(String id) {
         memberCourseMapper.deleteByPrimaryKey(id);
+    }
+
+
+    /**
+     * 查询：根据课程是否报名返回课程对象或者报名信息
+     * @param memberCourseDto 会员报名课程表传输对象
+     */
+    public MemberCourseDto enroll(MemberCourseDto memberCourseDto) {
+        MemberCourse memberCourseDb = this.select(memberCourseDto.getMemberId(), memberCourseDto.getCourseId());
+        if (memberCourseDb == null) {
+            MemberCourse memberCourse = CopyUtil.copy(memberCourseDto, MemberCourse.class);
+            this.insert(memberCourse);
+            /* 将数据库信息全部返回，包括id, at */
+            return CopyUtil.copy(memberCourse, MemberCourseDto.class);
+        } else {
+            // 如果已经报名，则直接返回已报名的信息
+            return CopyUtil.copy(memberCourseDb, MemberCourseDto.class);
+        }
+    }
+
+
+    /**
+     * 查询: 根据会员id和课程id判断会员是否已报名
+     * @param memberId 登录会员id
+     * @param courseId 报名课程id
+     */
+    public MemberCourse select(String memberId, String courseId) {
+        MemberCourseExample example = new MemberCourseExample();
+        example.createCriteria()
+                .andCourseIdEqualTo(courseId)
+                .andMemberIdEqualTo(memberId);
+        List<MemberCourse> memberCourseList = memberCourseMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(memberCourseList)) {
+            return null;
+        } else {
+            return memberCourseList.get(0);
+        }
     }
 }
