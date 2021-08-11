@@ -81,23 +81,6 @@ CREATE TABLE `chapter` (
 insert into `chapter` (id, course_id, name) values ('00000001', '00000000', '测试大章01');
 insert into `chapter` (id, course_id, name) values ('00000002', '00000000', '测试大章02');
 insert into `chapter` (id, course_id, name) values ('00000003', '00000000', '测试大章03');
-insert into `chapter` (id, course_id, name) values ('00000004', '00000000', '测试大章04');
-insert into `chapter` (id, course_id, name) values ('00000005', '00000000', '测试大章05');
-insert into `chapter` (id, course_id, name) values ('00000006', '00000000', '测试大章06');
-insert into `chapter` (id, course_id, name) values ('00000007', '00000000', '测试大章07');
-insert into `chapter` (id, course_id, name) values ('00000008', '00000000', '测试大章08');
-insert into `chapter` (id, course_id, name) values ('00000009', '00000000', '测试大章09');
-insert into `chapter` (id, course_id, name) values ('00000010', '00000000', '测试大章10');
-insert into `chapter` (id, course_id, name) values ('00000011', '00000000', '测试大章11');
-insert into `chapter` (id, course_id, name) values ('00000012', '00000000', '测试大章12');
-insert into `chapter` (id, course_id, name) values ('00000013', '00000000', '测试大章13');
-insert into `chapter` (id, course_id, name) values ('00000014', '00000000', '测试大章14');
-insert into `chapter` (id, course_id, name) values ('00000015', '00000000', '测试大章15');
-insert into `chapter` (id, course_id, name) values ('00000016', '00000000', '测试大章16');
-insert into `chapter` (id, course_id, name) values ('00000017', '00000000', '测试大章17');
-insert into `chapter` (id, course_id, name) values ('00000018', '00000000', '测试大章18');
-insert into `chapter` (id, course_id, name) values ('00000019', '00000000', '测试大章19');
-insert into `chapter` (id, course_id, name) values ('00000020', '00000000', '测试大章20');
 select id, course_id, name from chapter;
 
 
@@ -230,7 +213,7 @@ create table `user` (
     primary key (`id`),
     unique key `login_name_unique` (`login_name`)
 ) engine = innodb comment ='用户';
-insert into `user` (id, login_name, name, password) values ('10000000', 'test', '测试', '7c7a6dd08fcc91cc7bb35edc60b13d06');
+insert into `user` (id, login_name, name, password) values ('10000000', 'test', '测试', '36043090198c878ff2dd10ac7a398fa3');
 select `id`, `login_name`, `name`, `password` from user;
 
 
@@ -245,6 +228,7 @@ create table `resource`(
     primary key (`id`)
 ) engine = innodb comment ='资源';
 ## 资源表测试数据
+insert into `resource` values ('00', '欢迎', 'welcome', null, null);
 insert into `resource` values ('01', '系统管理', null, null, null);
 insert into `resource` values ('0101', '用户管理', '/system/user', null, '01');
 insert into `resource` values ('010101', '保存', null, '["/system/admin/user/list", "/system/admin/user/save"]', '0101');
@@ -254,7 +238,7 @@ insert into `resource` values ('0102', '资源管理', '/system/resource', null,
 insert into `resource` values ('010201', '保存/显示', null, '["/system/admin/resource"]', '0102');
 insert into `resource` values ('0103', '角色管理', '/system/role', null, '01');
 insert into `resource` values ('010301', '角色/权限管理', null, '["/system/admin/role"]', '0103');
-
+select * from resource;
 
 ## 角色表
 drop table if exists `role`;
