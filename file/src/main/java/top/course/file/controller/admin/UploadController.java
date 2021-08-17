@@ -39,7 +39,7 @@ public class UploadController {
     @Value("${file.path}")
     private String FILE_PATH;
 
-    @Value("${oss.domain}")
+    @Value("${oss.ossDomain}")
     private String OSS_DOMAIN;
 
     @Value("${vod.accessKeyId}")
