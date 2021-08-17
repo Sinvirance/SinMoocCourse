@@ -39,8 +39,8 @@ public class UploadController {
     @Value("${file.path}")
     private String FILE_PATH;
 
-    @Value("${file.domain}")
-    private String FILE_DOMAIN;
+    @Value("${oss.domain}")
+    private String OSS_DOMAIN;
 
     @Value("${vod.accessKeyId}")
     private String accessKeyId;
@@ -96,12 +96,12 @@ public class UploadController {
 
         /* 保存文件记录 */
         LOG.info("保存文件记录开始");
-        fileDto.setPath(FILE_DOMAIN + path);
+        fileDto.setPath(OSS_DOMAIN + path);
         fileService.save(fileDto);
 
         ResponseDto responseDto = new ResponseDto();
         /* 将图片位置返回前端 */
-        fileDto.setPath(FILE_DOMAIN + path);
+        fileDto.setPath(OSS_DOMAIN + path);
         responseDto.setContent(fileDto);
 
         if (fileDto.getShardIndex().equals(fileDto.getShardTotal())) {
@@ -117,7 +117,7 @@ public class UploadController {
      */
     public void merge(FileDto fileDto) throws Exception {
         LOG.info("合并分片开始");
-        String path = fileDto.getPath().replace(FILE_DOMAIN, "");
+        String path = fileDto.getPath().replace(OSS_DOMAIN, "");
         Integer shardTotal = fileDto.getShardTotal();
         File newFile = new File(FILE_PATH + path);
         FileOutputStream outputStream = new FileOutputStream(newFile, true);//文件追加写入
@@ -173,7 +173,7 @@ public class UploadController {
         FileDto fileDto = fileService.findByKey(key);
         if (fileDto != null) {
             if (StringUtils.isEmpty(fileDto.getVod())) {
-                fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
+                fileDto.setPath(OSS_DOMAIN + fileDto.getPath());
             } else {
                 DefaultAcsClient vodClient = VodUtil.initVodClient(accessKeyId, accessKeySecret);
                 GetMezzanineInfoResponse response = VodUtil.getMezzanineInfo(vodClient, fileDto.getVod());
