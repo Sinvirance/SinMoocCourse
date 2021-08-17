@@ -253,6 +253,7 @@
         let _this = this;
         let image = resp.content.path;
         _this.teacher.image = image;
+        _this.$forceUpdate();
       }
     }
   }
