@@ -155,7 +155,8 @@
                   LocalStorage.set(LOCAL_KEY_REMEMBER_USER, null);
                 }
                 // 想要导航到不同的URL，使用router.push()方法，这个方法会向history栈添加一个新纪录，所以，当用户点击浏览器后退按钮时，会回到之前的URL
-                _this.$router.push("/welcome")
+                // _this.$router.push("/welcome");
+								window.open("/welcome", "_self");
               } else {
                 Toast.warning(resp.message);
                 _this.loadImageCode();
