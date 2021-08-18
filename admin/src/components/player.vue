@@ -17,6 +17,10 @@ export default {
     }
   },
   methods: {
+		pause() {
+			let _this = this;
+			_this.aliPlayer.pause();
+		},
 
     /**
      * 一般url上传
