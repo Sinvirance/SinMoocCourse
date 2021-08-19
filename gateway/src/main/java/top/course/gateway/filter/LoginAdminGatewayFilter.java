@@ -15,6 +15,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Sinvirance
@@ -73,6 +74,8 @@ public class LoginAdminGatewayFilter implements GatewayFilter, Ordered {
             boolean exist = false;
             /* 将登录对象转为JSONObject格式 */
             JSONObject loginUserDto = JSON.parseObject(String.valueOf(object));
+            /* 刷新登录超时时间 */
+            redisTemplate.opsForValue().set(token, JSON.toJSONString(loginUserDto), 3600, TimeUnit.SECONDS);
             /* 获取登录对象中的请求列表 */
             JSONArray requests = loginUserDto.getJSONArray("requests");
             /* 遍历所有【权限请求】，判断当前请求的地址是否在【权限请求】里 */
