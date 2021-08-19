@@ -124,10 +124,10 @@
 											 id="forget-mobile-code" class="form-control"
 											 placeholder="手机验证码" v-model="memberForget.smsCode">
 								<div class="input-group-append">
-                  <button v-on:click="sendSmsForForget()"
-                          class="btn btn-outline-secondary" id="forget-send-code-btn">
-                    发送验证码
-                  </button>
+									<button v-on:click="sendSmsForForget()"
+													class="btn btn-outline-secondary" id="forget-send-code-btn">
+										发送验证码
+									</button>
 								</div>
 							</div>
 							<span v-show="forgetMobileCodeValidate === false" class="text-danger">请输入短信6位验证码</span>
@@ -242,7 +242,15 @@ export default {
 	mounted() {
 		let _this = this;
 		_this.toLoginDiv();
+		// 监听事件总线，openLoginModal事件
+		_this.$event.$on("openLoginModal", function (param) {
+			console.log(param);
+			// 前端调试可以使用debugger。
+			// debugger;
+			_this.openLoginModal();
+		})
 	},
+
 	methods: {
 
 		/**
@@ -449,7 +457,7 @@ export default {
 				use: SMS_USE.FORGET.key
 			};
 
-			_this.$ajax.get(process.env.VUE_APP_SERVER + '/business/web/member/is-mobile-exist/' + _this.memberForget.mobile).then((res)=>{
+			_this.$ajax.get(process.env.VUE_APP_SERVER + '/business/web/member/is-mobile-exist/' + _this.memberForget.mobile).then((res) => {
 				let response = res.data;
 				if (response.success) {
 					_this.forgetMobileValidate = true;
@@ -467,9 +475,9 @@ export default {
 			// 提交之前，先校验所有输入框
 			// 注意：当有一个文本框校验为false时，其它不校验
 			let validateResult = _this.onForgetMobileBlur() &&
-				_this.onForgetMobileCodeBlur() &&
-				_this.onForgetPasswordBlur() &&
-				_this.onForgetConfirmPasswordBlur();
+					_this.onForgetMobileCodeBlur() &&
+					_this.onForgetPasswordBlur() &&
+					_this.onForgetConfirmPasswordBlur();
 			if (!validateResult) {
 				return;
 			}
@@ -477,7 +485,7 @@ export default {
 			_this.memberForget.password = hex_md5(_this.memberForget.passwordOriginal + KEY);
 
 			// 调服务端密码重置接口
-			_this.$ajax.post(process.env.VUE_APP_SERVER + '/business/web/member/reset-password', _this.memberForget).then((res)=>{
+			_this.$ajax.post(process.env.VUE_APP_SERVER + '/business/web/member/reset-password', _this.memberForget).then((res) => {
 				let response = res.data;
 				if (response.success) {
 					Toast.success("密码重置成功");
@@ -485,7 +493,7 @@ export default {
 				} else {
 					Toast.warning(response.message);
 				}
-			}).catch((response)=>{
+			}).catch((response) => {
 				console.log("error：", response);
 			})
 		},
@@ -527,22 +535,22 @@ export default {
 
 		//-------------------------------- 忘记密码框校验 ----------------------------
 
-		onForgetMobileBlur () {
+		onForgetMobileBlur() {
 			let _this = this;
 			return _this.forgetMobileValidate = Pattern.validateMobile(_this.memberForget.mobile);
 		},
 
-		onForgetMobileCodeBlur () {
+		onForgetMobileCodeBlur() {
 			let _this = this;
 			return _this.forgetMobileCodeValidate = Pattern.validateMobileCode(_this.memberForget.smsCode);
 		},
 
-		onForgetPasswordBlur () {
+		onForgetPasswordBlur() {
 			let _this = this;
 			return _this.forgetPasswordValidate = Pattern.validatePasswordWeak(_this.memberForget.passwordOriginal);
 		},
 
-		onForgetConfirmPasswordBlur () {
+		onForgetConfirmPasswordBlur() {
 			let _this = this;
 			let forgetPassword = $("#forget-confirm-password").val();
 			if (Tool.isEmpty(forgetPassword)) {

@@ -10,6 +10,9 @@ Vue.prototype.$ajax = axios;
 // 解决每次ajax请求，对应的sessionId不一致的问题
 axios.defaults.withCredentials = true;
 
+//事件总线EventBus
+Vue.prototype.$event = new Vue();
+
 /**
  * 全局过滤器
  */
@@ -25,8 +28,9 @@ axios.interceptors.request.use(function (config) {
   /* 在请求时统一打印请求数据 */
   console.log("请求：", config);
   return config;
-}, error => {});
-  //对请求错误做些什么
+}, error => {
+});
+//对请求错误做些什么
 
 /**
  * axios response 拦截器
@@ -34,7 +38,8 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
   console.log("返回结果:", response);
   return response;
-}, error => {});
+}, error => {
+});
 
 
 new Vue({
@@ -53,9 +58,11 @@ router.push = function push(location) {
 
   // 这个if语句在跳转相同路径的时候，在路径末尾添加新参数（一些随机数字）
   // 用来触发watch
-  if(typeof(location)=="string"){
+  if (typeof (location) == "string") {
     var Separator = "&";
-    if(location.indexOf('?')==-1) { Separator='?'; }
+    if (location.indexOf('?') == -1) {
+      Separator = '?';
+    }
     location = location + Separator + "random=" + Math.random();
   }
 
