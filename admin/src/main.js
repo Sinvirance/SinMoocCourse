@@ -15,33 +15,50 @@ Vue.prototype.$ajax = axios;
  * axios request拦截器
  */
 axios.interceptors.request.use(function (config) {
-    /* 在请求时统一打印请求数据 */
-    console.log("请求:", config);
+  /* 在请求时统一打印请求数据 */
+  console.log("请求:", config);
 
-    /* 当用户token不为空时，为所有请求头加上token */
-    let token = SessionStorage.getLoginUser().token;
-    if (Tool.isNotEmpty(token)) {
-      config.headers.token = token;
-      console.log("请求headers增加token:", token);
-    }
-    return config;
-}, //对请求错误做些什么
- error => {});
+  /* 当用户token不为空时，为所有请求头加上token */
+  let token = SessionStorage.getLoginUser().token;
+  if (Tool.isNotEmpty(token)) {
+    config.headers.token = token;
+    console.log("请求headers增加token:", token);
+  }
+  return config;
+  }, //对请求错误做些什么
+ error => {
+});
 
 /**
  * axios response 拦截器
  */
 axios.interceptors.response.use(function (response) {
-    console.log("返回结果:", response);
-    return response;
-}, error => {});
+  console.log("返回结果:", response);
+  return response;
+}, error => {
+  console.log("返回拦截：", error.response);
+  let response = error.response;
+  const status = response.status;
+  if (status === 401) {
+    // 判断状态码是401 跳转到登录
+    console.log("未登录，跳到登录页面");
+    SessionStorage.setLoginUser(null);
+    router.push('/login');
+  }
+  return {
+    data: {
+      success: false,
+      message: "请重新登录"
+    }
+  };
+});
 
 /**
  * 全局过滤器
  */
 Object.keys(filter).forEach(key => {
-    /* Vue.filter()：把Array的某些元素过滤掉，然后返回剩下的元素,这里是将key去掉，留value  */
-    Vue.filter(key, filter[key])
+  /* Vue.filter()：把Array的某些元素过滤掉，然后返回剩下的元素,这里是将key去掉，留value  */
+  Vue.filter(key, filter[key])
 });
 
 /**
@@ -64,8 +81,8 @@ router.beforeEach((to, from, next) => {
 });
 
 new Vue({
-    router,
-    render: h => h(App),
+  router,
+  render: h => h(App),
 }).$mount('#app');
 
 console.log("环境", process.env.NODE_ENV);

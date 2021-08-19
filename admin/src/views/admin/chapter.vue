@@ -157,9 +157,11 @@
           // resp 就是后端的统一返回对象 ResponseDto
           let resp = response.data
           // 真实数据存储在响应对象的 data.list属性
-          _this.chapters = resp.content.list;
-          // render：pagination组件定义的方法, 用于使用数据重新渲染页面
-          _this.$refs.pagination.render(page, resp.content.total);
+					if (resp.success)  {
+						_this.chapters = resp.content.list;
+						// render：pagination组件定义的方法, 用于使用数据重新渲染页面
+						_this.$refs.pagination.render(page, resp.content.total);
+					}
         })
       },
 

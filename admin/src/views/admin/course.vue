@@ -296,8 +296,10 @@
         }).then((response)=>{
           Loading.hide();
           let resp = response.data
-          _this.courses = resp.content.list;
-          _this.$refs.pagination.render(page, resp.content.total);
+					if (resp.success) {
+						_this.courses = resp.content.list;
+						_this.$refs.pagination.render(page, resp.content.total);
+					}
         })
       },
 
@@ -390,9 +392,10 @@
         _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/category/all').then((response)=>{
           Loading.hide();
           let resp = response.data;
-          _this.categorys = resp.content;
-
-          _this.initTree();
+          if (resp.success) {
+						_this.categorys = resp.content;
+						_this.initTree();
+					}
         })
       },
 

@@ -214,8 +214,10 @@
         }).then((response)=>{
           Loading.hide();
           let resp = response.data
-          _this.roles = resp.content.list;
-          _this.$refs.pagination.render(page, resp.content.total);
+					if (resp.success) {
+						_this.roles = resp.content.list;
+						_this.$refs.pagination.render(page, resp.content.total);
+					}
         })
       },
 

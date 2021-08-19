@@ -64,9 +64,11 @@
         _this.$ajax.get(process.env.VUE_APP_SERVER + "/system/admin/resource/load-tree").then((response)=>{
           Loading.hide();
           let resp = response.data
-          _this.resources = resp.content;
-          /* 初始化资源树 */
-          _this.initTree();
+					if (resp.success) {
+						_this.resources = resp.content;
+						/* 初始化资源树 */
+						_this.initTree();
+					}
         })
       },
 

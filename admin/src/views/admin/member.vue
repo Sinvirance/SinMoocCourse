@@ -68,9 +68,10 @@
         }).then((response)=>{
           Loading.hide();
           let resp = response.data;
-          _this.members = resp.content.list;
-          _this.$refs.pagination.render(page, resp.content.total);
-
+          if (resp.success) {
+						_this.members = resp.content.list;
+						_this.$refs.pagination.render(page, resp.content.total);
+					}
         })
       }
     }
