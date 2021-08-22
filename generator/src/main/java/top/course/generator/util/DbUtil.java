@@ -26,8 +26,8 @@ public class DbUtil {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
             String url = "jdbc:mariadb://localhost:3306/coursemooc";
-            String user = "coursemooc";
-            String pass = "sin";
+            String user = "sinmooc";
+            String pass = "ABcd13578965@";
             conn = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

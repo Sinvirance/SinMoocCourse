@@ -24,8 +24,8 @@
 
         <jdbcConnection driverClass="org.mariadb.jdbc.Driver"
                         connectionURL="jdbc:mariadb://localhost:3306/coursemooc"
-                        userId="coursemooc"
-                        password="sin">
+                        userId="sinmooc"
+                        password="ABcd13578965@">
         </jdbcConnection>
 
         <!-- domain类的位置 -->
