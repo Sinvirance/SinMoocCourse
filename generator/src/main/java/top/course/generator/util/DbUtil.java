@@ -24,8 +24,8 @@ public class DbUtil {
     public static Connection getConnection() {
         Connection conn = null;
         try {
-            Class.forName("org.mariadb.jdbc.Driver");
-            String url = "jdbc:mariadb://localhost:3306/coursemooc";
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/coursemooc";
             String user = "sinmooc";
             String pass = "ABcd13578965@";
             conn = DriverManager.getConnection(url, user, pass);
