@@ -1,6 +1,5 @@
 package top.course.server.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.OSSClient;
 import com.aliyuncs.DefaultAcsClient;
@@ -8,7 +7,6 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.FormatType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.vod.model.v20170321.*;
-import org.apache.commons.codec.binary.Base64;
 
 import java.io.File;
 import java.io.InputStream;
@@ -151,35 +149,4 @@ public class VodUtil {
         return client.getAcsResponse(request);
     }
 
-
-    public static void main(String[] argv) {
-        //AccessKeyId
-        String accessKeyId = "LTAI4G6S5opNkQwySdjfxFev";
-        //AccessKeySecret
-        String accessKeySecret = "qVrICZfqfBOe17jpSzcvZ8G2rCgbEs";
-        //需要上传到VOD的本地视频文件的完整路径，需要包含文件扩展名
-        String localFile = "D:\\Sinvirance\\WorkSpace\\JavaProject\\SinMooc\\static\\course\\section-video\\test2.mp4";
-        try {
-            // 初始化VOD客户端并获取上传地址和凭证
-            DefaultAcsClient vodClient = initVodClient(accessKeyId, accessKeySecret);
-            String filename = "test.mp4";
-            CreateUploadVideoResponse createUploadVideoResponse = createUploadVideo(vodClient, filename);
-            // 执行成功会返回VideoId、UploadAddress和UploadAuth
-            String videoId = createUploadVideoResponse.getVideoId();
-            JSONObject uploadAuth =
-                    JSONObject.parseObject(Base64.decodeBase64(createUploadVideoResponse.getUploadAuth()), JSONObject.class);
-            JSONObject uploadAddress =
-                    JSONObject.parseObject(org.apache.commons.codec.binary.Base64.decodeBase64(createUploadVideoResponse.getUploadAddress()), JSONObject.class);
-            // 使用UploadAuth和UploadAddress初始化OSS客户端
-            OSSClient ossClient = initOssClient(uploadAuth, uploadAddress);
-            // 上传文件，注意是同步上传会阻塞等待，耗时与文件大小和网络上行带宽有关
-            uploadLocalFile(ossClient, uploadAddress, localFile);
-
-            GetMezzanineInfoResponse response = new GetMezzanineInfoResponse();
-            response = getMezzanineInfo(vodClient, videoId);
-            System.out.println("获取视频信息, response : " + JSON.toJSONString(response));
-        } catch (Exception e) {
-            System.out.println("上传视频失败 : " + e.getLocalizedMessage());
-        }
-    }
 }
