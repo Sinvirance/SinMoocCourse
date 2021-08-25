@@ -558,7 +558,7 @@
       // 为了实现登录到 welcome 页面也具有激活样式
       _this.activeSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
       /* 初始化页面时重新加载js */
-      // $.getScript('/ace/assets/js/ace.min.js');
+      $.getScript('/ace/assets/js/ace.min.js');
       _this.loginUser = SessionStorage.getLoginUser();
 
       /* 第一次加载admin.vue，需要判断路由权限，例如登录或者刷新 */
