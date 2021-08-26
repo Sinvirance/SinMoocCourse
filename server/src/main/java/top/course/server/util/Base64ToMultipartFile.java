@@ -1,10 +1,9 @@
 package top.course.server.util;
 
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
 
 import java.io.*;
-import java.util.Base64;
-import java.util.Base64.Decoder;
 
 /**
  * @Author: Sinvirance
@@ -66,19 +65,23 @@ public class Base64ToMultipartFile implements MultipartFile {
     }
 
     public static MultipartFile base64ToMultipart(String base64) {
-        String[] baseStrs = base64.split(",");
+        try {
+            String[] baseStrs = base64.split(",");
 
-        Decoder decoder = Base64.getDecoder();
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] b = new byte[0];
+            b = decoder.decodeBuffer(baseStrs[1]);
 
-        byte[] b = new byte[0];
-        b = decoder.decode(String.valueOf(baseStrs));
-
-        for(int i = 0; i < b.length; ++i) {
-            if (b[i] < 0) {
-                b[i] += 256;
+            for(int i = 0; i < b.length; ++i) {
+                if (b[i] < 0) {
+                    b[i] += 256;
+                }
             }
-        }
 
-        return new Base64ToMultipartFile(b, baseStrs[0]);
+            return new Base64ToMultipartFile(b, baseStrs[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
