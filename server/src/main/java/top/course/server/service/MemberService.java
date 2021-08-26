@@ -42,6 +42,7 @@ public class MemberService {
     public void list(PageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         MemberExample memberExample = new MemberExample();
+        memberExample.setOrderByClause("register_time desc");
         List<Member> memberList = memberMapper.selectByExample(memberExample);
 
         PageInfo<Member> pageInfo = new PageInfo<>(memberList);
